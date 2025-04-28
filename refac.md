@@ -1,6 +1,6 @@
 # Power BI Model & Report Documentation
 
-*Generated on: 2025-04-28 16:42:17*
+*Generated on: 2025-04-28 16:48:39*
 
 ## Table of Contents
 
@@ -11,9 +11,9 @@
 
 ## <a name="overview"></a>Overview
 
-The Power BI data model appears to be designed for a business domain focused on project management and timesheet tracking, likely within a professional services or project-based organization. The presence of tables such as 'vw_Timesheet' and 'vw_missing_timesheet' suggests a strong emphasis on monitoring employee hours worked against various projects, units, and codes, which are essential for resource allocation, billing, and performance analysis. The inclusion of dimension tables like 'DimDate' and lookup tables ('lkp_Project', 'lkp_Unit', 'lkp_Code', 'lkp_fltr_Employee') indicates a structured approach to categorizing and filtering data for insightful reporting.
+The Power BI data model appears to be designed for a project management and timesheet tracking system within an organization. It likely serves to analyze employee work hours, project allocations, and overall resource utilization. The presence of tables such as 'vw_Timesheet' and 'vw_missing_timesheet' suggests a focus on capturing and reporting on timesheet data, including identifying any discrepancies or missing entries. The inclusion of lookup tables like 'lkp_Project', 'lkp_Unit', and 'lkp_Code' indicates a structured approach to categorizing and filtering data related to projects, organizational units, and timesheet codes, which enhances the model's analytical capabilities.
 
-The relationships established between these tables facilitate comprehensive analysis of timesheet data, allowing users to track project progress, identify missing timesheets, and evaluate employee contributions over time. By linking timesheet entries to specific projects, units, and dates, the model supports detailed reporting capabilities that can help management make informed decisions regarding project staffing, budget adherence, and overall operational efficiency. This structure not only aids in compliance and accountability but also enhances strategic planning and resource management within the organization.
+The 'DimDate' table serves as a central date dimension, allowing for time-based analysis across various metrics, such as hours worked and project timelines. Relationships between the timesheet views and the lookup tables facilitate detailed reporting on employee performance, project progress, and resource allocation over time. Overall, this data model is likely aimed at providing insights into operational efficiency, project management effectiveness, and workforce productivity, enabling stakeholders to make informed decisions based on comprehensive data analysis.
 
 ---
 
