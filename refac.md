@@ -1,6 +1,6 @@
 # Power BI Model & Report Documentation
 
-*Generated on: 2025-04-28 17:18:17*
+*Generated on: 2025-04-28 17:30:32*
 
 ## Table of Contents
 
@@ -36,33 +36,40 @@ This model encompasses various entities relevant to the domain, including their 
 
 1. **Entities**: 
    - Entities represent distinct objects or concepts within the domain. Each entity is characterized by its attributes, which define the properties of the entity.
-   - Example entities might include:
-     - **Customer**: Attributes may include CustomerID, Name, Email, PhoneNumber, etc.
-     - **Product**: Attributes may include ProductID, Name, Description, Price, etc.
-     - **Order**: Attributes may include OrderID, OrderDate, CustomerID, TotalAmount, etc.
+   - Example entities may include:
+     - **Customer**: Represents individuals or organizations that purchase products or services.
+     - **Product**: Represents items available for sale.
+     - **Order**: Represents transactions made by customers.
 
-2. **Relationships**: 
+2. **Attributes**: 
+   - Attributes are the specific data points that describe an entity. Each attribute has a defined data type and may have constraints such as uniqueness or nullability.
+   - Example attributes for the Customer entity might include:
+     - CustomerID (Primary Key)
+     - Name
+     - Email
+     - PhoneNumber
+
+3. **Relationships**: 
    - Relationships define how entities interact with one another. They can be one-to-one, one-to-many, or many-to-many.
-   - Example relationships might include:
-     - A **Customer** can place multiple **Orders** (one-to-many).
-     - An **Order** can contain multiple **Products** (many-to-many).
+   - Example relationships may include:
+     - A Customer can place multiple Orders (one-to-many).
+     - An Order can contain multiple Products (many-to-many).
 
-3. **Attributes**: 
-   - Attributes are the data fields that provide details about each entity. They can be of various data types, such as string, integer, date, etc.
-   - Attributes may also include constraints such as primary keys, foreign keys, and unique constraints to ensure data integrity.
+4. **Constraints**: 
+   - Constraints are rules that ensure data integrity and consistency within the model. They may include primary keys, foreign keys, unique constraints, and check constraints.
+   - Example constraints might include:
+     - CustomerID must be unique for each Customer.
+     - OrderDate must not be in the future.
 
-4. **Normalization**: 
-   - The model may follow normalization principles to reduce data redundancy and improve data integrity. This involves organizing the data into tables in such a way that dependencies are properly enforced.
-
-5. **Data Integrity**: 
-   - The model incorporates rules and constraints to maintain data accuracy and consistency. This includes defining primary keys, foreign keys, and validation rules for attributes.
+5. **Normalization**: 
+   - The model adheres to normalization principles to reduce data redundancy and improve data integrity. This involves organizing data into separate tables and establishing relationships between them.
 
 6. **Documentation**: 
-   - Comprehensive documentation accompanies the model, detailing each entity, its attributes, relationships, and any relevant business rules. This documentation serves as a reference for developers, analysts, and stakeholders.
+   - Comprehensive documentation accompanies the model, detailing each entity, attribute, relationship, and constraint. This documentation serves as a reference for developers, analysts, and stakeholders.
 
 #### Use Cases
-- **Database Design**: The model serves as a foundation for creating a relational database schema.
-- **Data Integration**: It aids in integrating data from various sources by providing
+- **Data Warehousing**: The model can be used to design a data warehouse schema that supports reporting and analytics.
+- **Application Development**: Developers can utilize the model to create
 
 ---
 
@@ -93,89 +100,87 @@ The following relationships link the tables:
 ### Table Name: DimDate
 
 #### Table Description:
-The `DimDate` table serves as a comprehensive dimension table within a data warehouse, designed to facilitate time-based analysis and reporting. It provides a structured representation of dates, enabling users to perform time-related queries and aggregations efficiently. This table is essential for any analytical model that requires temporal insights, such as sales trends, seasonal patterns, and historical comparisons.
+The `DimDate` table serves as a dimension table in a star schema data model, primarily used for time-based analysis and reporting. It provides a comprehensive set of attributes related to dates, enabling users to perform time-based queries and analyses efficiently. This table is essential for facilitating time intelligence in data analytics, allowing for the aggregation and comparison of data across various time periods.
 
-#### Key Features:
-- **Date Range**: The `DimDate` table typically encompasses a wide range of dates, often spanning several years, to ensure that all relevant time periods are covered for analysis.
-- **Granularity**: Each record in the table represents a single day, allowing for detailed daily analysis while also supporting higher-level aggregations (e.g., monthly, quarterly, yearly).
-- **Attributes**: The table includes various attributes related to each date, such as:
-  - `DateKey`: A unique identifier for each date (often in YYYYMMDD format).
-  - `FullDate`: The complete date in a standard format (e.g., '2023-10-01').
-  - `Day`: The day of the month (1-31).
-  - `Month`: The month of the year (1-12).
-  - `Year`: The year (e.g., 2023).
-  - `Quarter`: The quarter of the year (Q1, Q2, Q3, Q4).
-  - `DayOfWeek`: The day of the week (e.g., Monday, Tuesday).
-  - `IsWeekend`: A boolean flag indicating whether the date falls on a weekend.
-  - `Fiscal Year/Quarter`: Attributes that align the date with the organization's fiscal calendar, if applicable.
-  - `Holidays`: Flags or indicators for public holidays or significant events.
+#### Key Attributes:
+- **DateKey**: A unique identifier for each date, typically formatted as an integer (YYYYMMDD) to facilitate efficient querying and indexing.
+- **FullDate**: The complete date in a standard date format (e.g., YYYY-MM-DD) for easy readability and use in reporting.
+- **Year**: The year component of the date, allowing for yearly aggregations and comparisons.
+- **Quarter**: The quarter of the year (Q1, Q2, Q3, Q4) to enable quarterly reporting and analysis.
+- **Month**: The month component of the date, often represented as both a number (1-12) and a name (e.g., January, February).
+- **Day**: The day of the month, providing granularity for daily reporting.
+- **DayOfWeek**: The day of the week (e.g., Monday, Tuesday) to facilitate weekly analysis.
+- **IsWeekend**: A boolean flag indicating whether the date falls on a weekend, useful for analyzing business operations.
+- **FiscalYear**: The fiscal year associated with the date, which may differ from the calendar year, allowing for fiscal reporting.
+- **HolidayFlag**: A boolean flag indicating whether the date is a recognized holiday, aiding in the analysis of business performance during holiday periods.
 
-#### Use Cases:
-- **Time Series Analysis**: Analysts can leverage the `DimDate` table to conduct time series analysis, identifying trends and patterns over time.
-- **Reporting**: The table supports various reporting needs, allowing users to filter and group data by different time dimensions.
-- **Data Integration**: It can be joined with fact tables (e.g., sales, transactions) to enrich data with temporal context, enhancing the analytical capabilities of the data model.
+#### Usage:
+The `DimDate` table is commonly joined with fact tables in a data warehouse to provide context for time-related metrics. Analysts and business intelligence tools leverage this table to generate reports, dashboards, and visualizations that require date-based filtering, grouping, and calculations.
+
+#### Data Type:
+The attributes in the `DimDate` table are typically stored in various data types, including integers for keys, strings for names, and date types for date-related fields.
 
 #### Maintenance:
-The `DimDate` table is typically populated during the ETL (Extract, Transform, Load) process and may require periodic updates to extend the date range or adjust for changes in the fiscal calendar or holiday schedules.
+The `DimDate` table is usually populated with a continuous range of dates, often spanning several years into the future and past, to accommodate historical analysis and future planning. Regular updates may be necessary to add new dates as time progresses.
 
-In summary, the
+This table is a foundational component of any data warehouse that requires robust
 
 ---
 
 #### <a name="table-hours_nd_percentage"></a>Table: `Hours_nd_Percentage`
 
-### Table Name: Hours_nd_Percentage
+### Table: Hours_nd_Percentage
 
-#### Table Description:
-The `Hours_nd_Percentage` table is designed to capture and analyze the relationship between hours worked and the corresponding percentage of completion or achievement of specific tasks, projects, or goals. This table serves as a critical resource for performance tracking, resource allocation, and productivity analysis within an organization.
+#### Description:
+The `Hours_nd_Percentage` table is designed to capture and analyze the relationship between hours worked and the corresponding percentage of total hours allocated to various tasks or projects within an organization. This table serves as a critical resource for performance evaluation, resource allocation, and productivity analysis.
 
-#### Key Features:
-- **Data Structure**: The table consists of multiple columns that store relevant metrics, including but not limited to hours worked, percentage of completion, task identifiers, and timestamps.
-- **Purpose**: It aims to provide insights into how effectively time is being utilized in relation to the outcomes achieved, enabling stakeholders to make informed decisions regarding project management and workforce optimization.
-- **Use Cases**: This table can be utilized for generating reports, conducting performance reviews, and identifying trends in productivity over time.
+#### Key Attributes:
+- **Employee_ID** (Primary Key): A unique identifier for each employee, linking to the employee's profile in the organization.
+- **Task_ID**: A unique identifier for each task or project, allowing for detailed tracking of hours spent on specific activities.
+- **Hours_Worked**: A numeric value representing the total hours an employee has dedicated to a specific task or project during a defined period.
+- **Total_Hours**: A numeric value indicating the total hours available for work during the same period, providing context for the percentage calculation.
+- **Percentage_Of_Total_Hours**: A calculated field that represents the proportion of hours worked on a specific task relative to the total hours available, expressed as a percentage.
+- **Date**: A timestamp indicating the period during which the hours were recorded, facilitating time-based analysis and reporting.
 
-#### Columns:
-- **Task_ID**: A unique identifier for each task or project being tracked.
-- **Employee_ID**: A reference to the employee or team responsible for the task.
-- **Hours_Worked**: The total number of hours spent on the task.
-- **Percentage_Complete**: The percentage of the task that has been completed at the time of recording.
-- **Date_Logged**: The date when the hours and percentage were recorded, allowing for time-based analysis.
+#### Purpose:
+The `Hours_nd_Percentage` table is instrumental in helping organizations monitor employee productivity, assess workload distribution, and identify areas for improvement. By analyzing the data within this table, management can make informed decisions regarding resource allocation, project prioritization, and employee performance evaluations.
 
-#### Relationships:
-The `Hours_nd_Percentage` table may be linked to other tables such as `Employees`, `Tasks`, and `Projects` to provide a comprehensive view of performance metrics across different dimensions.
+#### Use Cases:
+- **Performance Analysis**: Evaluate individual and team performance based on hours worked and task completion rates.
+- **Resource Management**: Identify over- or under-utilization of resources across various projects.
+- **Reporting**: Generate reports for stakeholders to visualize productivity trends and workload distribution.
 
-#### Summary:
-Overall, the `Hours_nd_Percentage` table is an essential component of the organization's data model, facilitating the evaluation of efficiency and effectiveness in task execution, and supporting strategic planning and operational improvements.
+This table is essential for organizations aiming to optimize their operational efficiency and enhance overall productivity through data-driven insights.
 
 ---
 
 #### <a name="table-lkp_code"></a>Table: `lkp_Code`
 
-_### Table Name: lkp_Code
+### Table Name: lkp_Code
 
 #### Table Description:
-The `lkp_Code` table serves as a lookup reference for various codes used throughout the database. It is designed to provide a standardized set of codes that can be referenced by other tables, ensuring data consistency and integrity across the application. This table typically includes a variety of code types, such as status codes, category codes, or type identifiers, which are essential for categorizing and filtering data in related entities.
+The `lkp_Code` table serves as a lookup reference for various codes used throughout the database. It is designed to standardize and centralize the management of code values that are frequently referenced in other tables, ensuring consistency and reducing redundancy. This table typically includes a variety of code types, such as status codes, category codes, or type identifiers, which can be utilized across different modules of the application.
 
 #### Key Attributes:
 - **Code_ID** (Primary Key): A unique identifier for each code entry in the table. This is typically an integer or string value that ensures each code can be distinctly referenced.
-- **Code_Value**: The actual value of the code, which may be a short string or alphanumeric representation. This value is what users or systems will reference when categorizing or filtering data.
-- **Description**: A textual description of what the code represents. This field provides context and clarity, helping users understand the meaning and usage of each code.
-- **Category**: An optional field that indicates the category or type of code (e.g., status, type, etc.). This helps in organizing codes into logical groups for easier management and retrieval.
-- **Is_Active**: A boolean flag indicating whether the code is currently active or deprecated. This allows for the management of codes over time, ensuring that only relevant codes are used in operations.
+- **Code_Value**: The actual value of the code, which may be a string or numeric representation. This is the value that will be used in other tables to reference the specific code.
+- **Description**: A textual description of what the code represents, providing context and clarity for users and developers.
+- **Category**: An optional field that categorizes the code into broader groups, facilitating easier filtering and searching of codes.
+- **Is_Active**: A boolean flag indicating whether the code is currently active or deprecated, allowing for better management of code lifecycle and usability.
 
 #### Usage:
-The `lkp_Code` table is utilized by various other tables within the database to enforce referential integrity and to provide a consistent framework for code usage. By referencing this table, applications can ensure that only valid codes are used in data entries, thereby reducing errors and improving data quality.
+The `lkp_Code` table is utilized by various other tables within the database to enforce referential integrity and to provide a consistent set of codes for data entry and reporting. By referencing this lookup table, applications can ensure that only valid codes are used, thereby enhancing data quality and integrity.
 
 #### Example Entries:
-| Code_ID | Code_Value | Description          | Category | Is_Active |
-|---------|------------|----------------------|----------|-----------|
-| 1       | ACTIVE     | Active status        | Status   | TRUE      |
-| 2       | INACTIVE   | Inactive status      | Status   | TRUE      |
-| 3       | PENDING    | Pending status       | Status   | TRUE      |
-| 4       | ERROR      | Error code           | Type     | TRUE      |
-| 5       | DEPRECATED | Deprecated code      | Type     | FALSE     |
+| Code_ID | Code_Value | Description           | Category   | Is_Active |
+|---------|------------|-----------------------|------------|-----------|
+| 1       | 'A'       | Active                | Status     | TRUE      |
+| 2       | 'I'       | Inactive              | Status     | TRUE      |
+| 3       | 'P'       | Pending                | Status     | TRUE      |
+| 4       | 'C'       | Completed             | Status     | TRUE      |
+| 5       | 'X'       | Cancelled             | Status     | FALSE     |
 
-This table is crucial for maintaining a robust and reliable data model, facilitating efficient data management and reporting across the system._
+This structure allows for efficient management and retrieval of code-related information, supporting various business processes and reporting requirements across the organization.
 
 ---
 
@@ -184,29 +189,26 @@ This table is crucial for maintaining a robust and reliable data model, facilita
 ### Table Name: lkp_fltr_Employee
 
 #### Table Description:
-The `lkp_fltr_Employee` table serves as a lookup reference for employee-related data within the organization. It is designed to provide a standardized set of attributes that can be used to filter and categorize employee records across various applications and reporting tools. This table enhances data integrity and consistency by centralizing key employee information, making it easier to manage and retrieve employee-related data.
+The `lkp_fltr_Employee` table serves as a lookup table that contains essential information about employees within an organization. This table is designed to facilitate filtering and categorization of employee data across various applications and reports. It provides a standardized reference for employee attributes, ensuring consistency and accuracy in data retrieval and analysis.
 
 #### Key Attributes:
-- **EmployeeID**: A unique identifier for each employee, serving as the primary key for the table.
-- **FirstName**: The first name of the employee.
-- **LastName**: The last name of the employee.
-- **Department**: The department in which the employee works, facilitating departmental filtering and reporting.
-- **JobTitle**: The official job title of the employee, providing context for their role within the organization.
-- **Status**: The employment status of the employee (e.g., Active, Inactive, Terminated), allowing for easy filtering of current versus former employees.
-- **HireDate**: The date the employee was hired, useful for tenure calculations and reporting.
-- **Location**: The physical location or office where the employee is based, aiding in geographical reporting and analysis.
+- **EmployeeID** (Primary Key): A unique identifier for each employee, ensuring that all records can be distinctly referenced.
+- **FirstName**: The first name of the employee, used for identification and personalization in communications.
+- **LastName**: The last name of the employee, essential for formal identification and reporting.
+- **Department**: The department in which the employee works, allowing for organizational categorization and filtering.
+- **Position**: The job title or position held by the employee, providing insight into their role within the organization.
+- **HireDate**: The date the employee was hired, useful for tracking tenure and employment history.
+- **Status**: The current employment status of the employee (e.g., Active, Inactive, Terminated), which aids in filtering current employees from those who are no longer with the organization.
+- **Email**: The official email address of the employee, facilitating communication and contact.
 
 #### Purpose:
-The `lkp_fltr_Employee` table is utilized by various systems and applications to ensure that employee data is consistently referenced and filtered. It supports reporting, analytics, and operational processes by providing a reliable source of employee information that can be easily queried and integrated with other datasets.
+The `lkp_fltr_Employee` table is utilized by various systems and applications to streamline employee-related queries, enhance reporting capabilities, and support data integrity across the organization. By maintaining a centralized repository of employee information, this table aids in efficient data management and decision-making processes.
 
 #### Usage:
-This table is commonly used in HR management systems, payroll processing, and performance evaluation tools. It is also leveraged in business intelligence applications to generate reports and dashboards that provide insights into workforce demographics, departmental performance, and employee trends.
+This table is commonly referenced in employee management systems, HR analytics, and reporting tools, enabling users to quickly access and filter employee data based on various criteria. It is also instrumental in generating insights related to workforce demographics, departmental performance, and employee engagement initiatives.
 
 #### Relationships:
-The `lkp_fltr_Employee` table may have relationships with other tables such as `EmployeeDetails`, `Payroll`, and `PerformanceReviews`, allowing for comprehensive data analysis and reporting across the organization.
-
-#### Maintenance:
-Regular updates to the `lkp_fltr_Employee` table are essential to ensure data accuracy, particularly when employees are hired, promoted, or leave the organization. Data governance practices should be implemented to maintain the integrity of the information contained within this lookup table.
+The `lkp_fltr_Employee` table may be linked to other tables within the database, such as payroll, performance reviews, and training records, to provide a comprehensive view of employee-related data across the organization.
 
 ---
 
@@ -215,28 +217,28 @@ Regular updates to the `lkp_fltr_Employee` table are essential to ensure data ac
 ### Table Name: lkp_Project
 
 #### Table Description:
-The `lkp_Project` table serves as a reference or lookup table that contains essential information about various projects within an organization. This table is designed to provide a standardized set of attributes related to each project, facilitating data integrity and consistency across the database. It is typically used in conjunction with other tables that reference project data, ensuring that all project-related information is centralized and easily accessible.
+The `lkp_Project` table serves as a lookup reference for project-related information within the database. It is designed to store essential details about various projects, enabling efficient data retrieval and management. This table is crucial for maintaining data integrity and consistency across related entities in the system.
 
 #### Key Attributes:
-- **ProjectID** (Primary Key): A unique identifier for each project, typically an integer or GUID, ensuring that each entry can be distinctly referenced.
-- **ProjectName**: A descriptive name for the project, providing a clear indication of its purpose or focus.
-- **ProjectDescription**: A detailed description of the project, outlining its objectives, scope, and any relevant details that help stakeholders understand its significance.
-- **StartDate**: The date when the project is scheduled to commence, allowing for tracking of project timelines.
-- **EndDate**: The projected completion date of the project, which aids in planning and resource allocation.
-- **Status**: The current status of the project (e.g., Active, Completed, On Hold, Canceled), providing insight into its progress and viability.
-- **ProjectManagerID**: A foreign key linking to the `lkp_Employee` table, identifying the individual responsible for overseeing the project.
-- **Budget**: The allocated financial resources for the project, which is crucial for financial tracking and management.
-- **CreatedDate**: The date when the project record was created, useful for auditing and historical reference.
-- **ModifiedDate**: The date when the project record was last updated, ensuring that users have access to the most current information.
+- **ProjectID** (Primary Key): A unique identifier for each project, ensuring that each entry can be distinctly referenced.
+- **ProjectName**: The name of the project, providing a human-readable identifier that describes the project’s purpose or focus.
+- **ProjectDescription**: A detailed description of the project, outlining its objectives, scope, and any relevant background information.
+- **StartDate**: The date when the project is scheduled to commence, allowing for timeline management and scheduling.
+- **EndDate**: The projected completion date of the project, facilitating tracking of project duration and deadlines.
+- **Status**: The current status of the project (e.g., Active, Completed, On Hold), which aids in monitoring progress and resource allocation.
+- **OwnerID**: A foreign key linking to the user or department responsible for the project, ensuring accountability and clear ownership.
 
-#### Usage:
-The `lkp_Project` table is utilized by various applications and reporting tools within the organization to generate insights, track project performance, and facilitate decision-making processes. By maintaining a comprehensive and well-structured lookup table, the organization can ensure that all project-related data is accurate, consistent, and readily available for analysis.
+#### Purpose:
+The `lkp_Project` table is utilized by various applications and reports within the organization to provide context and details about ongoing and completed projects. It supports project management processes, resource allocation, and performance tracking, making it an integral part of the overall data architecture.
 
 #### Relationships:
-This table may have relationships with other tables such as `lkp_Employee`, `tbl_Task`, and `tbl_Resource`, allowing for a more integrated view of project management activities and resource allocation within the organization.
+- The `lkp_Project` table may have relationships with other tables such as `lkp_User`, `lkp_Department`, or `tbl_Task`, allowing for comprehensive data analysis and reporting across different dimensions of project management.
+
+#### Usage:
+This table is primarily accessed by project managers, analysts, and reporting tools to generate insights, track project performance, and facilitate decision-making processes related to project execution and resource management. 
 
 #### Data Integrity:
-To maintain data integrity, constraints such as unique keys, foreign key relationships, and validation rules should be enforced on the `lkp_Project` table. This ensures that all project entries are valid and that relationships
+To maintain data integrity, constraints such as unique keys, foreign key relationships, and validation rules are enforced within the `lkp_Project` table, ensuring that all project data is accurate and reliable.
 
 ---
 
@@ -245,28 +247,31 @@ To maintain data integrity, constraints such as unique keys, foreign key relatio
 ### Table Name: lkp_Unit
 
 #### Table Description:
-The `lkp_Unit` table serves as a lookup reference for various measurement units used throughout the database. This table is essential for standardizing unit representations across different datasets, ensuring consistency and accuracy in data reporting and analysis. Each entry in the `lkp_Unit` table corresponds to a specific unit of measurement, which can be utilized in various contexts such as inventory management, sales reporting, and product specifications.
+The `lkp_Unit` table serves as a lookup reference for various measurement units used throughout the database. This table is essential for standardizing the representation of units across different datasets, ensuring consistency and accuracy in data reporting and analysis. 
 
 #### Key Attributes:
-- **UnitID** (Primary Key): A unique identifier for each unit of measurement. This is typically an integer value that serves as the primary key for the table.
-- **UnitName**: A descriptive name of the unit (e.g., "Kilogram", "Liter", "Meter"). This field provides a human-readable representation of the unit.
-- **UnitSymbol**: The symbol associated with the unit (e.g., "kg", "L", "m"). This field is used for shorthand representation in reports and user interfaces.
-- **ConversionFactor**: A numeric value that indicates how the unit relates to a base unit. This is useful for converting between different units of measurement.
-- **IsActive**: A boolean flag indicating whether the unit is currently active and available for use. This allows for the deactivation of obsolete units without deleting them from the database.
+- **UnitID** (Primary Key): A unique identifier for each unit, typically an integer or GUID, which allows for efficient referencing and retrieval.
+- **UnitName**: A string that represents the name of the unit (e.g., "Kilogram", "Liter", "Meter"). This field is crucial for user-friendly display and understanding of the unit.
+- **UnitSymbol**: A string that contains the symbol associated with the unit (e.g., "kg", "L", "m"). This is used in calculations and reporting to provide a concise representation of the unit.
+- **UnitType**: A string that categorizes the unit (e.g., "Weight", "Volume", "Length"). This classification helps in filtering and grouping units based on their application.
+- **IsActive**: A boolean flag indicating whether the unit is currently active or deprecated. This allows for historical data integrity while managing changes in unit usage.
+
+#### Purpose:
+The `lkp_Unit` table is designed to facilitate the management of measurement units across various applications within the database. By centralizing unit definitions, it supports data integrity, enhances reporting capabilities, and simplifies the process of unit conversion when necessary.
 
 #### Usage:
-The `lkp_Unit` table is utilized by various other tables within the database that require unit information, such as product specifications, inventory records, and sales transactions. By referencing this lookup table, applications can ensure that all measurements are consistent and adhere to the defined units, facilitating accurate calculations and reporting.
+This table is typically referenced by other tables that require unit information, such as product specifications, inventory management, and sales data. It plays a critical role in ensuring that all measurements are interpreted correctly and consistently across the system.
 
-#### Example Entries:
-| UnitID | UnitName   | UnitSymbol | ConversionFactor | IsActive |
-|--------|------------|------------|------------------|----------|
-| 1      | Kilogram   | kg         | 1.0              | true     |
-| 2      | Liter      | L          | 1.0              | true     |
-| 3      | Meter      | m          | 1.0              | true     |
-| 4      | Centimeter | cm         | 0.01             | true     |
-| 5      | Inch       | in         | 0.0254           | true     |
+#### Example Records:
+| UnitID | UnitName | UnitSymbol | UnitType | IsActive |
+|--------|----------|------------|----------|----------|
+| 1      | Kilogram | kg         | Weight   | true     |
+| 2      | Liter    | L          | Volume   | true     |
+| 3      | Meter    | m          | Length   | true     |
+| 4      | Pound    | lb         | Weight   | true     |
+| 5      | Gallon   | gal        | Volume   | false    |
 
-This table is crucial for maintaining data integrity and ensuring that all measurements are accurately represented across the system.
+This structured approach to unit management ensures that all stakeholders can rely on a consistent framework for measurement across the organization.
 
 ---
 
@@ -275,59 +280,58 @@ This table is crucial for maintaining data integrity and ensuring that all measu
 ### Table Name: `tbl_Project`
 
 #### Table Description:
-The `tbl_Project` table serves as a central repository for storing detailed information about various projects within an organization. This table is designed to facilitate project management by capturing essential attributes related to each project, enabling effective tracking, reporting, and analysis.
+The `tbl_Project` table serves as a central repository for storing detailed information about various projects within an organization. This table is designed to facilitate project management by capturing essential attributes related to each project, including its identification, status, timelines, budget, and associated personnel.
 
 #### Key Attributes:
 - **ProjectID** (Primary Key): A unique identifier for each project, typically an auto-incrementing integer or a GUID, ensuring that each project can be distinctly referenced.
-- **ProjectName**: A descriptive name for the project, providing a clear indication of its purpose or objective.
-- **ProjectDescription**: A detailed narrative outlining the scope, goals, and deliverables of the project, allowing stakeholders to understand its significance.
+- **ProjectName**: A descriptive name for the project, providing a clear indication of its purpose or focus.
+- **ProjectDescription**: A detailed narrative outlining the objectives, scope, and deliverables of the project.
 - **StartDate**: The date when the project is officially initiated, marking the beginning of project activities.
-- **EndDate**: The anticipated or actual completion date of the project, helping to assess project timelines and deadlines.
-- **Status**: The current state of the project (e.g., Planned, In Progress, Completed, On Hold), which aids in monitoring project progress and performance.
-- **Budget**: The allocated financial resources for the project, essential for financial planning and management.
-- **ProjectManagerID**: A foreign key linking to the `tbl_Employee` table, identifying the individual responsible for overseeing the project and ensuring its successful execution.
-- **CreatedDate**: The timestamp indicating when the project record was created, useful for auditing and historical reference.
-- **ModifiedDate**: The timestamp of the last update made to the project record, providing insight into the project's evolution over time.
+- **EndDate**: The projected or actual completion date of the project, indicating when the project is expected to conclude or has concluded.
+- **Status**: A categorical field representing the current state of the project (e.g., Planned, In Progress, Completed, On Hold, Canceled).
+- **Budget**: The allocated financial resources for the project, which may include estimates for labor, materials, and other expenses.
+- **ProjectManagerID**: A foreign key linking to the `tbl_Employee` table, identifying the individual responsible for overseeing the project.
+- **CreatedDate**: The timestamp indicating when the project record was created in the database.
+- **LastUpdatedDate**: The timestamp of the most recent update made to the project record, allowing for tracking of changes over time.
 
 #### Purpose:
-The `tbl_Project` table is integral to project management systems, enabling organizations to maintain a comprehensive overview of their projects. By capturing critical project data, it supports decision-making processes, resource allocation, and performance evaluation, ultimately contributing to the successful delivery of projects.
+The `tbl_Project` table is integral to project tracking and management processes, enabling stakeholders to monitor progress, allocate resources effectively, and ensure that projects align with organizational goals. By maintaining comprehensive records of each project, the table supports reporting, analysis, and decision-making activities.
 
 #### Relationships:
-- The `ProjectManagerID` field establishes a relationship with the `tbl_Employee` table, linking projects to the employees responsible for their management.
+- The `ProjectManagerID` field establishes a relationship with the `tbl_Employee` table, linking projects to the employees responsible for their execution.
 - Additional relationships may exist with other tables, such as `tbl_Task` for task management or `tbl_Resource` for resource allocation, depending on the overall database schema.
 
 #### Usage:
-This table is utilized by project managers, team members, and stakeholders to input, update, and retrieve project-related information, ensuring that all parties have access to the latest project data for informed decision-making and collaboration.
+This table is utilized by project managers, team members, and organizational leaders to gain insights into project performance, manage timelines and budgets, and facilitate communication among stakeholders. It is a critical component of the organization's project management framework.
 
 ---
 
 #### <a name="table-vw_missing_timesheet"></a>Table: `vw_missing_timesheet`
 
-### Table Description: `vw_missing_timesheet`
+### Table Name: `vw_missing_timesheet`
 
-The `vw_missing_timesheet` is a database view designed to provide a consolidated overview of employees who have not submitted their timesheets for a specified period. This view aggregates relevant data from various tables, including employee records, timesheet submissions, and payroll information, to identify individuals with missing timesheet entries.
+#### Table Description:
+The `vw_missing_timesheet` is a database view designed to provide a consolidated overview of employees who have not submitted their timesheets within the designated reporting period. This view serves as a critical tool for payroll and human resources departments to identify and address compliance issues related to timesheet submissions.
 
 #### Key Features:
-- **Employee Identification**: The view includes essential employee details such as Employee ID, Name, Department, and Position, allowing for easy identification of individuals.
-- **Timesheet Status**: It highlights the status of timesheet submissions, specifically focusing on those that are missing or overdue.
-- **Date Range Filtering**: The view can be filtered by specific date ranges to assess compliance with timesheet submission deadlines.
-- **Reporting Utility**: This view serves as a valuable tool for HR and management to monitor timesheet compliance, facilitating timely follow-ups and ensuring accurate payroll processing.
-
-#### Columns:
-- **Employee_ID**: Unique identifier for each employee.
-- **Employee_Name**: Full name of the employee.
-- **Department**: The department in which the employee works.
-- **Position**: The job title of the employee.
-- **Missing_Timesheet_Period**: The specific period for which the timesheet is missing.
-- **Submission_Deadline**: The deadline by which the timesheet should have been submitted.
-- **Last_Submission_Date**: The date of the last submitted timesheet, if applicable.
+- **Employee Identification**: The view includes essential employee details such as Employee ID, Name, and Department, allowing for easy identification of individuals who have missing timesheets.
+- **Reporting Period**: It captures the specific reporting period for which timesheets are missing, enabling targeted follow-up actions.
+- **Submission Status**: The view indicates the status of timesheet submissions, highlighting those that are overdue or not submitted at all.
+- **Date Filters**: The view can be filtered by date ranges to focus on specific payroll cycles or reporting periods, enhancing its usability for various administrative needs.
+- **Aggregated Data**: It may aggregate data to show trends in timesheet submissions over time, helping management to identify patterns or recurring issues.
 
 #### Use Cases:
-- **HR Management**: To track and manage timesheet submissions and ensure compliance with company policies.
-- **Payroll Processing**: To identify employees who may not be compensated accurately due to missing timesheets.
-- **Performance Monitoring**: To assess employee adherence to timesheet submission protocols and identify potential areas for improvement.
+- **Compliance Monitoring**: HR personnel can use this view to ensure that all employees are adhering to timesheet submission policies.
+- **Payroll Processing**: Payroll departments can quickly identify employees whose timesheets are missing, preventing delays in payroll processing.
+- **Performance Management**: Managers can utilize this information to address potential performance issues with employees who frequently miss submissions.
 
-This view is essential for maintaining accurate records and ensuring that all employees are held accountable for their timesheet submissions, ultimately contributing to the efficiency of payroll operations and workforce management.
+#### Data Sources:
+The `vw_missing_timesheet` view is derived from the underlying timesheet and employee tables, ensuring that it reflects the most current data available regarding timesheet submissions.
+
+#### Maintenance:
+Regular updates to the underlying data sources are necessary to keep the view accurate and relevant. It is recommended to review the view's logic periodically to ensure it aligns with any changes in timesheet policies or reporting requirements.
+
+This view is an essential component of the organization's data management strategy, facilitating efficient tracking and management of timesheet submissions across the workforce.
 
 ---
 
@@ -335,24 +339,39 @@ This view is essential for maintaining accurate records and ensuring that all em
 
 ### Table Description: `vw_Timesheet`
 
-The `vw_Timesheet` is a database view designed to provide a consolidated and user-friendly representation of timesheet data for employees within an organization. This view aggregates relevant information from various underlying tables, such as employee records, project assignments, and time entries, to facilitate reporting and analysis of work hours, project allocations, and overall productivity.
+The `vw_Timesheet` table is a database view designed to provide a consolidated and user-friendly representation of timesheet data for employees within an organization. This view aggregates relevant information from various underlying tables related to employee work hours, project assignments, and payroll details. 
+
+#### Purpose:
+The primary purpose of the `vw_Timesheet` view is to facilitate reporting and analysis of employee time tracking, ensuring that managers and HR personnel can easily access and interpret timesheet data for payroll processing, project management, and compliance purposes.
 
 #### Key Features:
-- **Employee Information**: Includes essential details about employees, such as employee ID, name, department, and role, allowing for easy identification and categorization of timesheet entries.
-- **Time Entries**: Captures daily or weekly time logged by employees, detailing hours worked on specific projects or tasks, including start and end times.
-- **Project Details**: Links time entries to specific projects, providing insights into project workloads and resource allocation.
-- **Date Range**: Supports filtering by date ranges, enabling users to analyze timesheet data over specific periods for better project management and payroll processing.
-- **Calculated Fields**: May include calculated fields such as total hours worked, overtime hours, and billable hours, enhancing the analytical capabilities of the view.
+- **Employee Information**: The view includes essential employee details such as employee ID, name, department, and position, allowing for easy identification and categorization of timesheet entries.
+- **Time Tracking**: It captures daily work hours, overtime, and leave taken, providing a comprehensive overview of employee attendance and productivity.
+- **Project Association**: Each timesheet entry is linked to specific projects or tasks, enabling analysis of time allocation across different initiatives and facilitating project costing and budgeting.
+- **Date Range Filtering**: The view supports filtering by date ranges, allowing users to generate reports for specific pay periods or project timelines.
+- **Status Indicators**: It may include status indicators (e.g., submitted, approved, pending) to streamline the review and approval process for timesheet submissions.
+
+#### Columns:
+The `vw_Timesheet` view typically includes the following columns (this may vary based on implementation):
+- `EmployeeID`: Unique identifier for the employee.
+- `EmployeeName`: Full name of the employee.
+- `Department`: The department in which the employee works.
+- `Position`: The job title of the employee.
+- `ProjectID`: Identifier for the project associated with the timesheet entry.
+- `ProjectName`: Name of the project.
+- `Date`: The date of the timesheet entry.
+- `HoursWorked`: Total hours worked on the specified date.
+- `OvertimeHours`: Total overtime hours recorded.
+- `LeaveHours`: Total hours taken as leave.
+- `Status`: Current status of the timesheet entry (e.g., submitted, approved).
 
 #### Use Cases:
-- **Payroll Processing**: Streamlines the payroll process by providing accurate and up-to-date timesheet data for compensation calculations.
-- **Project Management**: Assists project managers in tracking time spent on various projects, helping to assess project progress and resource utilization.
-- **Reporting and Analytics**: Serves as a foundation for generating reports and dashboards that visualize employee productivity and project performance metrics.
+- **Payroll Processing**: Streamlining the payroll process by providing accurate and timely timesheet data.
+- **Project Management**: Assisting project managers in tracking time spent on various tasks and projects.
+- **Compliance and Auditing**: Ensuring compliance with labor regulations and facilitating audits by providing a clear record of employee hours.
 
-#### Access and Security:
-Access to the `vw_Timesheet` view is typically restricted to authorized personnel, such as HR staff, project managers, and finance teams, to ensure the confidentiality and integrity of employee time data.
-
-This view is essential for organizations aiming to optimize their workforce management and enhance operational efficiency through effective time tracking and reporting.
+#### Conclusion:
+The
 
 ---
 
