@@ -1,6 +1,6 @@
 # Power BI Model & Report Documentation
 
-*Generated on: 2025-04-29 12:08:36*
+*Generated on: 2025-04-29 12:17:12*
 
 ## Table of Contents
 
@@ -27,9 +27,9 @@
 
 ## <a name="overview"></a>Overview
 
-The Power BI data model appears to be designed for a project management and time tracking system, likely within a corporate or organizational context. It integrates various dimensions and fact tables to facilitate comprehensive reporting and analysis of employee hours, project performance, and timesheet compliance. The presence of tables such as 'vw_Timesheet' and 'vw_missing_timesheet' suggests a focus on capturing and monitoring time entries, while the lookup tables ('lkp_Project', 'lkp_Unit', 'lkp_Code', and 'lkp_fltr_Employee') provide essential contextual information about projects, organizational units, and timesheet codes. 
+The Power BI data model appears to be designed for a project management or resource allocation domain, focusing on tracking and analyzing timesheet data related to various projects and units within an organization. The presence of tables such as 'vw_Timesheet' and 'vw_missing_timesheet' suggests a strong emphasis on monitoring employee hours and identifying gaps in timesheet submissions, which is crucial for accurate project costing and resource management. The inclusion of lookup tables like 'lkp_Project', 'lkp_Unit', and 'lkp_Code' indicates that the model is structured to provide detailed insights into project performance, employee contributions, and the organizational units involved.
 
-The 'DimDate' table indicates that the model supports time-based analysis, allowing users to evaluate trends over specific periods. Relationships between the timesheet views and the lookup tables enable detailed insights into project allocation, resource utilization, and potential discrepancies in timesheet submissions. Overall, this data model is structured to empower stakeholders with the ability to track project progress, analyze employee productivity, and ensure accountability in time reporting, ultimately supporting better decision-making and operational efficiency within the organization.
+The relationships established between these tables facilitate comprehensive reporting and analysis. For instance, linking 'vw_Timesheet' with 'DimDate' allows for time-based analysis of hours worked, while connections to project and unit lookup tables enable users to drill down into specific projects or organizational units. The model likely supports various metrics, such as total hours worked, percentage of missing timesheets, and project-specific performance indicators, thereby equipping stakeholders with the necessary insights to optimize project execution and resource utilization.
 
 ---
 
@@ -55,64 +55,62 @@ The following relationships link the tables:
 
 #### <a name="table-dimdate"></a>Table: `DimDate`
 
-The 'DimDate' table serves as a comprehensive date dimension, providing essential temporal attributes that enable businesses to analyze trends and performance over time. By offering detailed breakdowns of dates into various formats, such as day, week, month, and quarter, this table supports effective time-based reporting and enhances the ability to perform time-series analysis across different business metrics.
+The 'DimDate' table serves as a comprehensive date dimension for analytical reporting, enabling businesses to perform time-based analysis by providing essential date attributes such as day, week, month, and quarter. This table facilitates trend analysis, seasonality insights, and time-based comparisons across various business metrics.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `CalendarQuarter` | `string` | The 'CalendarQuarter' column represents the fiscal quarter of the year (e.g., Q1, Q2, Q3, Q4) associated with each date entry in the DimDate table, facilitating time-based analysis and reporting. |
+| `CalendarQuarter` | `string` | The 'CalendarQuarter' column represents the fiscal quarter of the year (e.g., Q1, Q2, Q3, Q4) for each date entry in the DimDate table, facilitating time-based analysis and reporting. |
 | `CalendarYear` | `int64` | The 'CalendarYear' column (int64) in the 'DimDate' table represents the year component of a date, facilitating time-based analysis and reporting within the dataset. |
-| `DateKey` | `int64` | Column Description: The 'DateKey' column (int64) serves as a unique identifier for each date in the 'DimDate' table, facilitating efficient date-based queries and data enrichment processes. |
-| `DayName` | `string` | The 'DayName' column in the 'DimDate' table provides the full name of the day (e.g., Monday, Tuesday) corresponding to each date, facilitating time-based analysis and reporting. |
+| `DateKey` | `int64` | The 'DateKey' column (int64) in the 'DimDate' table serves as a unique identifier for each date, facilitating efficient data retrieval and analysis in time-based reporting and analytics. |
+| `DayName` | `string` | The 'DayName' column in the 'DimDate' table stores the full name of the day (e.g., Monday, Tuesday) corresponding to each date, facilitating time-based analysis and reporting. |
 | `DayNumberOfMonth` | `int64` | Column Description: The 'DayNumberOfMonth' column represents the numerical day of the month (ranging from 1 to 31) for each date entry in the 'DimDate' table, facilitating date-related analyses and reporting. |
-| `DayNumberOfWeek` | `int64` | The 'DayNumberOfWeek' column (int64) in the 'DimDate' table represents the numerical value of the day of the week, where 1 corresponds to Sunday and 7 corresponds to Saturday, facilitating date-related analyses and reporting. |
-| `DayNumberOfYear` | `int64` | Column Description: The 'DayNumberOfYear' column represents the sequential day of the year (ranging from 1 to 365 or 366) for each date entry in the DimDate table, facilitating time-based analysis and reporting. |
+| `DayNumberOfWeek` | `int64` | Column Description: Represents the day of the week as an integer, where values range from 1 (Sunday) to 7 (Saturday), facilitating date-related analyses and reporting in the DimDate table. |
+| `DayNumberOfYear` | `int64` | Column Description: The 'DayNumberOfYear' column (int64) represents the sequential day of the year, ranging from 1 to 365 (or 366 for leap years), facilitating date-related calculations and analyses within the DimDate table. |
 | `MonthName` | `string` | The 'MonthName' column in the 'DimDate' table stores the full names of the months, facilitating easy reference and reporting for date-related analyses. |
-| `MonthNumberOfYear` | `int64` | Column Description: Represents the numerical value of the month (1 for January through 12 for December) to facilitate date-related analyses and reporting within the DimDate table. |
-| `ShortDate` | `dateTime` | Column Description: The 'ShortDate' column captures the date in a concise format, facilitating easy reference and analysis of date-related data within the DimDate table. |
+| `MonthNumberOfYear` | `int64` | Column Description: The 'MonthNumberOfYear' column (int64) represents the numerical value of the month (1 for January through 12 for December) to facilitate time-based analysis and reporting within the DimDate table. |
+| `ShortDate` | `dateTime` | Column Description: The 'ShortDate' column captures the date in a concise format, facilitating efficient date-based analysis and reporting within the DimDate table. |
 | `WeekNumberOfYear` | `int64` | The 'WeekNumberOfYear' column (int64) in the 'DimDate' table represents the sequential week number of the year for each date, facilitating time-based analysis and reporting. |
 
 ##### Calculated Columns
 
 **`CurrentYearFlag`** (`string`)
 
-- **Description:** Column Description: Indicates whether the date corresponds to the current calendar year, with values typically set to 'Yes' or 'No'.
+- **Description:** Indicates whether the date corresponds to the current calendar year, with values of 'Yes' or 'No' to facilitate time-based analysis and reporting.
 - **DAX Expression:**
 ```dax
 IF(YEAR(DimDate[ShortDate]) <= YEAR(TODAY()), 1, 0)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `CurrentYearFlag` in a data model, typically within a tool like Power BI. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a calculated column called `CurrentYearFlag`. Here's a simple explanation of what it does:
 
-1. **Purpose**: The `CurrentYearFlag` column is designed to indicate whether a given date in the `DimDate` table falls within the current year or not.
+1. **Purpose**: This calculated column is designed to identify whether a date in the `DimDate` table falls within the current year or not.
 
 2. **How It Works**:
    - The function `YEAR(DimDate[ShortDate])` extracts the year from the date in the `ShortDate` column of the `DimDate` table.
    - The function `YEAR(TODAY())` gets the current year based on today's date.
-   - The `IF` statement checks if the year extracted from `DimDate[ShortDate]` is less than or equal to the current year.
+   - The `IF` statement then compares the year extracted from `DimDate[ShortDate]` with the current year:
+     - If the year from `DimDate[ShortDate]` is less than or equal to the current year, it returns `1`.
+     - If the year is greater than the current year, it returns `0`.
 
-3. **Output**:
-   - If the year from `DimDate[ShortDate]` is less than or equal to the current year, the expression returns `1`. This means that the date is either in the current year or a previous year.
-   - If the year is greater than the current year, it returns `0`, indicating that the date is in a future year.
+3. **Outcome**: 
+   - The result is a column where each row will have a value of `1` if the date is in the current year or any previous year, and `0` if the date is in a future year. 
 
-4. **Result**: 
-   - The `CurrentYearFlag` column will have a value of `1` for all dates that are in the current year or any previous year, and a value of `0` for dates that are in the future. 
-
-In summary, this DAX expression helps to easily identify and flag dates that are either in the current year or earlier, which can be useful for analysis, reporting, or filtering data based on time.
+In summary, this calculated column helps in flagging dates that are either in the current year or earlier, making it easier to filter or analyze data based on time periods.
 
 ---
 
 #### <a name="table-hours_nd_percentage"></a>Table: `Hours_nd_Percentage`
 
-The 'Hours_nd_Percentage' table captures and categorizes various metrics related to hours worked and their corresponding percentage contributions, enabling businesses to analyze workforce productivity and resource allocation effectively. This table serves as a critical tool for performance evaluation and strategic planning by providing insights into labor utilization across different projects or departments.
+The 'Hours_nd_Percentage' table captures and categorizes various metrics related to hours worked and their corresponding percentage contributions, enabling businesses to analyze workforce productivity and resource allocation effectively. This table serves as a critical tool for performance tracking and decision-making in operational management.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `Hours_nd_Percentage` | `string` | The 'Hours_nd_Percentage' column stores string representations of hours worked alongside their corresponding percentage contributions to total hours, facilitating performance analysis and resource allocation. |
-| `Hours_nd_Percentage Fields` | `string` | The 'Hours_nd_Percentage Fields' column contains string representations of various metrics related to hours worked and their corresponding percentage contributions, facilitating data enrichment and analysis within the 'Hours_nd_Percentage' table. |
-| `Hours_nd_Percentage Order` | `string` | The 'Hours_nd_Percentage Order' column contains string values that represent the sequence or ranking of hours and percentage data, facilitating the organization and analysis of time-related metrics within the 'Hours_nd_Percentage' table. |
+| `Hours_nd_Percentage` | `string` | The 'Hours_nd_Percentage' column contains string representations of hours worked and their corresponding percentage of total hours, providing insights into employee time allocation and productivity metrics. |
+| `Hours_nd_Percentage Fields` | `string` | The 'Hours_nd_Percentage Fields' column contains string representations of various metrics related to hours worked and their corresponding percentage contributions, facilitating data enrichment and analysis within the Hours_nd_Percentage table. |
+| `Hours_nd_Percentage Order` | `string` | The 'Hours_nd_Percentage Order' column categorizes the sequence of hours and percentage values, facilitating the analysis of time allocation and performance metrics within the 'Hours_nd_Percentage' table. |
 
 ---
 
@@ -124,35 +122,35 @@ The 'lkp_Code' table serves as a reference dataset that categorizes various code
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `Code` | `string` | The 'Code' column contains unique string identifiers used to categorize and enrich data within the lookup table, facilitating efficient data retrieval and integration. |
-| `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Code' table indicates the qualification status of data entries, serving as a numeric flag to enhance data enrichment processes. |
-| `Sort` | `string` | The 'Sort' column in the 'lkp_Code' table specifies the order in which records should be arranged, facilitating efficient data retrieval and presentation. |
+| `Code` | `string` | The 'Code' column in the 'lkp_Code' table stores unique string identifiers that facilitate the enrichment of data by linking it to corresponding descriptive attributes. |
+| `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Code' table indicates the qualification status of records, serving as a numerical flag to categorize data for enrichment processes. |
+| `Sort` | `string` | The 'Sort' column in the 'lkp_Code' table contains string values that determine the order in which records are displayed or processed, facilitating organized data retrieval and presentation. |
 
 ---
 
 #### <a name="table-lkp_fltr_employee"></a>Table: `lkp_fltr_Employee`
 
-The 'lkp_fltr_Employee' table serves as a reference dataset for employee information, providing essential details such as EmployeeId and EmployeeName to facilitate filtering and reporting across various business analytics and performance metrics in Power BI. This table enhances data integrity and enables efficient data retrieval for employee-related insights.
+The 'lkp_fltr_Employee' table serves as a reference for employee data, providing essential identifiers and names to facilitate filtering and reporting across various business analytics. This table enhances data integrity and enables efficient analysis of employee-related metrics within the organization.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `EmployeeId` | `string` | The 'EmployeeId' column (string) uniquely identifies each employee in the 'lkp_fltr_Employee' table, facilitating data enrichment and integration processes. |
-| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees, facilitating the enrichment of data by providing identifiable references for each individual in the employee lookup table. |
+| `EmployeeId` | `string` | The 'EmployeeId' column stores unique identifiers for employees, facilitating data enrichment and integration within the employee lookup table. |
+| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees, facilitating the enrichment of data by providing identifiable references for each individual within the employee lookup table. |
 
 ---
 
 #### <a name="table-lkp_project"></a>Table: `lkp_Project`
 
-The 'lkp_Project' table serves as a reference for project-related data, linking project identifiers with their respective qualification and billing metrics, while categorizing them into groups. This table is essential for analyzing project performance and financial tracking within the organization.
+The 'lkp_Project' table serves as a reference for project-related data, linking project identifiers with their respective qualification and billing metrics, while categorizing them into groups. This table is essential for analyzing project performance and financial outcomes, enabling informed decision-making and strategic planning within the organization.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `Billing` | `int64` | The 'Billing' column (int64) in the 'lkp_Project' table represents the billing amount associated with each project, facilitating financial analysis and reporting. |
-| `Group` | `string` | The 'Group' column in the 'lkp_Project' table categorizes projects into distinct classifications for enhanced data organization and retrieval. |
+| `Billing` | `int64` | The 'Billing' column (int64) in the 'lkp_Project' table represents the billing code associated with each project, facilitating financial tracking and reporting. |
+| `Group` | `string` | The 'Group' column in the 'lkp_Project' table categorizes projects into distinct classifications to facilitate data enrichment and analysis. |
 | `Project` | `string` | The 'Project' column contains the names of various projects, serving as a key identifier for enriching data related to specific initiatives within the organization. |
 | `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Project' table indicates the qualification status of each project, serving as a numerical identifier for categorizing projects based on their eligibility or compliance criteria. |
 
@@ -160,46 +158,46 @@ The 'lkp_Project' table serves as a reference for project-related data, linking 
 
 #### <a name="table-lkp_unit"></a>Table: `lkp_Unit`
 
-The 'lkp_Unit' table serves as a reference for organizational units within the business, detailing their characteristics such as billable status and external affiliations. This table is essential for analyzing resource allocation and financial performance across different units, enabling informed decision-making and strategic planning.
+The 'lkp_Unit' table serves as a reference for organizational units within the business, detailing their characteristics such as billable status and external affiliations. This table is essential for analyzing resource allocation and financial performance across different units, facilitating informed decision-making and strategic planning.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `BillableDep` | `int64` | Column Description: The 'BillableDep' column (int64) indicates the department responsible for billable activities associated with each unit, facilitating accurate financial tracking and reporting. |
+| `BillableDep` | `int64` | The 'BillableDep' column (int64) in the 'lkp_Unit' table indicates the department responsible for billable activities, facilitating accurate tracking and reporting of revenue-generating units. |
 | `Organisatorische eenheid` | `string` | The 'Organisatorische eenheid' column identifies the specific organizational unit within the company, facilitating data enrichment and analysis related to departmental structures and functions. |
-| `OWN-Sub-ExtT` | `string` | Column Description: This column stores external identifiers for ownership sub-units, facilitating data enrichment and integration within the lkp_Unit table. |
-| `Unit` | `string` | The 'Unit' column stores the names of measurement units used for data enrichment, facilitating standardized interpretation and analysis across various datasets. |
+| `OWN-Sub-ExtT` | `string` | The 'OWN-Sub-ExtT' column in the 'lkp_Unit' table stores external type identifiers for owned sub-units, facilitating data enrichment and integration processes. |
+| `Unit` | `string` | The 'Unit' column stores the names of measurement units used for quantifying various data attributes, facilitating consistent data interpretation and analysis across the dataset. |
 
 ---
 
 #### <a name="table-tbl_project"></a>Table: `tbl_Project`
 
-The 'tbl_Project' table serves as a comprehensive repository for project-related information, capturing essential details such as project identifiers, descriptions, status, leadership, and financial aspects. This table enables effective project management and oversight by providing stakeholders with insights into project progress, categorization, and resource allocation.
+The 'tbl_Project' table serves as a comprehensive repository for project-related information, capturing essential details such as project identifiers, descriptions, leadership, and status. This table enables effective project management and oversight by providing insights into project categorization, progress, and resource allocation within the organization.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `ActualDateCompleted` | `dateTime` | Column Description: The 'ActualDateCompleted' column records the precise date and time when a project was officially completed, providing a key timestamp for project tracking and performance analysis. |
+| `ActualDateCompleted` | `dateTime` | The 'ActualDateCompleted' column records the precise date and time when a project was officially completed, providing a key timestamp for project tracking and performance analysis within the 'tbl_Project' table. |
 | `Administration` | `string` | The 'Administration' column in the 'tbl_Project' table captures the administrative details and oversight responsibilities associated with each project, facilitating effective management and governance. |
 | `Changed_on` | `dateTime` | The 'Changed_on' column records the date and time when the project details were last modified, providing a timestamp for tracking updates and changes in the project lifecycle. |
-| `ClientName` | `string` | The 'ClientName' column stores the names of clients associated with each project, facilitating the identification and management of client relationships within the project database. |
+| `ClientName` | `string` | The 'ClientName' column stores the names of clients associated with each project, facilitating easy identification and management of client relationships within the project data. |
 | `ClientNumber` | `string` | The 'ClientNumber' column stores a unique identifier for each client associated with a project, facilitating efficient data retrieval and management within the tbl_Project table. |
-| `Created_on` | `dateTime` | Column Description: The 'Created_on' column records the date and time when each project entry was initiated, providing a timestamp for tracking project creation and timeline management. |
-| `Currency` | `string` | The 'Currency' column in the 'tbl_Project' table specifies the type of currency used for financial transactions related to each project, facilitating accurate budgeting and reporting. |
-| `DateCreated` | `dateTime` | Column Description: The 'DateCreated' column records the timestamp of when each project entry was created, providing a reference for tracking project initiation and historical data analysis. |
-| `DevoteamPillar` | `string` | The 'DevoteamPillar' column identifies the specific strategic focus area or category of the project within the Devoteam framework, facilitating targeted analysis and reporting. |
-| `PlannedCompletionDate` | `dateTime` | The 'PlannedCompletionDate' column in the 'tbl_Project' table indicates the scheduled date and time for the completion of each project, facilitating effective project timeline management and planning. |
-| `Project` | `string` | The 'Project' column stores the names of various projects, enabling the identification and categorization of data related to specific initiatives within the tbl_Project table. |
-| `ProjectDescription` | `string` | The 'ProjectDescription' column contains a detailed narrative of the project's objectives, scope, and key deliverables, providing essential context for stakeholders and team members. |
-| `ProjectGroup` | `string` | The 'ProjectGroup' column identifies the category or classification of a project within the 'tbl_Project' table, facilitating organization and management of related projects. |
-| `ProjectGroupDescription` | `string` | The 'ProjectGroupDescription' column provides a detailed textual overview of the project group, facilitating better understanding and categorization of related projects within the 'tbl_Project' table. |
-| `ProjectKey` | `int64` | The 'ProjectKey' column (int64) uniquely identifies each project within the 'tbl_Project' table, serving as a primary reference for data enrichment and management processes. |
+| `Created_on` | `dateTime` | Column Description: The 'Created_on' column records the date and time when each project entry was initiated, providing a timestamp for tracking project creation within the tbl_Project table. |
+| `Currency` | `string` | The 'Currency' column specifies the type of currency used for financial transactions within the project, facilitating accurate budget management and reporting. |
+| `DateCreated` | `dateTime` | The 'DateCreated' column records the exact date and time when each project entry was created, facilitating tracking and auditing of project timelines. |
+| `DevoteamPillar` | `string` | The 'DevoteamPillar' column identifies the specific strategic focus area or competency associated with each project, facilitating targeted resource allocation and performance evaluation within the tbl_Project table. |
+| `PlannedCompletionDate` | `dateTime` | The 'PlannedCompletionDate' column indicates the scheduled date and time for the completion of the project, facilitating effective project timeline management and tracking. |
+| `Project` | `string` | The 'Project' column contains the name or identifier of a specific project, serving as a key reference for associating related data within the tbl_Project table. |
+| `ProjectDescription` | `string` | The 'ProjectDescription' column contains a detailed narrative of the project's objectives, scope, and key features, providing essential context for stakeholders and team members. |
+| `ProjectGroup` | `string` | The 'ProjectGroup' column identifies the specific category or classification of a project within the 'tbl_Project' table, facilitating organized management and reporting of related projects. |
+| `ProjectGroupDescription` | `string` | The 'ProjectGroupDescription' column provides a textual summary of the project group, detailing its objectives and scope to enhance understanding and facilitate collaboration among stakeholders. |
+| `ProjectKey` | `int64` | The 'ProjectKey' column (int64) uniquely identifies each project within the 'tbl_Project' table, serving as a primary reference for linking project-related data across the database. |
 | `ProjectleaderId` | `string` | The 'ProjectleaderId' column stores the unique identifier of the project leader responsible for overseeing the project's execution and management within the 'tbl_Project' table. |
 | `SalesPriceBaseCurrency` | `decimal` | The 'SalesPriceBaseCurrency' column represents the base currency amount for the sales price of a project, stored as a decimal to ensure precision in financial calculations. |
-| `Startdate` | `dateTime` | The 'Startdate' column in the 'tbl_Project' table captures the date and time when a project is initiated, serving as a critical reference point for project timelines and scheduling. |
-| `Status` | `string` | The 'Status' column in the 'tbl_Project' table indicates the current progress or state of each project, helping stakeholders assess project health and make informed decisions. |
+| `Startdate` | `dateTime` | The 'Startdate' column in the 'tbl_Project' table captures the date and time when a project is initiated, serving as a key reference point for project timelines and scheduling. |
+| `Status` | `string` | The 'Status' column indicates the current progress or state of each project within the tbl_Project table, helping stakeholders assess project health and prioritize resources effectively. |
 | `Statuscode` | `string` | The 'Statuscode' column in the 'tbl_Project' table indicates the current operational status of each project, facilitating effective tracking and management of project progress. |
 | `TotalContractSum` | `decimal` | The 'TotalContractSum' column represents the total monetary value of the contract associated with each project, expressed as a decimal to ensure precision in financial calculations. |
 
@@ -213,29 +211,29 @@ The 'vw_missing_timesheet' table serves as a critical resource for identifying e
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `ActualHours` | `double` | The 'ActualHours' column (double) in the 'vw_missing_timesheet' table represents the total number of hours worked by employees that have not been recorded in their timesheets, facilitating accurate tracking and reporting of labor hours. |
+| `ActualHours` | `double` | The 'ActualHours' column (double) in the 'vw_missing_timesheet' table represents the total number of hours worked by employees that have not been recorded in their timesheets, facilitating accurate tracking of labor and resource allocation. |
 | `Approved` | `boolean` | Indicates whether the timesheet entry has been approved (true) or not (false). |
-| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column represents the date and time when an employee's contract is scheduled to conclude, providing essential information for tracking contract durations within the context of missing timesheet records. |
-| `ContractHours` | `int64` | The 'ContractHours' column represents the total number of hours agreed upon in the contract for each employee, facilitating the identification of discrepancies in timesheet submissions. |
+| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column represents the date and time when an employee's contract is scheduled to conclude, providing critical information for managing timesheet compliance and workforce planning within the 'vw_missing_timesheet' table. |
+| `ContractHours` | `int64` | The 'ContractHours' column represents the total number of hours contracted for a specific employee or project, stored as an integer, to facilitate the identification of discrepancies in timesheet submissions within the 'vw_missing_timesheet' table. |
 | `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when an employee's contract begins, providing essential context for tracking timesheet submissions and compliance within the 'vw_missing_timesheet' table. |
-| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of contracts for employees who have missing timesheets, providing essential context for identifying potential compliance issues. |
-| `EmployeeID` | `string` | The 'EmployeeID' column (string) uniquely identifies each employee in the 'vw_missing_timesheet' table, facilitating the tracking and management of timesheet discrepancies. |
-| `EmployeeName` | `string` | The 'EmployeeName' column contains the full names of employees whose timesheets are missing, facilitating the identification and follow-up on outstanding time reporting issues. |
-| `Hours_` | `double` | The 'Hours_' column represents the total number of hours recorded for each employee's timesheet entry, stored as a double to accommodate fractional hours for precise tracking. |
-| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when the timesheet data was ingested into the system, facilitating tracking and auditing of data entry processes. |
+| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of employee contracts, providing essential context for identifying missing timesheet entries in the 'vw_missing_timesheet' table. |
+| `EmployeeID` | `string` | The 'EmployeeID' column (string) in the 'vw_missing_timesheet' table uniquely identifies each employee associated with missing timesheet entries, facilitating targeted data analysis and reporting. |
+| `EmployeeName` | `string` | The 'EmployeeName' column contains the full names of employees whose timesheets are missing, facilitating the identification and follow-up of individuals for timely data completion. |
+| `Hours_` | `double` | The 'Hours_' column (double) in the 'vw_missing_timesheet' table represents the total number of hours recorded for each employee's timesheet entry, facilitating the identification of discrepancies in time reporting. |
+| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when the timesheet data was ingested into the system, facilitating tracking and auditing of data updates. |
 | `ManagerID` | `string` | The 'ManagerID' column stores the unique identifier of the manager responsible for overseeing the employee's timesheet entries, facilitating accountability and tracking within the 'vw_missing_timesheet' table. |
-| `ManagerName` | `string` | The 'ManagerName' column stores the name of the employee's manager, providing essential context for identifying oversight and accountability in timesheet submissions. |
-| `MissingHours` | `double` | The 'MissingHours' column (double) in the 'vw_missing_timesheet' table quantifies the total number of hours not recorded in timesheets, providing insights into potential discrepancies in employee time tracking. |
+| `ManagerName` | `string` | The 'ManagerName' column contains the names of managers responsible for overseeing employees' timesheet submissions, facilitating accountability and tracking within the 'vw_missing_timesheet' view. |
+| `MissingHours` | `double` | The 'MissingHours' column (double) in the 'vw_missing_timesheet' table quantifies the total number of hours not recorded in timesheets, providing critical insights for identifying gaps in employee time tracking. |
 | `Project` | `string` | The 'Project' column identifies the specific project associated with each entry in the missing timesheet records, facilitating the tracking and management of time allocation across various initiatives. |
-| `ProjectCode` | `string` | The 'ProjectCode' column contains a unique identifier for each project, facilitating the tracking and management of timesheet entries associated with specific projects in the 'vw_missing_timesheet' table. |
+| `ProjectCode` | `string` | The 'ProjectCode' column stores unique identifiers for projects associated with missing timesheets, facilitating the tracking and management of time allocation across various initiatives. |
 | `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true signifying rejection and false indicating acceptance. |
-| `ReportReady` | `boolean` | Indicates whether the timesheet data is complete and ready for reporting, with a value of true signifying readiness and false indicating that further action is required. |
-| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales, recorded as a double data type, within the context of tracking and analyzing missing timesheet entries for accurate financial reporting. |
+| `ReportReady` | `boolean` | Indicates whether the timesheet data is complete and ready for reporting, with a value of true signifying readiness. |
+| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales transactions, recorded as a double to accommodate precise financial calculations within the 'vw_missing_timesheet' table. |
 | `SalesPrice` | `double` | The 'SalesPrice' column represents the monetary value of sales transactions, stored as a double to accommodate precise pricing information within the context of timesheet data analysis. |
-| `ShortDate` | `dateTime` | The 'ShortDate' column captures the specific date and time when a timesheet entry is missing, facilitating timely follow-up and data enrichment processes. |
-| `SubUnit` | `string` | The 'SubUnit' column identifies the specific organizational subunit associated with each entry in the missing timesheet records, facilitating targeted follow-up and resolution of timesheet discrepancies. |
-| `TimesheetCode` | `string` | The 'TimesheetCode' column contains a unique identifier for each timesheet entry, facilitating the tracking and management of employee work hours within the 'vw_missing_timesheet' table. |
-| `TimesheetDescription` | `string` | The 'TimesheetDescription' column provides a textual summary of the tasks or activities recorded in the timesheet, facilitating better understanding and analysis of employee work hours within the 'vw_missing_timesheet' table. |
+| `ShortDate` | `dateTime` | The 'ShortDate' column captures the specific date associated with missing timesheet entries, facilitating timely follow-up and resolution of discrepancies. |
+| `SubUnit` | `string` | The 'SubUnit' column identifies the specific organizational subunit associated with each entry in the missing timesheet records, facilitating targeted analysis and resolution of timesheet discrepancies. |
+| `TimesheetCode` | `string` | The 'TimesheetCode' column contains a unique identifier for each timesheet entry, facilitating the tracking and management of employee work hours within the 'vw_missing_timesheet' view. |
+| `TimesheetDescription` | `string` | The 'TimesheetDescription' column provides a detailed narrative of the work performed during the recorded timesheet period, facilitating better understanding and analysis of employee activities. |
 | `Week_` | `int64` | The 'Week_' column (int64) in the 'vw_missing_timesheet' table represents the numerical week of the year associated with each timesheet entry, facilitating the identification of missing submissions by week. |
 | `Year_` | `int64` | The 'Year_' column (int64) in the 'vw_missing_timesheet' table represents the calendar year associated with each timesheet entry, facilitating the analysis of timesheet data over time. |
 
@@ -243,7 +241,7 @@ The 'vw_missing_timesheet' table serves as a critical resource for identifying e
 
 **`BillableDep`** (`string`)
 
-- **Description:** The 'BillableDep' column indicates the department associated with billable hours for employees, facilitating the tracking and management of time entries in the context of missing timesheets.
+- **Description:** The 'BillableDep' column identifies the department associated with billable hours for employees, facilitating accurate tracking and reporting of time spent on chargeable projects within the 'vw_missing_timesheet' table.
 - **DAX Expression:**
 ```dax
 IF(
@@ -252,28 +250,28 @@ IF(
 			    IF(RELATED(lkp_Unit[BillableDep]) <> 0, 1, 0)
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillableDep`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillableDep`. Let's break down what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the `BillableDep` column from the `lkp_Unit` table. This is done using the `RELATED` function, which pulls in data from a related table based on the relationships defined in your data model.
+1. **Purpose**: The goal of this calculated column is to determine whether a certain unit is billable based on a related table called `lkp_Unit`.
 
-2. **Handle Blank Values**: 
-   - If the `BillableDep` value from the related table is blank (meaning there is no corresponding value), the formula returns `1`. This could indicate that if there is no specific billable dependency, it defaults to a value of `1`.
+2. **Logic**:
+   - The expression first checks if the `BillableDep` value from the `lkp_Unit` table is blank (i.e., there is no value).
+   - If it is blank, the calculated column will return a value of **1**. This indicates that the unit is considered billable in this case.
+   - If the `BillableDep` value is not blank, the expression then checks if this value is not equal to **0**.
+     - If `BillableDep` is not equal to **0**, it again returns **1**, indicating that the unit is billable.
+     - If `BillableDep` is equal to **0**, it returns **0**, indicating that the unit is not billable.
 
-3. **Check for Non-Zero Values**: 
-   - If the `BillableDep` value is not blank, the formula then checks if this value is not equal to zero. 
-   - If it is not zero, it again returns `1`, suggesting that there is a valid billable dependency present.
-   - If the value is zero, it returns `0`, indicating that there is no billable dependency.
+3. **Summary**: 
+   - The calculated column `BillableDep` will return **1** if:
+     - The related `BillableDep` value is blank (no value).
+     - The related `BillableDep` value is any number other than **0**.
+   - It will return **0** only if the related `BillableDep` value is exactly **0**.
 
-### Summary:
-In summary, this DAX expression is designed to categorize the `BillableDep` status into two states:
-- It returns `1` if there is either no related `BillableDep` value or if the related value is non-zero (indicating a valid billable dependency).
-- It returns `0` only when the related `BillableDep` value is specifically zero.
-
-This calculated column helps in identifying whether a unit has a billable dependency or not, which can be useful for reporting and analysis in a business context.
+In essence, this DAX expression helps categorize units as billable or not based on the presence and value of the `BillableDep` field in the related `lkp_Unit` table.
 
 **`CC_ActiveEmployees`** (`string`)
 
-- **Description:** Column Description: This column indicates the status of active employees, represented as a string, within the context of identifying missing timesheet entries in the 'vw_missing_timesheet' table.
+- **Description:** Column Description: This column indicates the status of active employees, represented as a string, to assist in identifying those who may be missing timesheet submissions within the 'vw_missing_timesheet' table.
 - **DAX Expression:**
 ```dax
 IF(vw_missing_timesheet[ShortDate] >= vw_missing_timesheet[ContractStartDate] && 
@@ -284,43 +282,45 @@ IF(vw_missing_timesheet[ShortDate] >= vw_missing_timesheet[ContractStartDate] &&
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `CC_ActiveEmployees` in a data model, specifically within a table called `vw_missing_timesheet`. Here's a breakdown of what this code does in simple business terms:
 
-1. **Purpose**: The calculated column is designed to determine whether an employee is currently active based on their contract dates.
+1. **Purpose**: The calculated column is designed to identify whether an employee is currently active based on their contract dates.
 
 2. **Conditions Checked**:
    - **Start Date Check**: The code first checks if the date in the column `ShortDate` (which likely represents a specific date being evaluated) is on or after the employee's `ContractStartDate`. This means the employee's contract must have started before or on this date for them to be considered active.
-   - **End Date Check**: Next, it checks if the `ShortDate` is on or before the `ContractEndDate`. This means the employee's contract must still be valid on this date. However, if the `ContractEndDate` is blank (meaning the employee has no defined end date), the employee is still considered active.
+   - **End Date Check**: Next, it checks if the `ShortDate` is on or before the `ContractEndDate`. This means the employee's contract must still be valid on this date. However, if the `ContractEndDate` is blank (meaning the employee has an open-ended contract), the employee is still considered active.
 
 3. **Output**:
-   - If both conditions are met (the date is within the contract period or the end date is blank), the expression returns a value of `1`, indicating that the employee is active.
-   - If either condition is not met, it returns a value of `0`, indicating that the employee is not active.
+   - If both conditions are met (the date is within the contract period or the contract has no end date), the expression returns a value of `1`, indicating that the employee is active.
+   - If either condition is not met, it returns `0`, indicating that the employee is not active.
 
 ### Summary:
-In summary, this DAX expression effectively flags employees as "active" (1) or "not active" (0) based on whether the date being evaluated falls within their contract period. This is useful for tracking employee status and ensuring that only currently active employees are considered in analyses or reports.
+In summary, this DAX expression effectively flags employees as "active" (1) or "not active" (0) based on whether the date being evaluated falls within their contract period. This helps in analyzing employee status and managing workforce data effectively.
 
 **`IncompleteFlag`** (`string`)
 
-- **Description:** The 'IncompleteFlag' column indicates whether a timesheet entry is incomplete, represented as a string value, to assist in identifying and addressing missing or insufficient data in the 'vw_missing_timesheet' view.
+- **Description:** The 'IncompleteFlag' column indicates whether a timesheet entry is missing required information, represented as a string value for easy identification of incomplete records in the 'vw_missing_timesheet' view.
 - **DAX Expression:**
 ```dax
 if(vw_missing_timesheet[MissingHours] < 0, 1, 0)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a calculated column called `IncompleteFlag`. Here's a simple explanation of what it does:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a calculated column called `IncompleteFlag` in a data model, specifically in a table named `vw_missing_timesheet`. Here's a breakdown of what this expression does in simple business terms:
 
-- **Purpose**: This calculated column is designed to flag records based on the value of `MissingHours` in the `vw_missing_timesheet` table.
+### Explanation of the DAX Expression:
 
-- **Logic**: The expression checks if the value in the `MissingHours` column is less than 0. 
+- **Condition Check**: The expression checks the value of the column `MissingHours` for each row in the `vw_missing_timesheet` table.
+- **Logic**: 
+  - If the value of `MissingHours` is **less than 0** (which might indicate that there are negative hours recorded, possibly due to an error or an incomplete timesheet), the expression returns **1**.
+  - If the value of `MissingHours` is **0 or greater**, it returns **0**.
 
-  - If `MissingHours` is less than 0, it returns a value of **1**. This indicates that there is an issue or a specific condition met (in this case, it could mean that there are negative hours, which might signify an incomplete or erroneous entry).
-  
-  - If `MissingHours` is 0 or greater, it returns a value of **0**. This indicates that there is no issue with the hours recorded.
+### What It Achieves:
 
-- **Outcome**: The result is a new column (`IncompleteFlag`) that will have a value of **1** for any record where `MissingHours` is negative, and **0** for all other records. This flag can be useful for quickly identifying and filtering records that may need further attention or correction.
+- **Flagging Incomplete Entries**: The `IncompleteFlag` column will effectively mark rows where there is an issue with the recorded hours. A value of **1** indicates that there is a problem (incomplete or erroneous data), while a value of **0** indicates that the data is acceptable or complete.
+- **Data Quality Control**: This calculated column helps in identifying and flagging entries that may require further review or correction, thus supporting better data quality and management in the reporting process.
 
-In summary, this DAX expression helps to identify incomplete or problematic entries in the timesheet data by marking them with a flag.
+In summary, this DAX expression is a simple way to create a flag that helps identify potentially problematic entries in the timesheet data, allowing for easier monitoring and management of timesheet accuracy.
 
 **`MAIN_UNIT`** (`string`)
 
-- **Description:** The 'MAIN_UNIT' column identifies the primary organizational unit associated with each entry in the 'vw_missing_timesheet' table, facilitating the tracking and management of timesheet submissions across different departments.
+- **Description:** The 'MAIN_UNIT' column identifies the primary organizational unit associated with each entry in the missing timesheet records, facilitating targeted analysis and reporting on timesheet compliance.
 - **DAX Expression:**
 ```dax
 IF(
@@ -329,38 +329,38 @@ IF(
 			    RELATED(lkp_Unit[Unit])
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'MAIN_UNIT'. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named 'MAIN_UNIT'. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the 'lkp_Unit' table for the current row. Specifically, it looks for the 'Unit' column in that related table.
+1. **Check for Related Data**: The code first checks if there is a related value in the 'lkp_Unit' table for the current row. Specifically, it looks for the 'Unit' field in that related table.
 
 2. **Handle Missing Data**: 
-   - If there is no related value (meaning the 'Unit' is blank or missing), the code will return the text "Unknown". This is useful for identifying records where the unit information is not available.
-   - If there is a related value (meaning the 'Unit' is present), it will return that value from the 'lkp_Unit[Unit]' column.
+   - If there is no related value (meaning the 'Unit' field is blank), the code will return the text "Unknown". This is a way to handle situations where the expected data is missing, ensuring that the output is clear and informative.
+   - If there is a related value (meaning the 'Unit' field has data), it will return that value.
 
-3. **Purpose**: The overall purpose of this calculated column is to ensure that every record has a clear indication of its unit. If the unit is missing, it provides a default label ("Unknown") instead of leaving it blank. This helps in maintaining data integrity and makes it easier to analyze or report on the data without encountering gaps.
+3. **Purpose**: The overall purpose of this calculated column is to provide a clear and user-friendly representation of the 'Unit' associated with each row. If the unit is not available, it explicitly states "Unknown", which helps in identifying gaps in the data.
 
-In summary, this DAX expression ensures that every entry in the 'MAIN_UNIT' column either shows the actual unit name or indicates that the unit is unknown, thereby improving clarity and usability of the data.
+In summary, this DAX expression ensures that every row in the 'MAIN_UNIT' column either shows the corresponding unit name or indicates that the unit is unknown, thereby improving data clarity and usability.
 
 **`YearWeek`** (`string`)
 
-- **Description:** The 'YearWeek' column (string) in the 'vw_missing_timesheet' table represents the specific year and week number of the timesheet entries, facilitating the identification and analysis of missing timesheet data by week.
+- **Description:** The 'YearWeek' column (string) in the 'vw_missing_timesheet' table represents the specific year and week number for each entry, facilitating the tracking and analysis of timesheet submissions over time.
 - **DAX Expression:**
 ```dax
 YEAR([ContractEndDate]) & "-" & 
 			FORMAT(WEEKNUM([ContractEndDate]), "00")
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'YearWeek' that combines the year and the week number of a date, specifically the date found in the column `[ContractEndDate]`. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'YearWeek' in a data model, specifically for a table that contains contract information. Here's a breakdown of what it does in simple business terms:
 
-1. **Extracting the Year**: The function `YEAR([ContractEndDate])` takes the date from the `[ContractEndDate]` column and extracts the year from it. For example, if the date is December 15, 2023, this part would return `2023`.
+1. **Extracting the Year**: The function `YEAR([ContractEndDate])` takes the date from the column `[ContractEndDate]` (which represents when a contract ends) and extracts the year from that date. For example, if the contract ends on March 15, 2023, this part would return `2023`.
 
-2. **Calculating the Week Number**: The function `WEEKNUM([ContractEndDate])` calculates which week of the year the date falls into. Continuing with our example, if December 15, 2023, is in the 50th week of the year, this function would return `50`.
+2. **Calculating the Week Number**: The function `WEEKNUM([ContractEndDate])` calculates the week number of the year for the same `[ContractEndDate]`. Continuing with our example, if the contract ends on March 15, 2023, this function would return `11`, since March 15 falls in the 11th week of the year.
 
-3. **Formatting the Week Number**: The `FORMAT(..., "00")` part ensures that the week number is always displayed as two digits. So, if the week number is `5`, it will be formatted as `05`. This is important for consistency, especially when the week number is less than 10.
+3. **Formatting the Week Number**: The `FORMAT(..., "00")` function ensures that the week number is always displayed as a two-digit number. So, if the week number is `5`, it will be formatted as `05`. This is important for consistency, especially when the week number is less than 10.
 
-4. **Combining Year and Week Number**: The `& "-" &` part combines the year and the formatted week number into a single string, separated by a hyphen. So, if the year is `2023` and the week number is `50`, the final result would be `2023-50`.
+4. **Combining Year and Week Number**: The `&` operator is used to concatenate (join together) the year and the formatted week number with a hyphen in between. So, if the year is `2023` and the week number is `11`, the final result would be `2023-11`.
 
-### Summary
-In summary, this DAX expression creates a new column that shows the year and week number of the contract's end date in the format "YYYY-WW". This can be useful for reporting and analysis, allowing users to easily identify and group data by year and week. For example, it helps in tracking contracts that end in the same week across different years.
+### Summary:
+In summary, this DAX expression creates a new column that combines the year and the week number of the contract's end date into a single string formatted as "YYYY-WW". This allows for easy identification and grouping of contracts based on the year and week they end, which can be useful for reporting and analysis purposes. For example, a contract ending on March 15, 2023, would be represented as `2023-11`.
 
 ##### Measures
 
@@ -375,16 +375,16 @@ CALCULATE(
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `Count_Negative_Consultant`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: This measure is designed to count the number of unique employees (consultants) who have recorded negative hours in a timesheet. Negative hours might indicate that an employee has made an error in reporting their hours or that there are adjustments to their recorded time.
+1. **Purpose**: This measure counts the number of unique consultants (employees) who have recorded negative hours in their timesheets.
 
 2. **Components**:
-   - **`CALCULATE`**: This function changes the context in which data is evaluated. In this case, it is used to apply a specific filter to the data being counted.
-   - **`DISTINCTCOUNT('vw_missing_timesheet'[EmployeeName])`**: This part counts the number of unique employee names in the `vw_missing_timesheet` table. It ensures that each employee is only counted once, even if they have multiple entries with negative hours.
-   - **`'vw_missing_timesheet'[MissingHours] < 0`**: This filter condition specifies that only the records where the `MissingHours` are less than zero should be considered in the count. Essentially, it filters the data to include only those instances where employees have negative hours.
+   - **`CALCULATE`**: This function changes the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
+   - **`DISTINCTCOUNT('vw_missing_timesheet'[EmployeeName])`**: This part counts the number of unique employee names in the `vw_missing_timesheet` table. It ensures that each consultant is only counted once, even if they have multiple entries with negative hours.
+   - **`'vw_missing_timesheet'[MissingHours] < 0`**: This is the filter condition applied by the `CALCULATE` function. It specifies that only those records where the `MissingHours` value is less than zero should be considered in the count.
 
-3. **Outcome**: The result of this measure is a single number that tells you how many different employees have reported negative hours in their timesheets. This information can be useful for identifying potential issues in time reporting, such as errors or discrepancies that need to be addressed.
+3. **Outcome**: The measure ultimately provides a count of how many different consultants have reported negative hours. This could indicate issues such as underreporting of hours worked, errors in timesheet submissions, or other discrepancies that need to be addressed.
 
-In summary, `Count_Negative_Consultant` provides a count of unique consultants who have negative hours recorded, helping the business monitor and manage timesheet accuracy.
+In summary, `Count_Negative_Consultant` helps the business identify and track the number of consultants with negative hours, which can be critical for ensuring accurate timekeeping and resource management.
 
 **`CountNegativeMissingHours`**
 
@@ -397,16 +397,17 @@ CALCULATE(
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided is designed to create a measure called **CountNegativeMissingHours**. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: This measure counts the number of unique employees who have recorded negative missing hours in the 'vw_missing_timesheet' table.
+1. **Purpose**: This measure counts the number of unique employees who have recorded negative missing hours in a timesheet.
 
 2. **Components**:
-   - **CALCULATE**: This function modifies the context in which data is evaluated. In this case, it is used to apply a specific filter to the data being counted.
-   - **DISTINCTCOUNT('vw_missing_timesheet'[EmployeeID])**: This part counts the number of unique Employee IDs in the 'vw_missing_timesheet' table. Essentially, it tells us how many different employees are involved.
-   - **'vw_missing_timesheet'[MissingHours] < 0**: This filter condition specifies that we are only interested in records where the 'MissingHours' value is less than zero. In other words, it focuses on cases where employees have negative missing hours, which might indicate an error or a specific situation that needs attention.
+   - **CALCULATE**: This function modifies the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
+   - **DISTINCTCOUNT**: This function counts the number of unique values in a specified column. Here, it counts unique Employee IDs.
+   - **'vw_missing_timesheet'[EmployeeID]**: This refers to the column in the data that contains the IDs of employees.
+   - **'vw_missing_timesheet'[MissingHours] < 0**: This is a filter condition that specifies we are only interested in records where the MissingHours value is less than zero (indicating negative hours).
 
-3. **Outcome**: The measure ultimately provides a count of how many distinct employees have negative missing hours. This information can be useful for identifying potential issues in timesheet reporting or for understanding employee attendance patterns.
+3. **What it Achieves**: The measure calculates how many different employees have a record of negative missing hours. This could be useful for identifying issues in timesheet reporting or understanding discrepancies in hours worked versus hours reported.
 
-In summary, **CountNegativeMissingHours** helps a business track and analyze the number of employees with negative missing hours, which can be critical for ensuring accurate timekeeping and addressing any discrepancies in employee records.
+In summary, **CountNegativeMissingHours** helps a business track how many employees have reported negative hours, which could indicate potential errors or issues in their timesheet submissions.
 
 **`Dax_EmpCount`**
 
@@ -432,35 +433,31 @@ VAR ActiveEmployees =
 			    )
 			RETURN COUNTROWS(ActiveEmployees)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the number of active employees who are missing timesheet hours in a specific context. Let's break it down into simpler business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a measure called `Dax_EmpCount_MissingTS`, which counts the number of active employees who have missing timesheet hours for a specific period. Here’s a breakdown of what it does in simple business terms:
 
-1. **Data Source**: The code is working with a data table called `vw_missing_timesheet`, which likely contains records of employee hours worked, including details about their contracts and whether they have submitted their timesheets.
+1. **Data Source**: The measure uses a data source called `vw_missing_timesheet`, which likely contains information about employees, their hours worked, and their contractual hours.
 
-2. **Key Variables**:
-   - **EmployeeName**: The name of the employee.
-   - **Year_**: The year of the record.
-   - **Week_**: The week of the record.
-   - **Unit**: The organizational unit the employee belongs to.
-   - **SubUnit**: A more specific division within the unit.
-   - **Hours_**: The actual hours the employee has worked.
-   - **ContractHours**: The hours the employee is contracted to work.
+2. **Summarization**: The code first summarizes the data by grouping it based on several key attributes:
+   - Employee Name
+   - Year
+   - Week
+   - Unit (likely a department or team)
+   - SubUnit (a more specific division within the unit)
 
-3. **Calculating Missing Hours**: 
-   - The code calculates "MissingHours" for each employee by taking the total hours they worked (`SUM(vw_missing_timesheet[Hours_])`) and subtracting the maximum hours they are contracted to work (`MAX(vw_missing_timesheet[ContractHours])`). If this results in a negative number, it indicates that the employee has not submitted enough hours.
+3. **Calculating Missing Hours**: For each group of employees, it calculates:
+   - **MissingHours**: This is determined by taking the total hours worked (`SUM(vw_missing_timesheet[Hours_])`) and subtracting the maximum contractual hours (`MAX(vw_missing_timesheet[ContractHours])`). If this value is negative, it indicates that the employee has not logged enough hours compared to what was expected.
 
-4. **Identifying Active Employees**:
-   - The code also checks for "MinActiveEmp", which is the minimum number of active employees recorded in the data for that specific context (like a week or a unit). It looks for cases where this value is equal to 1, meaning there is at least one active employee.
+4. **Identifying Active Employees**: It also calculates:
+   - **MinActiveEmp**: This checks the minimum value of a field called `CC_ActiveEmployees`, which likely indicates whether the employee is currently active (1 for active, 0 for inactive). 
 
-5. **Filtering Criteria**:
-   - The `FILTER` function is used to narrow down the summarized data to only those records where:
-     - There is exactly one active employee (`[MinActiveEmp] = 1`).
-     - The employee has missing hours (`[MissingHours] < 0`).
+5. **Filtering Criteria**: The `FILTER` function then narrows down the summarized data to only include:
+   - Employees who are active (`[MinActiveEmp] = 1`)
+   - Employees who have missing hours (`[MissingHours] < 0`)
 
-6. **Final Count**:
-   - Finally, the `COUNTROWS` function counts how many records meet these criteria, effectively giving the total number of active employees who have not submitted their timesheets and have missing hours.
+6. **Counting Active Employees**: Finally, the measure counts the number of rows in the filtered result, which represents the number of active employees who have missing timesheet hours.
 
 ### Summary:
-In summary, this DAX measure calculates the number of active employees who have not submitted their timesheets and have a deficit in hours worked compared to their contracted hours. This information can be crucial for management to identify compliance issues with timesheet submissions and to ensure that all employees are accurately reporting their work hours.
+In summary, this DAX measure calculates how many active employees have not logged enough hours in their timesheets for a given year and week, helping the business identify potential issues with timesheet compliance.
 
 **`Dax_MissingHours`**
 
@@ -483,18 +480,22 @@ VAR ActiveEmployees =
 			RETURN 
 			    SUMX(ActiveEmployees, [MissingHours])
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to calculate a measure called `Dax_MissingHours`, which focuses on identifying and summing up the negative missing hours for active employees in a specific context (like a week or year). Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate a measure called `Dax_MissingHours`, which focuses on identifying and quantifying the hours that certain employees are missing based on their contractual obligations. Here’s a breakdown of what this code does in simple business terms:
 
-1. **Identify Active Employees**: The code starts by creating a variable called `ActiveEmployees`. This variable filters a summarized table (`vw_missing_timesheet`) to focus on employees who are currently active. It does this by checking a specific condition: it only includes employees where the minimum count of active employees (`MinActiveEmp`) is equal to 1. This means that only those employees who are actively working are considered.
+1. **Identify Active Employees**: The code starts by creating a variable called `ActiveEmployees`. This variable filters a summarized table of data (`vw_missing_timesheet`) to focus on employees who are currently active (indicated by `CC_ActiveEmployees` being equal to 1).
 
-2. **Calculate Missing Hours**: For each employee, the code calculates "MissingHours" by taking the total hours they have recorded (`SUM(vw_missing_timesheet[Hours_])`) and subtracting their contracted hours (`MAX(vw_missing_timesheet[ContractHours])`). If this calculation results in a negative number, it indicates that the employee has not logged enough hours compared to what they are contracted to work.
+2. **Summarize Data**: The `SUMMARIZE` function is used to group the data by several key attributes:
+   - **Employee Name**: Identifies which employee the data pertains to.
+   - **Year and Week**: Specifies the time period for the data.
+   - **Unit and SubUnit**: Provides additional organizational context.
+   - **Missing Hours Calculation**: For each employee, it calculates the total hours they have logged (`SUM(vw_missing_timesheet[Hours_])`) and subtracts the maximum hours they are contracted to work (`MAX(vw_missing_timesheet[ContractHours])`). This gives the total missing hours for that employee.
 
-3. **Filter for Negative Missing Hours**: The filter applied in the `FILTER` function ensures that only those employees who have negative missing hours (i.e., they have logged fewer hours than their contract requires) are included in the final calculation. 
+3. **Filter for Missing Hours**: The `FILTER` function then narrows down this summarized data to only include those employees who are active and have a negative value for `MissingHours`. This means it focuses on employees who have worked fewer hours than they are contracted for.
 
-4. **Sum Up Missing Hours**: Finally, the `RETURN` statement uses `SUMX` to iterate over the filtered list of active employees and sums up their "MissingHours". This gives a total of all the negative hours across all active employees.
+4. **Calculate Total Missing Hours**: Finally, the `RETURN` statement uses `SUMX` to iterate over the filtered list of active employees and sums up their `MissingHours`. This gives the total number of hours that active employees are missing compared to their contractual obligations.
 
 ### Summary:
-In summary, this DAX measure calculates the total number of hours that active employees are missing (i.e., not working enough hours compared to their contracts) for a given period. It helps the business identify potential issues with employee hours, ensuring that they can address any discrepancies in work hours logged versus expected hours.
+In essence, this DAX measure calculates the total number of hours that active employees are missing from their expected work hours, helping the business understand potential shortfalls in labor hours. This information can be crucial for workforce management, ensuring that staffing levels meet operational needs.
 
 **`ExpectedContractHoursWeekly`**
 
@@ -512,18 +513,19 @@ SUMX(
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided calculates the total expected contract hours for employees on a weekly basis. Here’s a breakdown of what it does in simple business terms:
 
-1. **Data Source**: The calculation uses a data table called `vw_missing_timesheet`, which likely contains information about employees, their contract hours, and the weeks they worked.
+1. **Data Source**: The calculation uses a data table called `vw_missing_timesheet`, which likely contains information about employee timesheets, including the week, employee IDs, and their respective contract hours.
 
 2. **Grouping Data**: The `SUMMARIZE` function is used to group the data by two key pieces of information:
-   - **Week**: This represents the specific week for which we are calculating contract hours.
-   - **EmployeeID**: This identifies each employee.
+   - **Week**: This represents the specific week for which we are calculating the expected hours.
+   - **EmployeeID**: This identifies each individual employee.
 
-3. **Calculating Maximum Contract Hours**: For each unique combination of week and employee, the code calculates the maximum contract hours from the `ContractHours` column. This means that if an employee has multiple entries for the same week, it will take the highest number of contract hours recorded for that week.
+3. **Calculating Maximum Contract Hours**: For each unique combination of week and employee, the code calculates the maximum contract hours using `MAX(vw_missing_timesheet[ContractHours])`. This means that if an employee has multiple entries for the same week, it will take the highest number of contract hours recorded for that week.
 
-4. **Summing Up Contract Hours**: After summarizing the data and calculating the maximum contract hours for each employee in each week, the `SUMX` function then adds up all these maximum contract hours across all employees and weeks.
+4. **Summing Up Contract Hours**: After summarizing the data and determining the maximum contract hours for each employee in each week, the `SUMX` function then sums up all these maximum contract hours. Essentially, it adds together the highest contract hours for each employee across all weeks.
 
-### What It Achieves:
-The overall result of this DAX measure is the total expected contract hours for all employees, aggregated by week. This helps in understanding how many hours are expected to be worked based on the highest recorded contract hours for each employee in each week, providing valuable insights for workforce planning and management.
+5. **Final Result**: The final result of this measure, `ExpectedContractHoursWeekly`, gives you the total expected contract hours for all employees, considering only the maximum hours recorded for each employee in each week. This helps in understanding the total expected workload based on the highest contractual obligations recorded, which can be useful for planning and resource allocation.
+
+In summary, this DAX measure helps businesses track and analyze the total expected contract hours for employees on a weekly basis, ensuring that they are aware of the maximum commitments made by each employee.
 
 **`MissingHoursOut`**
 
@@ -531,21 +533,22 @@ The overall result of this DAX measure is the total expected contract hours for 
 ```dax
 MAX(vw_missing_timesheet[ContractHours]) - MAX(vw_missing_timesheet[Hours_])
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the difference between two values related to hours worked and contracted hours for a specific context, likely within a reporting or analytical framework.
+- **DAX Explanation (Generated):** The DAX expression you provided calculates the difference between two values related to hours worked and contracted hours for employees. Here's a breakdown of what it does in simple business terms:
 
-Here's a breakdown of what it does in simple business terms:
+1. **MAX(vw_missing_timesheet[ContractHours])**: This part of the expression retrieves the maximum value of "ContractHours" from the `vw_missing_timesheet` table. "ContractHours" represents the total number of hours that an employee is contracted to work.
 
-1. **MAX(vw_missing_timesheet[ContractHours])**: This part of the expression retrieves the maximum value of contracted hours from the `vw_missing_timesheet` table. Contracted hours refer to the total number of hours that an employee is expected to work according to their contract.
+2. **MAX(vw_missing_timesheet[Hours_])**: This part retrieves the maximum value of "Hours_" from the same table. "Hours_" represents the actual hours that the employee has worked or reported.
 
-2. **MAX(vw_missing_timesheet[Hours_])**: This part retrieves the maximum value of actual hours worked (or recorded) from the same table. This represents the total number of hours that the employee has actually logged or reported.
-
-3. **Calculation**: The expression then subtracts the maximum actual hours worked from the maximum contracted hours. 
+3. **Subtraction**: The expression then subtracts the maximum actual hours worked (Hours_) from the maximum contracted hours (ContractHours).
 
 ### What It Achieves:
-- The result of this calculation gives you the number of hours that are "missing" or unaccounted for. In other words, it tells you how many hours an employee has not worked compared to what they were contracted to work.
-- If the result is positive, it indicates that the employee has not fulfilled their contracted hours. If it is zero or negative, it suggests that the employee has either met or exceeded their contracted hours.
+The overall calculation gives you the difference between the maximum contracted hours and the maximum hours actually worked. 
 
-In summary, this measure helps organizations track discrepancies between expected and actual work hours, which can be crucial for payroll, performance management, and ensuring compliance with labor agreements.
+- **If the result is positive**: This indicates that there are missing hours that the employee was contracted to work but did not report. It highlights a shortfall in hours worked compared to what was expected.
+
+- **If the result is zero or negative**: This means that the employee has either met or exceeded their contracted hours, indicating no missing hours.
+
+In summary, this measure helps identify any discrepancies between expected and actual work hours, which can be crucial for managing workforce productivity and ensuring compliance with contractual obligations.
 
 **`PercentageCompleteness`**
 
@@ -557,20 +560,23 @@ DIVIDE(
 			    0
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the "Percentage Completeness" of timesheets based on the hours that are missing compared to the expected contract hours for a week. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided calculates a measure called `PercentageCompleteness`. Let's break it down into simple business terms:
 
-1. **SUM(vw_missing_timesheet[MissingHours])**: This part of the code adds up all the missing hours from the timesheet data. It gives a total of how many hours employees have not reported.
+1. **SUM(vw_missing_timesheet[MissingHours])**: This part of the code adds up all the missing hours from a table called `vw_missing_timesheet`. Essentially, it tells us how many hours were not accounted for in timesheets.
 
-2. **[ExpectedContractHoursWeekly]**: This is a measure that represents the total number of hours that employees are expected to work in a week according to their contracts.
+2. **[ExpectedContractHoursWeekly]**: This represents the expected number of hours that should have been worked in a week according to the contract. It serves as a benchmark for comparison.
 
-3. **SUM(vw_missing_timesheet[MissingHours]) - [ExpectedContractHoursWeekly]**: Here, the code calculates the difference between the total missing hours and the expected contract hours. If the result is positive, it indicates that the missing hours exceed what was expected; if negative, it means that the reported hours are more than expected.
+3. **SUM(vw_missing_timesheet[MissingHours]) - [ExpectedContractHoursWeekly]**: Here, the code calculates the difference between the total missing hours and the expected contract hours. If the result is positive, it means there are more missing hours than expected; if negative, it means the hours worked are exceeding the expected hours.
 
-4. **DIVIDE(..., [ExpectedContractHoursWeekly], 0)**: This function divides the result from the previous step (the difference between missing hours and expected hours) by the expected contract hours. The third argument, `0`, ensures that if the expected contract hours are zero (to avoid division by zero), the result will simply be 0 instead of an error.
+4. **DIVIDE(..., [ExpectedContractHoursWeekly], 0)**: This function divides the difference calculated in the previous step by the expected contract hours. The `DIVIDE` function is used instead of a simple division to handle cases where the denominator (expected hours) might be zero. If it is zero, the result will be 0 instead of causing an error.
 
 ### What It Achieves:
-The overall measure calculates the percentage of completeness of timesheets by showing how much the missing hours deviate from what is expected. A positive percentage indicates that there are more missing hours than expected, suggesting a potential issue with timesheet reporting. Conversely, a negative percentage indicates that employees are reporting more hours than expected, which could be a sign of over-reporting or mismanagement of hours.
+The overall measure calculates the percentage of completeness regarding timesheet submissions. Specifically, it shows how the actual missing hours compare to the expected hours. 
 
-In summary, this measure helps the business understand how well employees are completing their timesheets relative to what is expected, allowing for better management of time reporting and resource allocation.
+- If the result is positive, it indicates a shortfall in timesheet submissions relative to what was expected, suggesting that employees are not reporting their hours accurately.
+- If the result is negative, it indicates that employees are reporting more hours than expected, which could suggest over-reporting or additional work being done.
+
+In summary, this measure helps the business understand how well employees are completing their timesheets compared to what is expected, allowing for better management of time reporting and resource allocation.
 
 **`UniqueEmployeesPerUnit`**
 
@@ -587,29 +593,28 @@ SUMX(
 			    [IncompleteFlag]
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate a measure called `UniqueEmployeesPerUnit`. Let's break it down step by step in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to calculate a measure called `UniqueEmployeesPerUnit`. Let's break it down step by step in simple business terms:
 
-1. **Data Source**: The measure uses a data table called `vw_missing_timesheet`, which likely contains records of employees and their timesheet submissions, including information about whether their submissions are complete or incomplete.
+1. **Data Source**: The measure is based on a table called `vw_missing_timesheet`, which likely contains records of employees and their timesheet submissions, including information about whether their submissions are complete or incomplete.
 
 2. **Grouping Data**: The `SUMMARIZE` function is used to group the data by three key columns:
    - `Week_`: This represents the week of the year.
-   - `EmployeeName`: This is the name of the employee.
-   - `MAIN_UNIT`: This likely refers to the department or unit within the organization that the employee belongs to.
+   - `EmployeeName`: This identifies each employee.
+   - `MAIN_UNIT`: This indicates the main unit or department the employee belongs to.
 
-   While grouping, it also creates a new column called `"IncompleteFlag"` that captures the maximum value of the `IncompleteFlag` for each combination of week, employee, and unit. The `IncompleteFlag` is presumably a binary indicator (e.g., 0 for complete and 1 for incomplete), so using `MAX` here helps to determine if there was at least one instance of incompleteness for that employee in that week.
+   While grouping, the code also creates a new column called `IncompleteFlag`, which captures the maximum value of the `IncompleteFlag` for each combination of week, employee, and unit. The `IncompleteFlag` likely indicates whether an employee has submitted their timesheet completely (e.g., 0 for complete, 1 for incomplete).
 
-3. **Calculating the Sum**: After summarizing the data, the `SUMX` function iterates over the summarized table. For each row in this summarized table, it sums up the values of the `IncompleteFlag`. This means it counts how many unique employee-week-unit combinations have an incomplete timesheet submission.
+3. **Calculating the Sum**: After summarizing the data, the `SUMX` function iterates over the summarized table. For each group (each unique combination of week, employee, and unit), it sums up the values in the `IncompleteFlag` column.
 
-### What It Achieves:
-In essence, this DAX measure calculates the total number of unique employees who have not submitted their timesheets completely for each unit, across different weeks. This information can be crucial for management to identify units with compliance issues regarding timesheet submissions and to take necessary actions to improve submission rates. 
+4. **Final Outcome**: The final result of this measure is the total count of incomplete timesheet submissions across all employees and units for each week. This measure helps in understanding how many employees have not submitted their timesheets completely, which can be crucial for payroll processing, compliance, and operational efficiency.
 
-In summary, `UniqueEmployeesPerUnit` provides insights into how many employees in each unit are missing complete timesheet submissions, helping the organization monitor and address potential issues in timesheet compliance.
+In summary, `UniqueEmployeesPerUnit` calculates the total number of incomplete timesheet submissions by employees, grouped by week and unit, helping the organization track and manage timesheet compliance effectively.
 
 ---
 
 #### <a name="table-vw_timesheet"></a>Table: `vw_Timesheet`
 
-The 'vw_Timesheet' table serves as a comprehensive record of employee work hours and project allocations, enabling management to analyze labor costs, track project progress, and assess employee productivity across different financial years. By linking timesheet data with managerial and project identifiers, this table supports informed decision-making and resource planning within the organization.
+The 'vw_Timesheet' table serves as a comprehensive record of employee timesheet submissions, capturing essential details such as financial year, submission dates, and associated project and managerial information. This table enables businesses to analyze labor allocation, project costs, and managerial oversight, facilitating informed decision-making and resource management.
 
 ##### Columns
 
@@ -617,66 +622,66 @@ The 'vw_Timesheet' table serves as a comprehensive record of employee work hours
 |------|-----------|-------------------------|
 | `Approved` | `boolean` | Indicates whether the timesheet entry has been approved (true) or not (false). |
 | `Client` | `string` | The 'Client' column in the 'vw_Timesheet' table identifies the specific client associated with each timesheet entry, facilitating accurate billing and project tracking. |
-| `Code2` | `string` | The 'Code2' column in the 'vw_Timesheet' table stores a secondary identifier code used to categorize or classify timesheet entries for enhanced data analysis and reporting. |
-| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column in the 'vw_Timesheet' table represents the date and time when an employee's contract is set to expire, providing essential information for managing workforce planning and contract renewals. |
-| `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when an employee's contract begins, providing essential context for timesheet entries and project billing. |
-| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of contracts associated with timesheet entries, providing real-time insights into contract conditions for effective project management. |
-| `ContractStatusTodayPBI` | `string` | Column Description: This column indicates the current status of contracts as of today, providing a real-time snapshot for analysis within the timesheet data. |
+| `Code2` | `string` | The 'Code2' column in the 'vw_Timesheet' table stores a secondary identifier for time entries, facilitating enhanced data categorization and reporting. |
+| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column represents the date and time when an employee's contract is scheduled to conclude, providing essential information for project planning and resource allocation within the timesheet data. |
+| `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when an employee's contract begins, providing essential context for timesheet entries and payroll calculations within the 'vw_Timesheet' table. |
+| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of contracts associated with timesheet entries, providing a real-time overview of contractual obligations and conditions. |
+| `ContractStatusTodayPBI` | `string` | The 'ContractStatusTodayPBI' column indicates the current status of contracts as of today, providing essential insights for performance tracking and decision-making within the timesheet data. |
 | `ContractTransferDate` | `dateTime` | The 'ContractTransferDate' column records the date and time when a contract was transferred, providing essential temporal context for timesheet entries related to contract management. |
 | `CostAmount` | `double` | The 'CostAmount' column represents the total monetary cost associated with the recorded time entries in the 'vw_Timesheet' table, expressed as a double-precision floating-point number. |
 | `CostPrice` | `double` | The 'CostPrice' column represents the monetary value associated with the cost of labor for each entry in the timesheet, expressed as a double to accommodate precise financial calculations. |
-| `Currency` | `string` | The 'Currency' column in the 'vw_Timesheet' table specifies the type of currency used for financial transactions recorded in the timesheet, facilitating accurate monetary reporting and analysis. |
-| `DebtorName` | `string` | The 'DebtorName' column contains the name of the individual or entity responsible for payment, providing essential identification for financial tracking within the timesheet records. |
-| `EmployeeID` | `string` | The 'EmployeeID' column (string) in the 'vw_Timesheet' table uniquely identifies each employee, facilitating the tracking and management of their timesheet entries. |
-| `EmployeeIDName` | `string` | The 'EmployeeIDName' column in the 'vw_Timesheet' table stores the unique identifier and name of each employee, facilitating the association of timesheet entries with specific personnel for accurate tracking and reporting. |
+| `Currency` | `string` | The 'Currency' column in the 'vw_Timesheet' table specifies the type of currency used for financial transactions recorded in the timesheet, facilitating accurate cost analysis and reporting. |
+| `DebtorName` | `string` | The 'DebtorName' column stores the name of the individual or entity responsible for payment, facilitating the tracking and management of outstanding invoices within the timesheet records. |
+| `EmployeeID` | `string` | The 'EmployeeID' column (string) in the 'vw_Timesheet' table uniquely identifies each employee, facilitating the tracking and management of their respective timesheet entries. |
+| `EmployeeIDName` | `string` | The 'EmployeeIDName' column stores the unique identifier and name of each employee, facilitating the association of timesheet entries with the corresponding personnel in the vw_Timesheet table. |
 | `EmployeeKey` | `int64` | The 'EmployeeKey' column (int64) uniquely identifies each employee in the 'vw_Timesheet' table, facilitating the association of timesheet entries with the corresponding employee records. |
-| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees associated with each timesheet entry, facilitating the identification and tracking of individual work hours and contributions. |
-| `Employer` | `string` | The 'Employer' column in the 'vw_Timesheet' table captures the name of the organization for which the employee is working, facilitating accurate tracking and reporting of labor costs associated with each employer. |
-| `EmployerCode` | `int64` | The 'EmployerCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the employer associated with each timesheet entry, facilitating accurate payroll and reporting processes. |
+| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees associated with each timesheet entry, facilitating easy identification and reporting of labor hours. |
+| `Employer` | `string` | The 'Employer' column identifies the organization or company for which the employee is working during the recorded timesheet entry. |
+| `EmployerCode` | `int64` | The 'EmployerCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the employer associated with each timesheet entry, facilitating accurate payroll processing and reporting. |
 | `ExtraDetails` | `string` | The 'ExtraDetails' column contains additional contextual information or notes related to each timesheet entry, providing insights that enhance the understanding of the recorded hours and activities. |
 | `FinancialYear` | `int64` | The 'FinancialYear' column (int64) in the 'vw_Timesheet' table represents the fiscal year associated with each timesheet entry, facilitating financial reporting and analysis. |
-| `Hours` | `double` | The 'Hours' column (double) in the 'vw_Timesheet' table represents the total number of hours worked by an employee during a specified period, facilitating accurate tracking of labor input for payroll and project management. |
-| `HoursperWeek` | `int64` | The 'HoursperWeek' column (int64) in the 'vw_Timesheet' table represents the total number of hours worked by an employee in a given week, facilitating analysis of labor allocation and productivity. |
-| `HoursType` | `string` | The 'HoursType' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or vacation, to facilitate accurate reporting and analysis of employee time allocation. |
-| `HoursTypeCode` | `string` | The 'HoursTypeCode' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or leave, facilitating accurate reporting and analysis of employee time entries. |
+| `Hours` | `double` | The 'Hours' column (double) in the 'vw_Timesheet' table represents the total number of hours worked by an employee during a specified time period, facilitating accurate tracking and reporting of labor efforts. |
+| `HoursperWeek` | `int64` | The 'HoursperWeek' column (int64) in the 'vw_Timesheet' table represents the total number of hours worked by an employee in a given week, facilitating analysis of labor distribution and productivity. |
+| `HoursType` | `string` | The 'HoursType' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or holiday hours, to facilitate accurate reporting and analysis of employee work patterns. |
+| `HoursTypeCode` | `string` | The 'HoursTypeCode' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or leave, facilitating accurate reporting and analysis of employee time allocation. |
 | `Index` | `int64` | The 'Index' column (int64) in the 'vw_Timesheet' table serves as a unique identifier for each timesheet entry, facilitating efficient data retrieval and organization. |
-| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when timesheet data was ingested into the system, facilitating accurate tracking and auditing of data entry. |
+| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when timesheet data was ingested into the system, facilitating accurate tracking and auditing of data entry timelines. |
 | `InternalPMID` | `string` | The 'InternalPMID' column stores a unique identifier for internal project management instances, facilitating the tracking and association of timesheet entries with specific projects. |
-| `InternalPMKey` | `int64` | The 'InternalPMKey' column (int64) serves as a unique identifier for project managers within the 'vw_Timesheet' table, facilitating the association of timesheet entries with their respective project management records. |
-| `IPM_ManagerName` | `string` | The 'IPM_ManagerName' column stores the name of the Integrated Project Management (IPM) manager responsible for overseeing the timesheet entries, facilitating accountability and project oversight. |
+| `InternalPMKey` | `int64` | The 'InternalPMKey' column (int64) in the 'vw_Timesheet' table serves as a unique identifier for project managers, facilitating the association of timesheet entries with their respective project management records. |
+| `IPM_ManagerName` | `string` | The 'IPM_ManagerName' column stores the name of the Integrated Project Management (IPM) manager responsible for overseeing project timelines and resource allocation, facilitating effective project tracking and accountability within the timesheet records. |
 | `IPMIDName` | `string` | The 'IPMIDName' column in the 'vw_Timesheet' table stores the names of individuals associated with specific IPMIDs, facilitating the tracking and management of timesheet entries linked to these identifiers. |
-| `JobTitle` | `string` | The 'JobTitle' column in the 'vw_Timesheet' table captures the specific role or position of an employee, providing context for their time entries and facilitating analysis of labor distribution across various job functions. |
-| `Join_Key` | `string` | The 'Join_Key' column serves as a unique identifier that facilitates the linking of timesheet records to related datasets, ensuring accurate data integration and analysis. |
+| `JobTitle` | `string` | The 'JobTitle' column in the 'vw_Timesheet' table captures the specific role or position of an employee, providing essential context for analyzing timesheet data and resource allocation. |
+| `Join_Key` | `string` | The 'Join_Key' column serves as a unique identifier for linking timesheet records to related datasets, facilitating data integration and analysis. |
 | `ManagerID` | `string` | The 'ManagerID' column stores the unique identifier of the manager responsible for overseeing the timesheet entries, facilitating accountability and reporting within the organization. |
-| `ManagerIDName` | `string` | The 'ManagerIDName' column contains the names of managers associated with each timesheet entry, facilitating the identification of supervisory oversight for reported hours. |
-| `ManagerKey` | `int64` | The 'ManagerKey' column (int64) in the 'vw_Timesheet' table identifies the unique key associated with the manager responsible for overseeing the timesheet entries. |
-| `ManagerName` | `string` | The 'ManagerName' column stores the names of managers responsible for overseeing employee timesheets, facilitating accountability and performance tracking within the organization. |
-| `OHWWorkBookings` | `string` | The 'OHWWorkBookings' column contains string representations of work booking entries, detailing the hours allocated to specific tasks within the timesheet records. |
-| `Project` | `string` | The 'Project' column in the 'vw_Timesheet' table identifies the specific project associated with each recorded time entry, enabling effective tracking and analysis of resource allocation and project performance. |
-| `ProjectCode` | `string` | The 'ProjectCode' column stores a unique identifier for each project associated with the timesheet entries, facilitating accurate tracking and reporting of time spent on various projects. |
-| `ProjectProfile` | `string` | The 'ProjectProfile' column contains a string that identifies the specific project associated with each timesheet entry, facilitating detailed tracking and analysis of time spent on various projects. |
-| `ProjectProfileCode` | `int64` | The 'ProjectProfileCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the specific project profile associated with each timesheet entry, facilitating accurate project tracking and reporting. |
-| `ProjectType` | `string` | The 'ProjectType' column categorizes the nature of the projects associated with each timesheet entry, providing insights into the types of work being performed. |
-| `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true signifying rejection and false indicating acceptance. |
-| `ReportReady` | `boolean` | Indicates whether the timesheet is ready for reporting, with a value of true signifying readiness and false indicating that further action is required. |
-| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales transactions, recorded as a double-precision floating-point number, within the context of timesheet data analysis. |
+| `ManagerIDName` | `string` | Column Description: The 'ManagerIDName' column stores the names of managers associated with each timesheet entry, facilitating easy identification of supervisory oversight for employee hours worked. |
+| `ManagerKey` | `int64` | The 'ManagerKey' column (int64) in the 'vw_Timesheet' table identifies the unique key of the manager responsible for overseeing the associated timesheet entries. |
+| `ManagerName` | `string` | The 'ManagerName' column stores the name of the employee's direct supervisor, facilitating the identification of managerial oversight for each timesheet entry. |
+| `OHWWorkBookings` | `string` | The 'OHWWorkBookings' column contains string representations of work booking entries, providing detailed information about hours worked on specific tasks within the timesheet records. |
+| `Project` | `string` | The 'Project' column identifies the specific project associated with each timesheet entry, enabling detailed tracking of time allocation and resource management across various initiatives. |
+| `ProjectCode` | `string` | The 'ProjectCode' column in the 'vw_Timesheet' table uniquely identifies the specific project associated with each timesheet entry, facilitating accurate tracking and reporting of time spent on various projects. |
+| `ProjectProfile` | `string` | The 'ProjectProfile' column contains a string that identifies the specific project associated with each timesheet entry, facilitating detailed tracking and analysis of time allocation across various projects. |
+| `ProjectProfileCode` | `int64` | The 'ProjectProfileCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the associated project profile for each timesheet entry, facilitating accurate project tracking and reporting. |
+| `ProjectType` | `string` | The 'ProjectType' column categorizes the nature of the projects associated with each timesheet entry, enabling better analysis of resource allocation and project performance. |
+| `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true representing rejection and false indicating acceptance. |
+| `ReportReady` | `boolean` | Indicates whether the timesheet is ready for reporting, with a value of true signifying readiness and false indicating further processing is required. |
+| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales transactions, recorded as a double to accommodate precise financial calculations within the 'vw_Timesheet' table. |
 | `SalesPrice` | `double` | The 'SalesPrice' column represents the monetary value assigned to each sale, stored as a double to accommodate precise pricing calculations within the timesheet data context. |
-| `Status` | `string` | The 'Status' column indicates the current approval state of each timesheet entry, reflecting whether it is pending, approved, or rejected. |
-| `Taxed` | `boolean` | Indicates whether the hours recorded in the timesheet are subject to taxation. |
+| `Status` | `string` | The 'Status' column indicates the current approval or processing state of each timesheet entry, facilitating tracking and management of employee work hours. |
+| `Taxed` | `boolean` | Indicates whether the hours recorded in the timesheet are subject to taxation, with a value of true representing taxed hours and false representing non-taxed hours. |
 | `Tier` | `string` | The 'Tier' column categorizes the level of service or priority associated with each timesheet entry, enabling better resource allocation and management. |
-| `TimesheetCode` | `string` | The 'TimesheetCode' column stores unique identifiers for each timesheet entry, facilitating the tracking and management of employee work hours and associated billing. |
+| `TimesheetCode` | `string` | The 'TimesheetCode' column stores unique identifiers for each timesheet entry, facilitating efficient tracking and management of employee work hours within the vw_Timesheet table. |
 | `TimesheetDate` | `dateTime` | The 'TimesheetDate' column captures the specific date and time when the timesheet entry was recorded, facilitating accurate tracking of work hours and project timelines. |
-| `TimesheetDescription` | `string` | The 'TimesheetDescription' column contains a detailed narrative of the tasks and activities recorded in the timesheet, providing context and clarity for time entries. |
-| `Unit` | `string` | The 'Unit' column in the 'vw_Timesheet' table represents the measurement unit associated with the recorded time entries, facilitating accurate tracking and reporting of work hours across various projects. |
+| `TimesheetDescription` | `string` | The 'TimesheetDescription' column contains a textual summary of the tasks and activities recorded in the timesheet, providing context and details for each entry. |
+| `Unit` | `string` | The 'Unit' column in the 'vw_Timesheet' table represents the measurement unit associated with the recorded time entries, facilitating accurate tracking and reporting of work hours across different projects or tasks. |
 | `UnitCode` | `string` | The 'UnitCode' column in the 'vw_Timesheet' table represents a unique identifier for the organizational unit associated with each timesheet entry, facilitating accurate tracking and reporting of labor costs by department. |
-| `WorkEmail` | `string` | The 'WorkEmail' column stores the professional email addresses of employees, facilitating communication and data enrichment related to timesheet entries. |
-| `YearWeek` | `string` | The 'YearWeek' column (string) in the 'vw_Timesheet' table represents the specific year and week number, facilitating time-based analysis and reporting of timesheet entries. |
+| `WorkEmail` | `string` | The 'WorkEmail' column stores the professional email addresses of employees, facilitating communication and data enrichment within the timesheet management system. |
+| `YearWeek` | `string` | The 'YearWeek' column (string) in the 'vw_Timesheet' table represents the specific year and week number, facilitating time-based analysis and reporting of timesheet data. |
 
 ##### Calculated Columns
 
 **`Approved_With_V_Z`** (`string`)
 
-- **Description:** Column Description: This column indicates the method or criteria used to approve timesheets, providing insight into the approval process within the timesheet management system.
+- **Description:** The 'Approved_With_V_Z' column indicates the approval status of timesheets, specifying whether they have been approved with a particular validation or verification process denoted by 'V_Z'.
 - **DAX Expression:**
 ```dax
 IF(
@@ -686,23 +691,23 @@ IF(
 			    0
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named 'Approved_With_V_Z'. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `Approved_With_V_Z`. Here's a breakdown of what it does in simple business terms:
 
 1. **Purpose**: The calculated column determines whether a timesheet is considered "approved" based on specific criteria.
 
 2. **Conditions**: The code checks two main conditions:
-   - **First Condition**: It checks if the column `[Approved]` is marked as `TRUE()`. This means that if the timesheet has been officially approved, it meets the criteria.
-   - **Second Condition**: It checks if the `TimesheetCode` from the `vw_Timesheet` table is either "V" or "Z". This means that even if the timesheet is not marked as approved, it will still be considered approved if it has one of these specific codes.
+   - **Condition 1**: It checks if the `Approved` column is marked as `TRUE`. This means that if the timesheet has been officially approved, it meets the criteria.
+   - **Condition 2**: It checks if the `TimesheetCode` is either "V" or "Z". These codes likely represent specific types of timesheets that are automatically considered approved regardless of the `Approved` status.
 
 3. **Output**: 
-   - If either of the conditions is met (the timesheet is approved or has a code of "V" or "Z"), the calculated column will return a value of `1`. This indicates that the timesheet is approved.
-   - If neither condition is met, it will return a value of `0`, indicating that the timesheet is not approved.
+   - If either of the conditions is met (the timesheet is approved or the code is "V" or "Z"), the calculated column will return a value of `1`. This indicates that the timesheet is approved.
+   - If neither condition is met, it returns a value of `0`, indicating that the timesheet is not approved.
 
-In summary, this DAX expression effectively flags timesheets as approved if they are either officially approved or have a specific code ("V" or "Z"). This helps in easily identifying which timesheets can be considered approved for further processing or reporting.
+In summary, this DAX expression effectively flags timesheets as approved (1) or not approved (0) based on whether they are explicitly approved or fall under specific codes (V or Z). This helps in easily identifying which timesheets can be considered approved for further processing or reporting.
 
 **`BillableDep`** (`string`)
 
-- **Description:** The 'BillableDep' column identifies the department associated with billable hours recorded in the timesheet, facilitating accurate billing and departmental cost tracking.
+- **Description:** The 'BillableDep' column identifies the department associated with billable hours recorded in the timesheet, facilitating accurate cost allocation and departmental budgeting.
 - **DAX Expression:**
 ```dax
 IF(
@@ -711,20 +716,20 @@ IF(
 			    IF(RELATED(lkp_Unit[BillableDep]) <> 0, 1, 0)
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillableDep`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `BillableDep`. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the `BillableDep` column from the `lkp_Unit` table. This is done using the `RELATED` function, which retrieves a value from a related table based on the current row context.
+1. **Purpose**: The calculated column is designed to determine whether a certain unit is considered "billable" based on a related table called `lkp_Unit`.
 
-2. **Handle Blank Values**: 
-   - If the `BillableDep` value from the related table is blank (meaning there is no corresponding entry), the formula returns `1`. This indicates that, in the absence of a specific billable dependency, the default assumption is that it is billable.
+2. **Logic**:
+   - The expression first checks if the `BillableDep` value from the `lkp_Unit` table is blank (i.e., there is no value).
+   - If it is blank, the expression returns **1**. This indicates that if there is no information about whether the unit is billable, it defaults to being considered billable.
+   - If the `BillableDep` value is not blank, it then checks if this value is not equal to **0**.
+     - If the value is not **0**, it returns **1**, meaning the unit is billable.
+     - If the value is **0**, it returns **0**, indicating that the unit is not billable.
 
-3. **Check for Non-Zero Values**: 
-   - If the `BillableDep` value is not blank, the formula then checks if this value is not equal to zero. 
-   - If it is not zero, the formula again returns `1`, indicating that there is a billable dependency present.
-   - If the `BillableDep` value is zero, the formula returns `0`, indicating that there is no billable dependency.
+3. **Outcome**: The final result of this calculated column will be either **1** (indicating the unit is billable) or **0** (indicating it is not billable). This helps in categorizing units based on their billable status, which can be useful for reporting, analysis, or decision-making processes in a business context.
 
-### Summary:
-In summary, this DAX expression effectively categorizes each row based on the presence and value of a related billable dependency. It assigns a value of `1` if there is either no related billable dependency or if there is a non-zero billable dependency, and it assigns a value of `0` if there is a related billable dependency that is zero. This helps in identifying which entries are considered billable based on their dependencies.
+In summary, this DAX expression helps to classify units as billable or not based on the related `BillableDep` information, providing a clear indicator for further analysis or billing processes.
 
 **`BillablePrj`** (`string`)
 
@@ -739,28 +744,28 @@ IF(
 			    0
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `BillablePrj` in a data model, likely related to timesheet entries or project tracking. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `BillablePrj` in a data model, specifically in a table called `vw_Timesheet`. Here's a breakdown of what this code does in simple business terms:
 
-1. **Purpose**: The `BillablePrj` column is designed to determine whether a particular timesheet entry is considered "billable" or not. A billable entry is one that can be charged to a client or project.
+1. **Purpose**: The `BillablePrj` column is designed to identify whether a particular timesheet entry is billable or not. A billable entry is one that can be charged to a client or customer.
 
-2. **Conditions for Billability**: The code checks three specific conditions to decide if an entry is billable:
-   - **Condition 1**: If the `SalesPrice` (the amount charged for the service or work done) is greater than 0. This means that if there is a positive sales price, the entry is billable.
-   - **Condition 2**: If the `ProjectProfileCode` equals 81. This suggests that there is a specific project type or category (identified by the code 81) that is always considered billable, regardless of other factors.
-   - **Condition 3**: If the `Project` field contains the phrase "Customer Success Services". This indicates that any project related to customer success services is also considered billable.
+2. **Conditions Checked**:
+   - **Sales Price**: The first condition checks if the `SalesPrice` for the entry is greater than 0. If there is a positive sales price, it indicates that the work done can be billed to a client.
+   - **Project Profile Code**: The second condition checks if the `ProjectProfileCode` is equal to 81. This specific code likely represents a type of project that is always considered billable, regardless of other factors.
+   - **Project Name**: The third condition uses the `SEARCH` function to look for the phrase "Customer Success Services" within the `Project` field. If this phrase is found, it suggests that the project is related to customer success services, which are typically billable.
 
 3. **Output**: 
-   - If any of the above conditions are met, the formula returns a value of `1`, indicating that the entry is billable.
-   - If none of the conditions are met, it returns `0`, indicating that the entry is not billable.
+   - If any of the three conditions are met (i.e., if the sales price is positive, the project profile code is 81, or the project name includes "Customer Success Services"), the expression returns a value of `1`, indicating that the entry is billable.
+   - If none of the conditions are met, it returns a value of `0`, indicating that the entry is not billable.
 
-In summary, this DAX expression effectively flags timesheet entries as billable or non-billable based on specific criteria related to sales price, project type, and project description. This helps in tracking which entries can be invoiced to clients, ensuring accurate billing and project management.
+In summary, this DAX expression helps categorize timesheet entries as billable or non-billable based on specific criteria related to sales price, project type, and project name. This categorization is essential for accurate billing and financial reporting.
 
 **`cc_Employer`** (`string`)
 
-- **Description:** The 'cc_Employer' column stores the name of the employer associated with each timesheet entry, facilitating the identification of the organization responsible for employee hours worked.
+- **Description:** The 'cc_Employer' column contains the name of the employer associated with each timesheet entry, facilitating the identification of the organization responsible for employee hours worked.
 
 **`Employee_WeeklyHours`** (`string`)
 
-- **Description:** The 'Employee_WeeklyHours' column captures the total number of hours worked by each employee during the week, represented as a string for flexibility in formatting.
+- **Description:** The 'Employee_WeeklyHours' column captures the total number of hours worked by each employee during the week, represented as a string for flexible formatting and potential inclusion of additional context.
 - **DAX Expression:**
 ```dax
 CONCATENATE(
@@ -768,22 +773,18 @@ CONCATENATE(
 			    " - " & ('vw_Timesheet'[HoursperWeek])
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `Employee_WeeklyHours` in a data model, specifically from a table named `vw_Timesheet`. 
-
-Here's a breakdown of what it does:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `Employee_WeeklyHours` in a data model, specifically within a table named `vw_Timesheet`. Here's a breakdown of what it does in simple business terms:
 
 1. **Combining Information**: The code takes two pieces of information from the `vw_Timesheet` table:
    - The name of the employee (`EmployeeName`).
    - The number of hours that employee works per week (`HoursperWeek`).
 
 2. **Formatting the Output**: It combines these two pieces of information into a single string. The format of the output will be:
-   - The employee's name followed by " - " and then the number of hours they work per week.
+   - The employee's name followed by a hyphen and then the number of hours they work each week. For example, if the employee's name is "John Doe" and he works 40 hours a week, the output would be "John Doe - 40".
 
-3. **Example Output**: If an employee's name is "John Doe" and he works 40 hours per week, the resulting value in the `Employee_WeeklyHours` column would be:
-   - "John Doe - 40"
+3. **Purpose**: The purpose of this calculated column is to create a clear and concise representation of each employee's weekly working hours alongside their name. This can be useful for reporting, analysis, or simply for better readability in the data model.
 
-### Purpose:
-The purpose of this calculated column is to create a clear and concise representation of each employee's name along with their weekly working hours. This can be useful for reporting, analysis, or displaying information in dashboards, making it easier to understand how many hours each employee is scheduled to work at a glance.
+In summary, this DAX expression helps to create a user-friendly summary of each employee's name and their corresponding weekly hours worked, making it easier to understand and analyze employee work patterns.
 
 **`GroupCat`** (`string`)
 
@@ -802,24 +803,24 @@ IF(
 			    )
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'GroupCat' in a data model, likely related to project management or timesheet tracking. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'GroupCat' in a data model, likely related to project management or timesheet tracking. Here’s a breakdown of what it does in simple business terms:
 
-1. **Lookup for Group**: The code first checks if there is a corresponding 'Group' value in a lookup table (`lkp_Project`) for a specific project listed in the `vw_Timesheet` table. It does this using the `LOOKUPVALUE` function, which searches for the 'Group' based on the 'PROJECT' field.
+1. **Purpose**: The 'GroupCat' column categorizes projects based on whether they are linked to a specific group in a lookup table or if they are billable or unbillable.
 
-2. **Check for Blank Values**: The `NOT(ISBLANK(...))` part checks if the result of the lookup is not blank. This means it verifies whether a valid 'Group' was found for the project.
+2. **Lookup for Group**: 
+   - The code first checks if there is a corresponding group for the project listed in the `vw_Timesheet` table by looking it up in the `lkp_Project` table. 
+   - It uses the `LOOKUPVALUE` function to find the group associated with the project. If a group is found (i.e., it is not blank), it will return that group.
 
-3. **Return Group if Found**: If a valid 'Group' is found (i.e., the lookup is not blank), the code returns that 'Group' value.
+3. **Conditional Logic**:
+   - If a group is found (the result of the lookup is not blank), the 'GroupCat' column will take the value of that group.
+   - If no group is found (the result of the lookup is blank), it checks if the project is billable by looking at the `BillablePrj` column in the `vw_Timesheet` table.
+     - If `BillablePrj` equals 1 (indicating the project is billable), it assigns the category "Billable".
+     - If `BillablePrj` does not equal 1 (indicating the project is unbillable), it assigns the category "Other Unbillable".
 
-4. **Determine Billable Status**: If no 'Group' is found (the lookup is blank), the code then checks if the project is billable by looking at the `BillablePrj` field in the `vw_Timesheet` table. If `BillablePrj` equals 1, it indicates that the project is billable.
+4. **Outcome**: 
+   - The final result is that each project in the `vw_Timesheet` table will be categorized as either a specific group (if applicable), "Billable", or "Other Unbillable". This helps in understanding the nature of each project in terms of its billing status and group association.
 
-5. **Return Billable or Unbillable**: If the project is billable, the code returns the string "Billable". If it is not billable (i.e., `BillablePrj` is not 1), it returns "Other Unbillable".
-
-### Summary:
-In summary, this DAX expression categorizes each project in the `vw_Timesheet` table into one of three categories:
-- It assigns the project to a specific 'Group' if that information is available.
-- If no 'Group' is found, it checks if the project is billable and labels it as "Billable" or "Other Unbillable" accordingly. 
-
-This helps in organizing and analyzing projects based on their group affiliation and billing status, which is valuable for reporting and decision-making.
+In summary, this DAX expression effectively classifies projects into meaningful categories based on their group affiliation and billing status, which can be very useful for reporting and analysis in a business context.
 
 **`IsContractActive`** (`string`)
 
@@ -834,22 +835,18 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called **IsContractActive** in a data model, specifically for a table named **vw_Timesheet**. Here's a simple breakdown of what it does:
 
-1. **Purpose**: The calculated column determines whether a contract is currently active or not.
+1. **Checks Contract End Date**: The code first checks if the **ContractEndDate** for each record (or row) in the **vw_Timesheet** table is blank (meaning there is no end date specified) or if the end date is in the future (greater than today's date).
 
-2. **Logic**:
-   - The expression checks two conditions regarding the **ContractEndDate**:
-     - **ISBLANK('vw_Timesheet'[ContractEndDate])**: This checks if the **ContractEndDate** is blank (meaning there is no end date specified). If there is no end date, it implies that the contract is still ongoing.
-     - **'vw_Timesheet'[ContractEndDate] > TODAY()**: This checks if the **ContractEndDate** is greater than today's date. If the end date is in the future, it means the contract is still active.
+2. **Determines Contract Status**:
+   - If either of the above conditions is true (the contract has no end date or the end date is still ahead of today), it labels the contract as **"Active"**.
+   - If neither condition is true (meaning there is a specific end date that has already passed), it labels the contract as **"Not Active"**.
 
-3. **Output**:
-   - If either of the above conditions is true (the contract has no end date or the end date is in the future), the column will return **"Active"**.
-   - If neither condition is true (meaning there is an end date that has already passed), it will return **"Not Active"**.
-
-**In summary**, this calculated column helps users quickly identify whether a contract is currently active or has ended, based on the presence and value of the **ContractEndDate**.
+### In Summary:
+This calculated column helps to quickly identify whether a contract is currently active or not based on its end date. If a contract is still ongoing (either because it has no end date or it ends in the future), it is marked as "Active"; otherwise, it is marked as "Not Active". This can be useful for tracking contract statuses in a business context.
 
 **`MAIN_UNIT`** (`string`)
 
-- **Description:** The 'MAIN_UNIT' column in the 'vw_Timesheet' table identifies the primary organizational unit responsible for the recorded time entries, facilitating effective resource allocation and reporting.
+- **Description:** The 'MAIN_UNIT' column in the 'vw_Timesheet' table identifies the primary organizational unit responsible for the recorded timesheet entries, facilitating effective resource allocation and reporting.
 - **DAX Expression:**
 ```dax
 IF(
@@ -860,18 +857,20 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'MAIN_UNIT'. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the 'lkp_Unit' table for the current row. Specifically, it looks for the 'Unit' field in that related table.
+1. **Check for Related Data**: The code uses the `RELATED` function to look up a value from another table called `lkp_Unit`. Specifically, it tries to find the value in the column `Unit` that is related to the current row of the table where this calculated column is being created.
 
-2. **Handle Missing Data**: If the related 'Unit' value is blank (meaning there is no corresponding entry in the 'lkp_Unit' table), the code will return the text "Unknown". This is a way to handle situations where the expected data is missing, ensuring that the result is clear and understandable.
+2. **Handle Missing Data**: The `ISBLANK` function checks if the value retrieved from the `lkp_Unit[Unit]` column is blank (i.e., there is no related unit found). 
 
-3. **Return the Unit Name**: If there is a valid related 'Unit' value (i.e., it is not blank), the code will return that value. This means that the calculated column will show the actual unit name associated with the current row.
+3. **Return Values Based on the Check**:
+   - If the value is blank (meaning there is no related unit), the code returns the string "Unknown". This indicates that the system could not find a corresponding unit for that particular row.
+   - If the value is not blank (meaning a related unit was found), it returns the actual unit name from the `lkp_Unit[Unit]` column.
 
 ### Summary:
-In summary, this DAX expression is designed to populate the 'MAIN_UNIT' column with either the name of the unit from the related table or "Unknown" if no unit is found. This helps maintain clarity in the data by ensuring that every row has a meaningful value, even when some data might be missing.
+In summary, this DAX expression is designed to populate the 'MAIN_UNIT' column with the name of a unit from a related table. If no unit is found, it will label that entry as "Unknown". This helps ensure that every row has a clear indication of its unit, either by showing the actual unit name or by marking it as unknown when no unit is available.
 
 **`MonthNumber`** (`string`)
 
-- **Description:** The 'MonthNumber' column (string) in the 'vw_Timesheet' table represents the numerical designation of the month (e.g., "01" for January, "02" for February) associated with each timesheet entry, facilitating time-based analysis and reporting.
+- **Description:** The 'MonthNumber' column (string) in the 'vw_Timesheet' table represents the numerical designation of the month (e.g., "01" for January, "02" for February) to facilitate time-based reporting and analysis of timesheet data.
 - **DAX Expression:**
 ```dax
 MONTH([TimesheetDate])
@@ -884,52 +883,58 @@ MONTH([TimesheetDate])
   - 1 represents January,
   - 2 represents February,
   - 3 represents March,
-  - and so on, up to 12 for December.
+  - and so on, up to
+  - 12, which represents December.
 
-### Business Context:
-- **Simplifies Analysis**: By converting dates into month numbers, it allows for easier grouping and analysis of data by month. For example, you can quickly summarize timesheet data to see how many hours were logged in each month.
-- **Facilitates Reporting**: This calculated column can be used in reports and dashboards to visualize trends over time, such as monthly performance or workload.
+### Business Purpose:
+- **Simplifies Analysis**: By converting dates into month numbers, it makes it easier to analyze data by month. For example, you can quickly summarize or visualize timesheet data by month.
+- **Facilitates Reporting**: This calculated column can be used in reports to group or filter data based on the month, helping businesses track performance or trends over time.
 
-In summary, this DAX expression helps businesses analyze and report on their data by breaking down dates into a more manageable format—specifically, the month number.
+In summary, this DAX expression helps in breaking down dates into a more manageable format (month numbers), which is useful for reporting and analysis purposes.
 
 **`NR_EMP_COLUMN`** (`string`)
 
-- **Description:** The 'NR_EMP_COLUMN' stores the employee identification numbers as strings, facilitating the association of timesheet entries with specific employees in the 'vw_Timesheet' table.
+- **Description:** The 'NR_EMP_COLUMN' stores the employee identification numbers as strings, facilitating the association of timesheet entries with specific employees in the vw_Timesheet view.
 - **DAX Expression:**
 ```dax
 DISTINCTCOUNT(vw_Timesheet[EmployeeName])
 ```
 - **DAX Explanation (Generated):** The DAX expression `DISTINCTCOUNT(vw_Timesheet[EmployeeName])` is used to calculate the number of unique employees listed in the `EmployeeName` column of the `vw_Timesheet` table.
 
-### What It Achieves:
-- **Count of Unique Employees**: This expression counts how many different employees have entries in the timesheet. For example, if there are multiple entries for the same employee, they will only be counted once.
-- **Data Analysis**: This is useful for understanding workforce participation, tracking how many distinct employees are working during a specific period, or analyzing employee engagement in projects.
+### What it Achieves:
 
-### In Simple Terms:
-Imagine you have a list of employees who worked on various projects, and some employees worked on multiple projects. This DAX expression helps you find out how many individual employees contributed, regardless of how many times they appear in the list. It gives you a clear picture of the workforce involved.
+1. **Counts Unique Employees**: This expression counts how many different employees are present in the `EmployeeName` column. For example, if the column has the names "Alice", "Bob", "Alice", and "Charlie", the result would be 3, because there are three unique names.
+
+2. **Useful for Reporting**: This calculation is particularly useful in business reporting and analysis. It helps organizations understand how many distinct employees are contributing to a project, working in a department, or logged hours in a timesheet.
+
+3. **Avoids Duplicates**: By using `DISTINCTCOUNT`, the expression ensures that each employee is only counted once, regardless of how many times their name appears in the timesheet. This is important for accurate reporting and analysis.
+
+In summary, this DAX expression provides a clear count of how many different employees are recorded in the timesheet, which can be valuable for workforce analysis and resource management.
 
 **`Own-Sub-ExtT`** (`string`)
 
-- **Description:** The 'Own-Sub-ExtT' column in the 'vw_Timesheet' table categorizes the type of time entry as either owned, subcontracted, or external, facilitating accurate tracking and reporting of resource allocation.
+- **Description:** The 'Own-Sub-ExtT' column in the 'vw_Timesheet' table captures the classification of time entries as either owned, subcontracted, or external, facilitating accurate tracking and reporting of resource allocation.
 - **DAX Expression:**
 ```dax
 RELATED(lkp_Unit[OWN-Sub-ExtT])
 ```
 - **DAX Explanation (Generated):** The DAX expression `RELATED(lkp_Unit[OWN-Sub-ExtT])` is used in a calculated column to retrieve a specific value from a related table. Here’s a breakdown of what it does in simple business terms:
 
-1. **Context of Use**: This expression is typically used in a data model where there are two tables that have a relationship. For example, you might have a main table (let's call it "Sales") and a lookup table (let's call it "lkp_Unit").
+1. **Context**: This expression is typically used in a table that has a relationship with another table called `lkp_Unit`. The relationship is established based on a common key or identifier.
 
-2. **Purpose of the Expression**: The `RELATED` function is designed to fetch a value from a related table based on the current row context of the main table. In this case, it is looking for the value in the column `OWN-Sub-ExtT` from the `lkp_Unit` table.
+2. **Purpose**: The expression aims to fetch the value from the `OWN-Sub-ExtT` column in the `lkp_Unit` table for each row in the current table where the expression is being evaluated.
 
-3. **What It Achieves**: By using this expression, the calculated column will populate each row in the main table (e.g., "Sales") with the corresponding value from the `OWN-Sub-ExtT` column in the `lkp_Unit` table. This is useful for enriching the main table with additional information that is stored in the related table.
+3. **How It Works**: 
+   - When you use `RELATED`, DAX looks for the corresponding row in the `lkp_Unit` table that matches the current row based on the established relationship.
+   - It then retrieves the value from the `OWN-Sub-ExtT` column of that matched row.
 
-4. **Example Scenario**: Imagine you have a sales record that includes a unit identifier. The `lkp_Unit` table contains detailed information about each unit, including a column called `OWN-Sub-ExtT` that categorizes the unit in a specific way (like ownership type or external classification). By using this DAX expression, each sales record can automatically include this categorization, making it easier to analyze sales data based on unit characteristics.
+4. **Outcome**: The result is that each row in the current table will have a new column (the calculated column) that contains the value from `lkp_Unit[OWN-Sub-ExtT]`. This allows you to enrich your data with additional information from the related table, which can be useful for analysis and reporting.
 
-In summary, this DAX expression enhances the main table by pulling in relevant data from a related table, allowing for more comprehensive analysis and reporting.
+In summary, this DAX expression enhances your data model by linking information from the `lkp_Unit` table to the current table, providing valuable insights based on the `OWN-Sub-ExtT` values.
 
 **`QualifyPrj`** (`string`)
 
-- **Description:** The 'QualifyPrj' column contains string values that categorize or specify the qualification status of projects associated with each timesheet entry, aiding in project management and resource allocation.
+- **Description:** The 'QualifyPrj' column contains string values that categorize or qualify the projects associated with each timesheet entry, providing essential context for project-related time tracking and analysis.
 - **DAX Expression:**
 ```dax
 IF(
@@ -940,26 +945,24 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named 'QualifyPrj'. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The calculated column 'QualifyPrj' is designed to determine a qualification status for a project based on related data from another table called 'lkp_Project'.
+1. **Purpose**: The calculated column 'QualifyPrj' is designed to determine a qualification status for projects based on related data from another table called 'lkp_Project'.
 
 2. **Logic**:
-   - The expression first checks if the 'Qualify' field from the related 'lkp_Project' table is blank (i.e., it has no value).
-   - If the 'Qualify' field is blank, the calculated column will return a value of **1**. This could signify a default or a specific status indicating that the project does not have a qualification assigned.
+   - The code checks if the 'Qualify' field from the 'lkp_Project' table is blank (i.e., it has no value).
+   - If the 'Qualify' field is blank, the calculated column will return a value of **1**. This could indicate a default or a specific status, such as "not qualified" or "unknown".
    - If the 'Qualify' field is not blank (meaning it has a value), the calculated column will return the actual value from the 'Qualify' field in the 'lkp_Project' table.
 
-3. **Outcome**: 
-   - The result of this calculation is that for each row in the table where this calculated column is being created, you will either get a **1** (if there is no qualification) or the specific qualification value from the related project (if it exists).
-   - This helps in easily identifying projects that are either unqualified or have a specific qualification status, which can be useful for reporting or analysis purposes.
+3. **Outcome**: The result is that for each row in the table where this calculated column is created, you will either get a default value of 1 (if there is no qualification information available) or the specific qualification value from the related 'lkp_Project' table. This helps in easily identifying projects that have a qualification status and those that do not.
 
-In summary, the 'QualifyPrj' column provides a straightforward way to assess the qualification status of projects by either assigning a default value or pulling in existing qualification data from a related table.
+In summary, this DAX expression helps to ensure that every project has a qualification status, either by providing a default value when no information is available or by pulling in the relevant qualification data when it exists.
 
 **`ReportingEntity`** (`string`)
 
-- **Description:** The 'ReportingEntity' column identifies the organization or department responsible for submitting the timesheet entries, facilitating accurate tracking and reporting of labor hours.
+- **Description:** The 'ReportingEntity' column identifies the organization or department responsible for submitting the timesheet data, facilitating accurate tracking and reporting of labor hours.
 
 **`RReady_With_V_Z`** (`string`)
 
-- **Description:** The 'RReady_With_V_Z' column indicates the readiness status of resources, formatted as a string, within the context of timesheet data for project management and resource allocation.
+- **Description:** The 'RReady_With_V_Z' column indicates the readiness status of timesheet entries, specifically reflecting whether they have been processed with version Z enhancements.
 - **DAX Expression:**
 ```dax
 IF(
@@ -971,19 +974,19 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `RReady_With_V_Z`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The calculated column is designed to determine whether a certain condition is met for each row in the data. It outputs either a 1 or a 0 based on this condition.
+1. **Purpose**: The calculated column determines whether a certain condition is met for each row in the dataset. It outputs either a 1 (true) or a 0 (false) based on specific criteria.
 
 2. **Conditions Checked**:
-   - The first condition checks if the value of the column `[ReportReady]` is `TRUE`. This means that if the report is ready, the condition is satisfied.
-   - The second condition checks if the value in the column `vw_Timesheet[TimesheetCode]` is either "V" or "Z". This means that if the timesheet code is one of these two specific codes, the condition is also satisfied.
+   - The first condition checks if the column `[ReportReady]` is marked as `TRUE()`. This likely indicates that a report is ready for processing or has been completed.
+   - The second condition checks if the value in the column `vw_Timesheet[TimesheetCode]` is either "V" or "Z". These codes probably represent specific types of timesheets or statuses that are relevant to the business.
 
 3. **Output**:
-   - If either of the conditions is true (i.e., the report is ready or the timesheet code is "V" or "Z"), the calculated column will return a value of `1`.
-   - If neither condition is met, it will return a value of `0`.
+   - If either of the conditions is true (meaning the report is ready or the timesheet code is "V" or "Z"), the calculated column will return a value of **1**.
+   - If neither condition is met, it will return a value of **0**.
 
-4. **Business Implication**: This calculated column can be used to quickly identify rows where either the report is ready or the timesheet code is relevant (specifically "V" or "Z"). This can help in filtering or analyzing data based on readiness or specific timesheet codes, making it easier for decision-makers to focus on important entries.
+4. **Business Implication**: This calculated column can be used to easily identify rows that are either ready for reporting or belong to specific categories (V or Z). This can help in filtering, analyzing, or aggregating data based on readiness or specific timesheet types, making it easier for decision-makers to focus on relevant entries. 
 
-In summary, `RReady_With_V_Z` flags rows with a `1` if the report is ready or if the timesheet code is "V" or "Z", and a `0` otherwise.
+In summary, `RReady_With_V_Z` helps flag important records in the dataset based on readiness and specific timesheet codes, facilitating better data analysis and reporting.
 
 ##### Measures
 
@@ -997,16 +1000,16 @@ IF(
 			    "Not Active"
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure called `ContractStatus2`. Here's a simple explanation of what it does:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure called `ContractStatus2`. Here's a breakdown of what it does in simple business terms:
 
-1. **Condition Check**: The measure first checks the value of another measure called `[ContractStatusMeasure]`. It looks to see if this value is equal to "Active".
+1. **Condition Check**: The measure first checks the value of another measure called `ContractStatusMeasure`. It specifically looks to see if this measure equals "Active".
 
 2. **Return Value Based on Condition**:
-   - If the condition is true (meaning the contract status is "Active"), the measure returns the value of another measure called `[HoursDifference]`. This likely represents the difference in hours related to the contract, such as time worked or time remaining.
-   - If the condition is false (meaning the contract status is not "Active"), the measure returns the text "Not Active".
+   - If `ContractStatusMeasure` is "Active", the measure will return the value of another measure called `HoursDifference`. This likely represents the difference in hours related to the contract, such as the number of hours worked or remaining hours on a contract.
+   - If `ContractStatusMeasure` is not "Active", the measure will return the text "Not Active".
 
 ### Summary:
-In summary, `ContractStatus2` is designed to provide information about the status of a contract. If the contract is active, it shows the hours difference; if not, it simply indicates that the contract is not active. This helps users quickly understand the status of contracts and the associated hours.
+In essence, `ContractStatus2` is used to determine the status of a contract. If the contract is currently active, it provides a numerical value (the hours difference). If the contract is not active, it simply indicates that by returning the text "Not Active". This measure helps users quickly understand the status of contracts and the associated hours, facilitating better decision-making and reporting.
 
 **`ContractStatusMeasure`**
 
@@ -1023,15 +1026,16 @@ IF(
 1. **Purpose**: This measure is designed to determine the status of a contract based on its end date.
 
 2. **Logic**:
-   - The measure first checks if the maximum value of the `ContractEndDate` from the `vw_Timesheet` table is blank (meaning there is no end date recorded) or if that date is greater than today’s date.
-   - If either of these conditions is true (i.e., there is no end date or the end date is still in the future), the measure will return the status "Active".
-   - If neither condition is true (meaning the end date is in the past), it will return the status "Not Active".
+   - The measure first checks if the maximum value of the `ContractEndDate` from the `vw_Timesheet` table is blank (meaning there is no end date recorded) or if that date is greater than today's date.
+   - If either of these conditions is true, it means the contract is still active (either it has no end date or it ends in the future).
+   - If neither condition is true (meaning the contract has an end date that is in the past), it indicates that the contract is not active.
 
-3. **Outcome**: 
-   - This measure helps users quickly identify whether a contract is currently active or has ended. 
-   - It provides a simple "Active" or "Not Active" label based on the contract's end date, which can be useful for reporting and decision-making regarding contract management.
+3. **Output**:
+   - If the contract is active, the measure returns the text "Active".
+   - If the contract is not active, it returns the text "Not Active".
 
-In summary, `ContractStatusMeasure` effectively categorizes contracts as either "Active" or "Not Active" based on their end dates, helping businesses keep track of their contractual obligations.
+### Summary
+In summary, `ContractStatusMeasure` helps businesses quickly identify whether contracts are currently active or not based on their end dates. This can be useful for managing contracts, ensuring compliance, and making informed decisions about contract renewals or terminations.
 
 **`CurrentWeekCard`**
 
@@ -1039,19 +1043,18 @@ In summary, `ContractStatusMeasure` effectively categorizes contracts as either 
 ```dax
 WEEKNUM(TODAY())
 ```
-- **DAX Explanation (Generated):** The DAX expression `WEEKNUM(TODAY())` is used to calculate the current week number of the year based on today's date.
+- **DAX Explanation (Generated):** The DAX expression `WEEKNUM(TODAY())` is used to determine the current week number of the year based on today's date.
 
 Here's a breakdown of what it does:
 
 1. **TODAY()**: This function retrieves the current date. For example, if today is October 10, 2023, this function will return that date.
 
-2. **WEEKNUM()**: This function takes a date as input and returns the week number of that date within the year. The week number is typically calculated starting from the first week of the year. 
+2. **WEEKNUM()**: This function takes a date as input and calculates which week of the year that date falls into. The week number is typically calculated starting from January 1st, with the first week of the year being the week that contains January 1st.
 
-So, when you combine these two functions, `WEEKNUM(TODAY())` effectively tells you which week of the year it is right now. 
+So, when you combine these two functions, `WEEKNUM(TODAY())` calculates the week number for the current date. 
 
-For example, if today is October 10, 2023, and it falls in the 41st week of the year, this expression will return the number 41. 
-
-In business terms, this measure can be useful for reporting and analysis purposes, such as tracking weekly performance, sales, or any other metrics that are evaluated on a weekly basis. It helps organizations understand where they stand in the current week of the year.
+### Business Implication:
+In practical terms, this measure can be used in reports or dashboards to identify which week of the year it currently is. This can be particularly useful for businesses that track performance, sales, or other metrics on a weekly basis. By knowing the current week number, teams can align their activities, analyze trends, and make timely decisions based on weekly performance data.
 
 **`Dax_EmpCount_Approved`**
 
@@ -1069,11 +1072,11 @@ CALCULATE(
 2. **Components**:
    - **`CALCULATE`**: This function changes the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
    - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. It ensures that each employee is only counted once, even if they have multiple entries.
-   - **`vw_Timesheet[Approved] = FALSE()`**: This condition filters the data to include only those timesheet entries where the `Approved` status is set to `FALSE`. In other words, it focuses on timesheets that have not been approved.
+   - **`vw_Timesheet[Approved] = FALSE()`**: This condition filters the data to include only those timesheet entries where the `Approved` status is set to FALSE. In other words, it focuses on timesheets that have not been approved.
 
-3. **Outcome**: The measure ultimately provides a count of distinct employees who have submitted timesheets that are still pending approval. This information can be useful for management to understand how many employees are waiting for their timesheets to be reviewed and approved.
+3. **Outcome**: The measure ultimately provides a count of how many distinct employees have submitted timesheets that are still pending approval. This information can be useful for tracking outstanding approvals and managing workflow within the organization.
 
-In summary, `Dax_EmpCount_Approved` helps track the number of unique employees with unapproved timesheets, aiding in monitoring and managing the approval process.
+In summary, `Dax_EmpCount_Approved` helps businesses understand how many employees are waiting for their timesheets to be approved, which can aid in resource management and operational efficiency.
 
 **`Dax_EmpCount_RReady`**
 
@@ -1084,18 +1087,18 @@ CALCULATE(
 			    vw_Timesheet[ReportReady] = FALSE()
 			)
 ```
-- **DAX Explanation (Generated):** The DAX expression you've provided is used to create a measure called `Dax_EmpCount_RReady`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `Dax_EmpCount_RReady`. Here's a breakdown of what it does in simple business terms:
 
 1. **Purpose**: This measure calculates the number of unique employees whose timesheets are not marked as "Report Ready."
 
 2. **Components**:
-   - **`CALCULATE`**: This function changes the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
-   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. It ensures that each employee is only counted once, even if they have multiple entries in the timesheet.
-   - **`vw_Timesheet[ReportReady] = FALSE()`**: This filter condition specifies that we only want to consider timesheet entries where the `ReportReady` status is set to FALSE. In other words, it filters out any entries that are marked as ready for reporting.
+   - **`CALCULATE`**: This function changes the context in which data is evaluated. It allows us to apply filters to the data before performing calculations.
+   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. Essentially, it tells us how many different employees are present in the data.
+   - **`vw_Timesheet[ReportReady] = FALSE()`**: This condition filters the data to include only those timesheets where the `ReportReady` field is set to FALSE. In other words, it focuses on timesheets that are not ready for reporting.
 
-3. **Outcome**: The final result of this measure is the total number of distinct employees who have timesheet entries that are not ready for reporting. This can help a business identify how many employees still need to complete or finalize their timesheets before they can be reported.
+3. **What It Achieves**: The overall result of this measure is to provide a count of distinct employees who have timesheets that are still pending or not ready for reporting. This can be useful for management to understand how many employees still need to finalize their timesheets before reports can be generated.
 
-In summary, `Dax_EmpCount_RReady` provides valuable insight into the number of employees who have pending timesheet submissions, helping management track and encourage timely reporting.
+In summary, `Dax_EmpCount_RReady` helps businesses track how many employees have not yet completed their timesheets, which is important for ensuring timely reporting and payroll processing.
 
 **`DISTINCT_COUNT_EMP`**
 
@@ -1107,15 +1110,17 @@ DISTINCTCOUNT(vw_Timesheet[EmployeeName])
 
 ### Breakdown of the Expression:
 
-- **DISTINCTCOUNT**: This function counts the number of unique values in a specified column. In this case, it is counting unique entries.
+- **DISTINCTCOUNT**: This function counts the number of distinct (unique) values in a specified column. In this case, it is counting unique entries.
   
 - **vw_Timesheet[EmployeeName]**: This specifies the column from which the unique values are being counted. Here, it refers to the `EmployeeName` column in the `vw_Timesheet` table.
 
 ### What It Achieves:
 
-In simple business terms, this measure provides the total number of different employees who have submitted timesheets. It helps organizations understand how many distinct employees are actively logging their work hours, which can be useful for workforce analysis, payroll processing, and resource management. 
+In simple terms, this measure calculates how many different employees have logged time in the timesheet. For example, if there are entries for "Alice", "Bob", and "Alice" again, the result of this measure would be 2, because there are two unique names (Alice and Bob).
 
-For example, if the result of this measure is 50, it means that there are 50 different employees who have filled out timesheets, regardless of how many times each employee has submitted their hours.
+### Business Context:
+
+This measure is useful for understanding workforce participation or engagement. It helps businesses track how many individual employees are contributing to projects or tasks over a specific period, which can be important for resource management, payroll, and performance analysis.
 
 **`HoursDifference`**
 
@@ -1131,18 +1136,16 @@ For example, if the result of this measure is 50, it means that there are 50 dif
 ```dax
 SUM(vw_Timesheet[SalesAmount])/SUM(vw_Timesheet[Hours])
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the average hourly rate for sales based on timesheet data. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX expression you provided calculates the average hourly rate for a given dataset, specifically from a table called `vw_Timesheet`. Here’s a breakdown of what it does in simple business terms:
 
-1. **Data Source**: The calculation uses a table called `vw_Timesheet`, which likely contains records of sales and the hours worked by employees.
+1. **SUM(vw_Timesheet[SalesAmount])**: This part of the expression adds up all the sales amounts recorded in the `SalesAmount` column of the `vw_Timesheet` table. Essentially, it totals the revenue generated from sales.
 
-2. **Sales Amount**: The expression `SUM(vw_Timesheet[SalesAmount])` adds up all the sales amounts recorded in the `SalesAmount` column of the `vw_Timesheet` table. This gives the total sales generated over a specific period.
+2. **SUM(vw_Timesheet[Hours])**: This part sums up all the hours worked, as recorded in the `Hours` column of the same table. It gives the total number of hours that have been logged.
 
-3. **Hours Worked**: The expression `SUM(vw_Timesheet[Hours])` adds up all the hours worked recorded in the `Hours` column of the same table. This provides the total number of hours worked during that same period.
+3. **Division**: The expression then divides the total sales amount by the total hours worked. This calculation gives you the average hourly rate, which represents how much revenue is generated for each hour worked.
 
-4. **Average Hourly Rate Calculation**: The entire expression divides the total sales amount by the total hours worked. This means it calculates how much revenue was generated for each hour worked, which is the average hourly rate.
-
-### Summary:
-In summary, this DAX measure calculates the average hourly rate of sales by taking the total sales generated and dividing it by the total hours worked. This helps businesses understand how effectively their time is being converted into sales revenue.
+### In Summary:
+The measure `MSR_AVG_HOURLY_RATE` calculates the average revenue earned per hour worked by taking the total sales and dividing it by the total hours. This metric is useful for understanding productivity and profitability on an hourly basis, helping businesses assess how effectively they are generating revenue relative to the time invested.
 
 **`Msr_Budget`**
 
@@ -1164,23 +1167,23 @@ VAR CurrentWeek = SELECTEDVALUE(DimDate[WeekNumberOfYear])
 			        PrevBudget
 			    )
 ```
-- **DAX Explanation (Generated):** This DAX code snippet defines a measure called `Msr_Budget`, which is used to calculate a budget value based on sales data over time, specifically focusing on weekly performance. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet defines a measure called `Msr_Budget`, which is used to calculate a budget figure based on sales data and the week of the year. Here’s a breakdown of what it does in simple business terms:
 
 1. **Identify the Current Week**: 
-   - The measure starts by determining the current week number of the year using the `SELECTEDVALUE` function. This means it looks at the context in which the measure is being evaluated (like a report or dashboard) to find out which week is currently selected.
+   - The measure starts by determining the current week number of the year using `SELECTEDVALUE(DimDate[WeekNumberOfYear])`. This means it looks at the date context in which the measure is being evaluated and identifies which week it is.
 
 2. **Calculate Previous Budget**:
-   - Next, it calculates a value called `PrevBudget`. This is done using the `CALCULATE` function, which modifies the context of the calculation. 
-   - It uses the measure `[Msr_SalesPriceBaseCurrency]`, which presumably represents some form of sales or revenue in a base currency.
-   - The `FILTER` function is applied to the `DimDate` table to include only those weeks that are earlier than the current week. The `ALLSELECTED` function ensures that any filters applied to the date dimension are respected, but it still allows for the calculation of previous weeks.
+   - Next, it calculates a value called `PrevBudget`. This is done using the `CALCULATE` function, which modifies the context in which a measure is evaluated. 
+   - Inside `CALCULATE`, it uses the measure `[Msr_SalesPriceBaseCurrency]`, which presumably represents some sales figure in the base currency.
+   - The `FILTER` function is applied to the `DimDate` table to include only those weeks that are less than the current week. This means it sums up the sales figures for all previous weeks.
 
 3. **Return the Appropriate Value**:
    - Finally, the measure uses an `IF` statement to decide what to return:
-     - If the current sales measure `[Msr_SalesPriceBaseCurrency]` is not blank (meaning there is actual sales data for the current week), it returns that current sales value.
-     - If the current sales measure is blank (indicating no sales data for the current week), it returns the previously calculated budget value (`PrevBudget`).
+     - If the current sales figure (`[Msr_SalesPriceBaseCurrency]`) is not blank (meaning there is actual sales data for the current week), it returns that current sales figure.
+     - If the current sales figure is blank (indicating no sales data for the current week), it returns the previously calculated budget (`PrevBudget`).
 
 ### Summary:
-In summary, this measure calculates the budget for the current week based on sales data. If there are sales figures available for the current week, it uses those figures. If not, it falls back to the budget from previous weeks. This approach helps businesses understand their current performance against historical data, allowing for better decision-making and forecasting.
+In summary, this measure calculates the budget for the current week based on sales data. If there are sales figures available for the current week, it uses those figures. If not, it falls back to the total sales from all previous weeks, effectively providing a way to estimate the budget when current data is missing. This helps businesses understand their performance against budget expectations, even in the absence of current week sales data.
 
 **`MSR_Cumulative Cost`**
 
@@ -1196,19 +1199,19 @@ VAR SelectedMonth = MAX('DimDate'[MonthNumberOfYear])  -- Get the selected month
 			    )
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a cumulative cost measure, specifically named 'MSR_Cumulative Cost'. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a measure called 'MSR_Cumulative Cost', which provides the cumulative cost up to a selected month in a report or dashboard. Here’s a breakdown of what it does in simple business terms:
 
-1. **Identify the Current Month**: The code starts by determining the month that is currently selected in the visual (like a chart or table). It does this by finding the maximum value of the 'MonthNumberOfYear' from the 'DimDate' table. This means if you are looking at data for March, the `SelectedMonth` would be 3.
+1. **Identify the Selected Month**: The code starts by determining which month is currently selected in the visual (like a chart or table). It uses the `MAX` function to find the highest month number from the 'DimDate' table, which represents the month currently being viewed.
 
 2. **Calculate Cumulative Cost**: The main goal of this measure is to calculate the total cost incurred up to and including the selected month. 
 
-3. **Summing Costs**: The `CALCULATE` function is used to change the context in which the data is evaluated. It sums up the 'CostAmount' from the 'vw_Timesheet' table.
+3. **Sum the Costs**: The `SUM` function is used to add up all the costs from the 'vw_Timesheet' table, specifically the 'CostAmount' column.
 
-4. **Filtering the Data**: The `FILTER` function is applied to ensure that only the months that are less than or equal to the `SelectedMonth` are included in the calculation. The `ALLSELECTED` function allows the measure to respect any filters that might be applied in the report, ensuring that it only considers the relevant months based on user selections.
+4. **Filter the Data**: The `FILTER` function is applied to ensure that only the months up to and including the selected month are considered in the calculation. The `ALLSELECTED` function is used to maintain any other filters that might be applied to the 'DimDate' table, ensuring that the calculation respects the context of the report.
 
-5. **Final Outcome**: The result of this measure is the total cost from the beginning of the year up to the selected month. For example, if the selected month is March, it will sum the costs for January, February, and March.
+5. **Final Result**: The result of this measure is the total cost accumulated from the beginning of the year (or the relevant time period) up to the selected month. This allows users to see how costs have built up over time, providing valuable insights for budgeting and financial analysis.
 
-In summary, this DAX measure calculates the total costs accumulated from the start of the year up to the month currently selected in the report, allowing users to see how costs have built up over time.
+In summary, this DAX measure helps businesses track their cumulative costs over time, allowing for better financial planning and decision-making based on historical data.
 
 **`MSR_Cumulative Sales`**
 
@@ -1226,19 +1229,18 @@ VAR SelectedMonth = MAX('DimDate'[MonthNumberOfYear])  -- Get the selected month
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the cumulative sales amount up to a selected month in a report or dashboard. Here’s a breakdown of what it does in simple business terms:
 
-1. **Identify the Selected Month**: 
-   - The code starts by determining which month is currently selected in the visual (like a chart or table). It uses `MAX('DimDate'[MonthNumberOfYear])` to find the highest month number that has been selected. For example, if the user has selected data up to March, `SelectedMonth` will be 3.
+1. **Identify the Selected Month**: The code starts by determining which month is currently selected in the visual (like a chart or table). It does this by finding the maximum value of the `MonthNumberOfYear` from the `DimDate` table. This means if you are looking at data for March, the `SelectedMonth` would be 3.
 
-2. **Calculate Cumulative Sales**:
-   - The `CALCULATE` function is then used to compute the total sales amount (`SUM(vw_Timesheet[SalesAmount])`). This means it will sum up all the sales figures from the `vw_Timesheet` table.
+2. **Calculate Cumulative Sales**: The main goal of this measure is to calculate the total sales amount from the beginning of the year up to and including the selected month. 
 
-3. **Filter for Relevant Months**:
-   - The `FILTER` function is applied to ensure that only the sales from the months that are less than or equal to the selected month are included in the calculation. The `ALLSELECTED('DimDate')` part ensures that the filter respects any other selections made in the report, such as year or other date filters.
+3. **Use of CALCULATE and FILTER**: 
+   - The `CALCULATE` function is used to change the context in which the data is evaluated. In this case, it’s summing up the `SalesAmount` from the `vw_Timesheet` table.
+   - The `FILTER` function is applied to the `DimDate` table to include all months that are less than or equal to the `SelectedMonth`. This means if March is selected, it will include sales from January, February, and March.
 
-4. **Final Result**:
-   - The result of this measure is the total sales amount for all months up to and including the selected month. For instance, if the selected month is March, it will sum the sales from January, February, and March.
+4. **ALLSELECTED Function**: The `ALLSELECTED` function ensures that any filters applied to the `DimDate` table (like year or other slicers) are respected while still allowing the measure to consider all months up to the selected month.
 
-In summary, this DAX measure calculates the total sales accumulated from the beginning of the year up to the month that the user has selected, allowing for a clear view of sales performance over time.
+### Summary:
+In summary, this DAX measure calculates the total sales from the start of the year up to the month that the user has selected in the visual. This allows users to see how sales have accumulated over time, providing valuable insights into sales performance for the selected period.
 
 **`MSR_Cumulative_Revenue`**
 
@@ -1255,20 +1257,23 @@ VAR TotalValue =
 			RETURN 
 			    DIVIDE(SUM(vw_Timesheet[Hours]), TotalValue, 0)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the percentage of hours worked by a specific group, project, or employee compared to the total hours worked across all selected categories. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet defines a measure called `Msr_HoursPercentage`, which calculates the percentage of hours worked by a specific group, project, or employee relative to the total hours worked across all selected categories.
 
-1. **TotalValue Calculation**:
-   - The first part of the code, defined by the variable `TotalValue`, calculates the total number of hours worked. 
-   - It uses the `CALCULATE` function to sum up the hours from the `vw_Timesheet` table.
-   - The `ALLSELECTED` function ensures that this total is based on the current selections made in the report for the categories of Group, Project, and Employee. This means it respects any filters applied by the user but ignores any filters specifically on the `GroupCat`, `Project`, and `EmployeeName` fields.
+Here's a breakdown of what it does in simple business terms:
 
-2. **Percentage Calculation**:
-   - The `RETURN` statement then calculates the percentage of hours worked for the current context (which could be a specific group, project, or employee).
-   - It does this by taking the sum of hours for the current context (using `SUM(vw_Timesheet[Hours])`) and dividing it by the `TotalValue` calculated earlier.
-   - The `DIVIDE` function is used for this division, which is a safe way to handle division in DAX. If the `TotalValue` is zero (meaning no hours were recorded), it will return 0 instead of causing an error.
+1. **Calculate Total Hours**: 
+   - The variable `TotalValue` is created to hold the total number of hours worked. This is done using the `CALCULATE` function, which sums up the hours from the `vw_Timesheet` table.
+   - The `ALLSELECTED` function is used to ensure that the total hours are calculated based on the current selections in the report, but it ignores any filters applied specifically to the `GroupCat`, `Project`, or `EmployeeName` fields. This means it considers all relevant data while still respecting other filters that might be applied.
+
+2. **Calculate Individual Hours**: 
+   - The measure then sums up the hours for the current context (which could be a specific group, project, or employee).
+
+3. **Calculate Percentage**: 
+   - Finally, the `DIVIDE` function is used to calculate the percentage of hours worked by the current context (the sum of hours for the selected group, project, or employee) compared to the total hours calculated in `TotalValue`.
+   - If the total value is zero (to avoid division by zero), it returns 0 instead of an error.
 
 ### Summary:
-In summary, this measure calculates what percentage of the total hours worked (based on the user's current selections) is represented by the hours worked in the current context (like a specific employee or project). This helps in understanding how much of the total effort is contributed by a particular segment, making it easier to analyze performance and resource allocation.
+In summary, `Msr_HoursPercentage` calculates what percentage of the total hours worked (across all selected categories) is attributed to the specific group, project, or employee currently being analyzed. This helps in understanding how much of the total effort is coming from a particular segment, which can be useful for performance analysis and resource allocation.
 
 **`MSR_ProjectMargin`**
 
@@ -1276,16 +1281,15 @@ In summary, this measure calculates what percentage of the total hours worked (b
 ```dax
 sum(vw_Timesheet[SalesAmount]) - sum(vw_Timesheet[CostAmount])
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the project margin for a specific measure called 'MSR_ProjectMargin'. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the project margin for a specific measure called `MSR_ProjectMargin`. Here's a breakdown of what it does in simple business terms:
 
-1. **Sales Amount**: The expression starts by summing up all the values in the `SalesAmount` column from the `vw_Timesheet` table. This represents the total revenue generated from projects.
+1. **Sales Amount**: The expression starts by summing up the total sales amount from a table called `vw_Timesheet`. This represents the total revenue generated from projects or services.
 
-2. **Cost Amount**: Next, it sums up all the values in the `CostAmount` column from the same table. This represents the total costs incurred for those projects.
+2. **Cost Amount**: Next, it sums up the total cost amount from the same `vw_Timesheet` table. This represents the total expenses incurred to deliver those projects or services.
 
-3. **Calculating Margin**: The expression then subtracts the total costs from the total sales. In other words, it takes the total revenue and deducts the total expenses to find out how much profit (or margin) is left over after covering the costs.
+3. **Calculating Project Margin**: The measure then subtracts the total cost amount from the total sales amount. This calculation gives you the project margin, which is essentially the profit made from the projects after accounting for the costs.
 
-### Summary:
-In essence, this DAX measure calculates the **project margin** by determining how much profit a project generates after accounting for its costs. A positive result indicates that the project is profitable, while a negative result would suggest a loss. This measure is crucial for assessing the financial performance of projects within an organization.
+In summary, this DAX expression calculates the profit (or margin) from projects by taking the total revenue generated and subtracting the total costs associated with those projects. A positive result indicates a profitable project, while a negative result indicates a loss.
 
 **`Msr_SalesPriceBaseCurrency`**
 
@@ -1303,19 +1307,15 @@ SUMX(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a measure called `Msr_SalesPriceBaseCurrency`, which essentially sums up the sales prices in a base currency for different projects and clients. Here’s a breakdown of what it does in simple business terms:
 
-1. **Data Source**: The calculation is based on a table called `vw_Timesheet`, which likely contains records related to projects and clients.
+1. **Data Source**: The measure uses a table called `vw_Timesheet`, which likely contains records of timesheets related to various projects and clients.
 
-2. **Grouping Data**: The `SUMMARIZE` function is used to group the data by two key fields: `ProjectProfile` and `Client`. This means that the measure will look at each unique combination of project profiles and clients.
+2. **Grouping Data**: The `SUMMARIZE` function is used to group the data by two key dimensions: `ProjectProfile` and `Client`. This means that for each unique combination of project and client, the measure will perform calculations.
 
-3. **Selecting Sales Price**: For each group created in the previous step, the code retrieves the sales price in the base currency from another table called `tbl_Project`. The `SELECTEDVALUE` function is used here to get the sales price for the current context (i.e., the specific project and client being evaluated).
+3. **Calculating Sales Price**: Within each group, the measure retrieves the sales price in the base currency using `SELECTEDVALUE(tbl_Project[SalesPriceBaseCurrency])`. This function gets the sales price for the current project being evaluated. If there are multiple sales prices, it will return the single value if there's only one, or it will return blank if there are multiple values.
 
-4. **Calculating Total**: After summarizing the data and retrieving the sales prices, the `SUMX` function is used to iterate over each of these groups and sum up the values of the sales prices (referred to as `MeasureValue`).
+4. **Summing Up Values**: The outer `SUMX` function then takes the summarized table (which now contains the project-client combinations and their corresponding sales prices) and sums up the `MeasureValue` for all these combinations. 
 
-### What It Achieves:
-- **Total Sales Price Calculation**: The measure calculates the total sales price in the base currency for all projects and clients in the `vw_Timesheet` table.
-- **Contextual Insight**: By grouping the data by project and client, it provides insights into how much revenue is generated from each project/client combination, which can be useful for financial analysis and reporting.
-
-In summary, this DAX measure helps businesses understand their sales performance in a standardized currency across different projects and clients, enabling better financial decision-making and reporting.
+In summary, this DAX measure calculates the total sales price in the base currency for all projects and clients listed in the `vw_Timesheet`. It effectively aggregates the sales prices, allowing businesses to see the total revenue or cost associated with their projects and clients in a consistent currency.
 
 **`Static Total Employees`**
 
@@ -1327,20 +1327,20 @@ CALCULATE(
 			    vw_Timesheet[ContractStatusToday] = "Valid"
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a measure called "Static Total Employees." Let's break down what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a measure called 'Static Total Employees'. Let's break down what it does in simple business terms:
 
-1. **Purpose**: The measure calculates the total number of unique employees who have a "Valid" contract status as of today.
+1. **Purpose**: The measure calculates the total number of unique employees who have a valid contract status as of today.
 
 2. **Components**:
-   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. Essentially, it ensures that each employee is only counted once, even if they appear multiple times in the data.
+   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. It ensures that each employee is only counted once, even if they appear multiple times in the data.
    
    - **`ALL(vw_Timesheet)`**: This function removes any filters that might be applied to the `vw_Timesheet` table. By doing this, the measure looks at all the data in the table, rather than just a subset that might be filtered by other criteria (like date or department).
    
-   - **`vw_Timesheet[ContractStatusToday] = "Valid"`**: This condition filters the data to only include employees whose contract status is marked as "Valid" for today. It ensures that only those employees who are currently active and have valid contracts are counted.
+   - **`vw_Timesheet[ContractStatusToday] = "Valid"`**: This condition filters the data to only include rows where the employee's contract status is marked as "Valid". This means that only employees who currently have a valid contract will be counted.
 
-3. **Overall Calculation**: When you put it all together, this measure counts how many unique employees have a valid contract today, ignoring any other filters that might be applied to the data. This is useful for understanding the current workforce status in terms of valid employment contracts.
+3. **Overall Calculation**: When you put it all together, this measure counts how many unique employees have a valid contract, ignoring any other filters that might be in place. This is useful for understanding the current workforce that is actively employed under valid contracts, providing a clear picture of the organization's staffing status.
 
-In summary, the "Static Total Employees" measure provides a clear count of active employees with valid contracts, helping businesses track their workforce effectively.
+In summary, the 'Static Total Employees' measure gives you a count of all employees who are currently validly contracted, ensuring that you have an accurate and comprehensive view of your workforce.
 
 **`TotalActualHours`**
 
@@ -1353,10 +1353,10 @@ SUM(vw_Timesheet[Hours])
 Here's a breakdown of what it does:
 
 - **SUM**: This function adds up all the values in a specified column.
-- **vw_Timesheet**: This refers to a table (or view) that contains timesheet data. It includes various columns related to employee hours worked, among other details.
-- **[Hours]**: This is the specific column within the `vw_Timesheet` table that contains the number of hours each employee has logged.
+- **vw_Timesheet**: This refers to a table (or view) that contains timesheet data. It likely includes various columns related to employee hours worked, projects, dates, etc.
+- **[Hours]**: This specifies the column within the `vw_Timesheet` table that contains the actual hours worked by employees.
 
-In simple business terms, this measure calculates the total actual hours worked by all employees as recorded in the timesheet. It provides a single number that represents the sum of all hours, which can be useful for reporting, payroll, or analyzing workforce productivity.
+In simple terms, this measure totals up all the hours from the `Hours` column in the `vw_Timesheet` table. The result gives you the overall number of hours worked, which can be useful for reporting, payroll calculations, or analyzing employee productivity.
 
 **`TotalContractedHours`**
 
@@ -1367,20 +1367,21 @@ SUMX(
 			    MAX(vw_Timesheet[HoursPerWeek])
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to calculate the total contracted hours for employees based on their weekly hours. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to calculate a measure called 'TotalContractedHours'. Let's break it down in simple business terms:
 
-1. **SUMX Function**: This function is used to perform a calculation over a table and then sum the results. In this case, it will sum up values for each employee.
+1. **SUMX Function**: This function is used to perform a calculation over a table and then sum up the results. In this case, it will iterate through a set of values and calculate a total based on those values.
 
-2. **VALUES Function**: This function retrieves a unique list of employee names from the `vw_Timesheet` table. Essentially, it creates a list of all the employees who have timesheet entries.
+2. **VALUES Function**: The `VALUES(vw_Timesheet[EmployeeName])` part creates a unique list of employee names from the 'vw_Timesheet' table. This means that for each employee, the calculation will be done separately.
 
-3. **MAX Function**: For each employee in the unique list, the `MAX` function looks at the `HoursPerWeek` column in the `vw_Timesheet` table. It finds the maximum number of hours that each employee is contracted to work in a week.
+3. **MAX Function**: The `MAX(vw_Timesheet[HoursPerWeek])` part looks at the 'HoursPerWeek' column in the 'vw_Timesheet' table and finds the maximum number of hours that each employee is contracted to work in a week.
 
-4. **Putting It All Together**: The `SUMX` function then takes the maximum hours per week for each employee (as determined by the `MAX` function) and adds them all together. 
+4. **Putting It All Together**: The entire expression calculates the total contracted hours for all employees by:
+   - Going through each unique employee name.
+   - For each employee, it finds the maximum hours they are contracted to work in a week.
+   - Finally, it sums up these maximum hours across all employees.
 
 ### What It Achieves:
-The overall result of this DAX expression is the total number of contracted hours for all employees. It effectively sums up the highest weekly hours that each employee is contracted to work, giving you a comprehensive view of total contracted hours across the organization. 
-
-In summary, this measure helps businesses understand their total workforce capacity in terms of hours, which can be useful for planning, budgeting, and resource allocation.
+In summary, this DAX measure calculates the total number of contracted hours for all employees by summing up the highest number of hours each employee is scheduled to work in a week. This is useful for understanding the overall capacity or commitment of your workforce in terms of hours worked.
 
 **`TotalHoursDeltaComplete`**
 
@@ -1392,20 +1393,22 @@ In summary, this measure helps businesses understand their total workforce capac
 ```dax
 [TotalActualHours]-[TotalContractedHours]
 ```
-- **DAX Explanation (Generated):** The DAX expression you provided calculates the difference between two measures: **TotalActualHours** and **TotalContractedHours**. Here's a breakdown of what this means in simple business terms:
+- **DAX Explanation (Generated):** The DAX expression you provided calculates the difference between two measures: **TotalActualHours** and **TotalContractedHours**. 
+
+Here's a breakdown of what this means in simple business terms:
 
 1. **TotalActualHours**: This measure represents the total number of hours that have actually been worked or logged by employees or resources on a project or task.
 
-2. **TotalContractedHours**: This measure indicates the total number of hours that were agreed upon in a contract for the project or task. This is the expected or planned amount of work.
+2. **TotalContractedHours**: This measure indicates the total number of hours that were agreed upon or contracted for the project or task. This is the expected or planned amount of work.
 
 3. **The Calculation**: The expression `[TotalActualHours] - [TotalContractedHours]` subtracts the total contracted hours from the total actual hours. 
 
 4. **What It Achieves**: 
-   - If the result is positive, it means that more hours were worked than what was contracted, indicating potential overwork or additional effort beyond what was planned.
-   - If the result is negative, it means that fewer hours were worked than what was contracted, suggesting that the project may be under budget in terms of hours or that tasks are not being completed as expected.
-   - If the result is zero, it indicates that the actual hours worked match the contracted hours, showing that the project is on track in terms of time.
+   - If the result is **positive**, it means that more hours were worked than were originally contracted, indicating potential overwork or additional effort beyond what was planned.
+   - If the result is **negative**, it suggests that fewer hours were worked than contracted, which could indicate underperformance or that the project is ahead of schedule.
+   - If the result is **zero**, it means that the actual hours worked match the contracted hours, indicating that the project is on track as per the agreement.
 
-In summary, this measure helps businesses understand how actual work hours compare to what was planned, allowing for better project management and resource allocation.
+In summary, this measure helps assess whether the actual work hours align with the contracted expectations, providing insights into project performance and resource management.
 
 **`TotalHoursTracked`**
 
@@ -1419,14 +1422,14 @@ IF (
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called 'TotalHoursTracked'. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Blank Values**: The measure first checks if the total sum of hours from the `vw_Timesheet` table is blank (i.e., there are no hours recorded). This is done using the `ISBLANK` function.
+1. **Check for Blank Values**: The expression starts by checking if the total sum of hours from the `vw_Timesheet` table is blank (i.e., there are no hours recorded). This is done using the `ISBLANK` function.
 
-2. **Return Zero if Blank**: If the sum of hours is blank (meaning no hours have been tracked), the measure will return a value of **0**. This is important because it ensures that when there are no hours recorded, the measure does not show a blank value, which could be confusing in reports.
+2. **Return Zero if Blank**: If the sum of hours is blank (meaning no hours have been tracked), the measure will return a value of **0**. This is important because it ensures that when there are no recorded hours, the measure does not show a blank value, which could be confusing in reports.
 
-3. **Return the Sum of Hours if Not Blank**: If there are hours recorded (i.e., the sum is not blank), the measure will return the actual total sum of hours tracked from the `vw_Timesheet` table.
+3. **Return the Sum if Not Blank**: If there are hours recorded (i.e., the sum is not blank), the measure will return the actual total sum of hours tracked from the `vw_Timesheet` table.
 
 ### Summary:
-In essence, this measure calculates the total hours tracked by summing up the hours from the timesheet. If no hours are recorded, it returns 0 instead of leaving a blank, making it clearer for users to understand that no hours have been logged. This helps in reporting and analysis by providing a consistent output.
+In essence, this measure calculates the total hours tracked by summing up the hours from the timesheet. If no hours are recorded, it returns 0 instead of a blank value. This makes it easier for users to understand the data in reports, as they will always see a numerical value (either the total hours or zero) rather than an empty space.
 
 **`TotalHoursTrackedMissing`**
 
@@ -1438,16 +1441,16 @@ IF (
 			    SUM(vw_Timesheet[Hours])
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure named `TotalHoursTrackedMissing`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is a measure named `TotalHoursTrackedMissing`. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Blank Values**: The measure first checks if the total hours tracked (from the `vw_Timesheet` table) is blank. This means it is looking to see if there are any recorded hours for the timesheet.
+1. **Check for Blank Values**: The measure first checks if the total sum of hours tracked in the `vw_Timesheet` table is blank (i.e., there are no hours recorded). This is done using the `ISBLANK` function.
 
 2. **Return Value Based on Check**:
-   - If the total hours are blank (meaning no hours have been recorded), the measure returns the text "Empty". This indicates that there are no hours tracked for the selected context (like a specific employee, project, or time period).
-   - If there are hours recorded (i.e., the total is not blank), it simply returns the sum of those hours. This gives the actual total hours tracked.
+   - If the sum of hours is blank (meaning no hours have been logged), the measure returns the text "Empty". This indicates that there are no hours to report.
+   - If there are hours logged (the sum is not blank), it returns the actual total number of hours tracked.
 
 ### Summary:
-In essence, this measure helps to identify whether there are any hours recorded in the timesheet. If there are no hours, it clearly indicates that with the word "Empty". If there are hours, it provides the total number of hours tracked. This is useful for reporting and analysis, as it helps users quickly understand if data is missing or if there are actual hours to consider.
+In essence, this measure helps to identify whether any hours have been recorded in the timesheet. If no hours are recorded, it clearly indicates that with the word "Empty". If hours are present, it provides the total number of hours tracked. This can be useful for reporting and ensuring that time tracking is being properly maintained.
 
 **`trackedDiff`**
 
@@ -1459,27 +1462,27 @@ In essence, this measure helps to identify whether there are any hours recorded 
 			        ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])
 			    )
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates a measure called `trackedDiff`, which essentially determines the difference between the total hours tracked for a specific context (like an employee or a project) and the maximum hours tracked per week for that same context.
+- **DAX Explanation (Generated):** The DAX code snippet you've provided calculates a measure called `trackedDiff`, which essentially determines the difference between the total hours tracked for a specific context (like an employee or a project) and the maximum hours tracked per week for that same context.
 
-Here's a breakdown of what each part does in simple business terms:
+Here's a breakdown of what each part of the code does in simple business terms:
 
-1. **[TotalHoursTracked]**: This part represents the total number of hours that have been logged or tracked. It could be the total hours an employee has worked on tasks or projects.
+1. **[TotalHoursTracked]**: This part represents the total number of hours that have been logged or tracked. It could be the total hours worked by an employee or the total hours for a specific project.
 
 2. **CALCULATE(...)**: This function modifies the context in which the data is evaluated. It allows us to perform calculations based on specific filters or conditions.
 
 3. **MAXX(DISTINCT(vw_Timesheet[HoursPerWeek]), vw_Timesheet[HoursPerWeek])**: 
-   - **DISTINCT(vw_Timesheet[HoursPerWeek])**: This part creates a list of unique values for hours worked per week from the timesheet data.
-   - **MAXX(...)**: This function then looks at that list of unique weekly hours and finds the maximum value. Essentially, it identifies the highest number of hours that have been tracked in any single week for the context being evaluated (like a specific employee).
+   - **DISTINCT(vw_Timesheet[HoursPerWeek])**: This part creates a list of unique values for hours tracked per week from the timesheet data.
+   - **MAXX(...)**: This function then looks at that list of unique weekly hours and finds the maximum value. In other words, it identifies the highest number of hours that have been tracked in any single week for the context being evaluated (like a specific employee).
 
-4. **ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])**: This function removes all filters from the `vw_Timesheet` table except for the filter on `EmployeeID`. This means that the calculation of the maximum hours per week will only consider the data for the specific employee, ignoring any other filters that might be applied.
+4. **ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])**: This part is used to maintain the filter context for the specific employee while ignoring any other filters that might be applied to the timesheet data. It ensures that the calculation of maximum hours per week is done only for the selected employee.
 
 ### What It Achieves:
-The overall calculation of `trackedDiff` gives you the difference between the total hours tracked for an employee and the maximum hours they have tracked in any single week. 
+The overall calculation of `trackedDiff` gives you the difference between the total hours tracked and the maximum hours tracked in any single week for that employee. 
 
-- If `trackedDiff` is positive, it indicates that the employee has logged more hours overall than their maximum weekly hours, which could suggest consistent overtime or additional work.
-- If it is zero or negative, it means the total hours tracked are less than or equal to their maximum weekly hours, indicating that they have not exceeded their typical workload.
+- If the result is positive, it indicates that the total hours tracked are greater than the maximum weekly hours, which might suggest consistent overtime or additional work.
+- If the result is zero or negative, it indicates that the total hours tracked are less than or equal to the maximum weekly hours, which could suggest that the employee is working within their typical capacity.
 
-In summary, this measure helps in understanding how an employee's total tracked hours compare to their peak weekly performance, which can be useful for workload management and performance analysis.
+In summary, `trackedDiff` helps in understanding how an employee's total tracked hours compare to their maximum weekly hours, providing insights into workload and productivity.
 
 **`trackedDiff2`**
 
@@ -1495,20 +1498,25 @@ In summary, this measure helps in understanding how an employee's total tracked 
 			        ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])
 			    )
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you've provided is a measure named `trackedDiff2`. Let's break down what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided calculates a measure called `trackedDiff2`. Let's break it down into simpler terms to understand what it achieves:
 
-1. **Total Hours Tracked**: The measure starts by referencing another measure called `[TotalHoursTracked]`. This measure likely represents the total number of hours that have been logged or tracked by employees over a certain period.
+1. **Total Hours Tracked**: The measure starts with `[TotalHoursTracked]`, which represents the total number of hours that have been tracked for a specific context (like a specific employee or time period).
 
-2. **Calculating the Maximum Hours Per Week**: The next part of the code calculates the maximum number of hours worked in a week by an employee. It does this using the `MAXX` function, which looks at a distinct list of hours per week from the `vw_Timesheet` table. Essentially, it finds the highest value of hours that any employee has recorded in a week.
+2. **Calculating the Maximum Hours Per Week**:
+   - The `CALCULATE` function is used to modify the context in which the data is evaluated.
+   - Inside `CALCULATE`, the `MAXX` function is applied to find the maximum value of `HoursPerWeek` from a distinct list of hours recorded in the `vw_Timesheet` table. This means it looks at all the unique hours per week that have been logged and finds the highest one.
 
-3. **Removing Filters**: The `REMOVEFILTERS` function is used to ignore any filters that might be applied to the `HoursPerWeek` column. This means that the calculation of the maximum hours per week will consider all records, regardless of any specific filtering that might be in place.
+3. **Removing Filters**:
+   - The `REMOVEFILTERS(vw_Timesheet[HoursPerWeek])` part ensures that any filters applied to the `HoursPerWeek` column are ignored. This allows the calculation to consider all possible values of `HoursPerWeek` without any restrictions.
 
-4. **Keeping Employee Context**: The `ALLEXCEPT` function is used to maintain the context of the calculation for each individual employee. This means that while it ignores filters on `HoursPerWeek`, it still respects the filter for `EmployeeID`. So, the maximum hours per week calculated will be specific to each employee.
+4. **Keeping Employee Context**:
+   - The `ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])` function keeps the context for the specific employee (identified by `EmployeeID`) while removing other filters. This means the calculation will only consider the data related to the current employee, but it will not be limited by any other filters that might be applied to the `vw_Timesheet` table.
 
-5. **Final Calculation**: Finally, the measure subtracts the maximum hours per week (calculated in the previous step) from the total hours tracked. 
+5. **Final Calculation**:
+   - The final result of the measure `trackedDiff2` is the difference between the total hours tracked for the employee and the maximum hours they have logged in any week. 
 
 ### Summary:
-In summary, the `trackedDiff2` measure calculates the difference between the total hours an employee has tracked and the maximum number of hours they have worked in any single week. This can help identify how much more or less an employee has worked compared to their peak weekly performance, providing insights into their workload and productivity.
+In simple business terms, `trackedDiff2` calculates how many more hours an employee has tracked compared to their highest recorded hours in any single week. This measure can help identify if an employee is consistently working more hours than their peak week, which could be useful for workload management or performance evaluation.
 
 **`UTI_TotalBillableHours`**
 
@@ -1525,19 +1533,19 @@ Var FilteredHours =
 			RETURN 
 			    SUMX(FilteredHours, vw_Timesheet[Hours])
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the total billable hours from a timesheet data source, specifically focusing on certain projects that qualify for billing. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate the total billable hours from a timesheet data source, specifically focusing on certain criteria. Here's a breakdown of what it does in simple business terms:
 
 1. **Variable Definition**: The code starts by defining a variable called `FilteredHours`. This variable will hold a filtered version of the `vw_Timesheet` data.
 
-2. **Filtering Criteria**: The filtering is based on two main conditions:
-   - **Qualifying Projects**: It checks if the project qualifies for billing (`vw_Timesheet[QualifyPrj] = 1`) and if it is a billable project (`vw_Timesheet[BillablePrj] = 1`). This means that only projects that meet both of these criteria will be included.
-   - **Specific Project Name**: Additionally, it looks for any projects that contain the phrase "Customer Success Services" in their name. If a project matches this name, it will also be included in the filtered results.
+2. **Filtering Criteria**: The `Filter` function is used to create this filtered dataset. It includes two main conditions:
+   - **Condition 1**: It checks if the project qualifies as billable (`vw_Timesheet[QualifyPrj] = 1` and `vw_Timesheet[BillablePrj] = 1`). This means that only projects that are marked as both qualifying and billable will be included.
+   - **Condition 2**: It also includes any projects that contain the phrase "Customer Success Services" in their name (`SEARCH("Customer Success Services", vw_Timesheet[Project], 1, 0) > 0`). This allows for additional projects that may not meet the first criteria but are still relevant to the business.
 
-3. **Summing Up Hours**: After applying the filters, the code uses the `SUMX` function to calculate the total hours worked on the filtered projects. `SUMX` iterates over each row in the `FilteredHours` variable and sums up the `Hours` column from the `vw_Timesheet`.
+3. **Calculating Total Hours**: After filtering the data based on the above criteria, the `SUMX` function is used to calculate the total hours worked on these filtered projects. `SUMX` iterates over each row in the `FilteredHours` variable and sums up the `vw_Timesheet[Hours]` for those rows.
 
-4. **Final Output**: The result of this measure, `UTI_TotalBillableHours`, is the total number of hours that can be billed to clients, based on the specified criteria. This helps the business understand how many hours are being worked on projects that are eligible for billing, which is crucial for revenue tracking and project management.
+4. **Final Output**: The result of this measure, `UTI_TotalBillableHours`, is the total number of hours that are billable based on the specified conditions. This measure helps the business understand how many hours can be billed to clients, which is crucial for revenue tracking and project management.
 
-In summary, this DAX measure effectively calculates the total billable hours for specific projects that either qualify as billable or are related to "Customer Success Services," providing valuable insights into the company's billable work.
+In summary, this DAX measure calculates the total billable hours from a timesheet, focusing on projects that are either specifically marked as billable or fall under a particular service category, helping the business track its billable work effectively.
 
 **`UTI_TOTALHOURS`**
 
@@ -1545,18 +1553,18 @@ In summary, this DAX measure effectively calculates the total billable hours for
 ```dax
 CALCULATE(SUM(vw_Timesheet[Hours]), vw_Timesheet[QualifyPrj] = 1)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `UTI_TOTALHOURS`. Let's break it down in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `UTI_TOTALHOURS`. Here's a breakdown of what it does in simple business terms:
 
 1. **Purpose**: This measure calculates the total number of hours worked on specific projects that meet a certain qualification criteria.
 
 2. **Components**:
-   - **SUM(vw_Timesheet[Hours])**: This part of the code adds up all the values in the `Hours` column from the `vw_Timesheet` table. Essentially, it totals the hours worked.
-   - **CALCULATE**: This function modifies the context in which the data is evaluated. In this case, it is used to apply a filter to the data being summed.
-   - **vw_Timesheet[QualifyPrj] = 1**: This condition filters the data to include only those entries where the `QualifyPrj` column has a value of 1. This means that only projects that are marked as "qualified" (or meet certain criteria) will be included in the total hours calculation.
+   - **SUM(vw_Timesheet[Hours])**: This part of the code adds up all the values in the `Hours` column from the `vw_Timesheet` table. Essentially, it totals the hours recorded in timesheets.
+   - **vw_Timesheet[QualifyPrj] = 1**: This condition filters the data to include only those entries where the `QualifyPrj` column equals 1. This means it only considers projects that are marked as qualified.
 
-3. **Outcome**: The measure `UTI_TOTALHOURS` will return the total hours worked on projects that are considered qualified. This is useful for reporting and analysis, as it helps the business understand how much time is being spent on projects that meet specific standards or requirements.
+3. **CALCULATE Function**: The `CALCULATE` function modifies the context in which the data is evaluated. In this case, it ensures that the sum of hours is calculated only for the qualified projects.
 
-In summary, this DAX measure helps organizations track and analyze the total hours worked on qualified projects, providing insights into resource allocation and project performance.
+### Summary:
+In summary, the `UTI_TOTALHOURS` measure calculates the total hours worked on projects that are deemed qualified (where `QualifyPrj` equals 1). This is useful for understanding how much time is being spent on projects that meet specific criteria, helping businesses track performance and resource allocation effectively.
 
 **`UTILIZATION_New`**
 
@@ -1571,28 +1579,22 @@ VAR _TotalBillableHours = [UTI_TotalBillableHours]
 			            )
 			    )
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure called 'UTILIZATION_New'. Let's break it down into simple business terms to understand what it calculates or achieves.
-
-### Key Components of the Measure:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is a measure called `UTILIZATION_New`, which is designed to calculate the utilization rate of resources (like employees or contractors) based on their billable hours compared to their total hours worked. Here's a breakdown of what it does in simple business terms:
 
 1. **Variables Defined**:
-   - **_TotalBillableHours**: This variable captures the total number of hours that can be billed to clients. It is represented by another measure called `[UTI_TotalBillableHours]`.
-   - **_TotalHours**: This variable captures the total number of hours worked, represented by another measure called `[UTI_TOTALHOURS]`.
+   - `_TotalBillableHours`: This variable captures the total number of hours that are billable (i.e., hours that can be charged to clients).
+   - `_TotalHours`: This variable captures the total number of hours worked by the resource, which includes both billable and non-billable hours.
 
 2. **Return Logic**:
-   - The measure uses a series of conditional checks (IF statements) to determine what value to return.
-   - **First Check**: It checks if there are any active contacts (`[Msr_ActiveContacts]`). If there are no active contacts, the measure will not proceed further.
-   - **Second Check**: If there are active contacts, it checks if the total hours worked (`[UTI_TOTALHOURS]`) is not blank. If it is blank, the measure will not proceed further.
-   - **Final Calculation**: If both previous checks are satisfied, it calculates the utilization rate by dividing the total billable hours by the total hours worked. If this division results in a blank value (which can happen if total hours are zero), it returns 0 instead of a blank.
+   - The measure first checks if there are any active contacts (represented by `[Msr_ActiveContacts]`). If there are no active contacts, the measure will not proceed with the calculation.
+   - If there are active contacts, it then checks if the total hours worked (`_TotalHours`) is not blank. If it is blank, the measure will not proceed further.
+   - If `_TotalHours` is available, the measure calculates the utilization rate by dividing `_TotalBillableHours` by `_TotalHours`. This gives a percentage that indicates how much of the total time worked was billable.
+   - If the result of the division is blank (which can happen if `_TotalHours` is zero), the measure will return 0 instead of a blank value.
 
-### What It Achieves:
+3. **Final Outcome**:
+   - The final output of this measure is a percentage that represents the utilization of resources. A higher percentage indicates that a greater portion of the hours worked is billable, which is generally a positive indicator of productivity and efficiency in a business context.
 
-In summary, this measure calculates the **utilization rate** of resources (like employees or teams) based on the hours they have worked. Utilization rate is a key performance indicator in many businesses, especially in service industries, as it shows how effectively the available hours are being used for billable work.
-
-- If there are active contacts and total hours worked are available, it provides a percentage that indicates how much of the total hours worked were billable.
-- If there are no active contacts or if total hours worked is not available, it ensures that the measure returns a meaningful value (either 0 or a calculated percentage) rather than leaving it blank.
-
-This measure helps businesses understand their efficiency in utilizing their workforce for billable tasks, which can inform decisions about resource allocation, project management, and overall productivity.
+In summary, `UTILIZATION_New` calculates how effectively resources are being utilized by comparing their billable hours to their total hours worked, while ensuring that the calculation only occurs when there are active contacts and valid total hours.
 
 ---
 
@@ -1686,7 +1688,7 @@ The following filters are applied to the entire report:
 - Fields Used:
   - `cc_Employer` (Query: `PBI_TIMESHEET.cc_Employer`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`cc_Employer` (Type: Categorical, Definition: (No conditions found in Where clause))
+  - Filter on `vw_Timesheet`.`cc_Employer` (Type: Categorical, Definition: `cc_Employer` IN (`'G Cloud NL'`))
 
 **Project Name**
 
@@ -1727,7 +1729,7 @@ The following filters are applied to the entire report:
   - `SalesAmount` (Query: `Sum(vw_Timesheet.SalesAmount)`) (Role: Y)
 - Visual Level Filters:
   - Filter on `DimDate`.`WeekNumberOfYear` (Type: Advanced, Definition: `WeekNumberOfYear` <> `4L`)
-  - Filter on `vw_Timesheet`.`Sum(SalesAmount)` (Type: Advanced, Definition: (Complex condition))
+  - Filter on `vw_Timesheet`.`Sum(SalesAmount)` (Type: Advanced, Definition: NOT (`Sum(SalesAmount)` = `50L`))
 
 **pivotTable**
 
@@ -1865,7 +1867,7 @@ The following filters are applied to the entire report:
   - `ExpEnddate` (Query: `Min(tbl_Project.PlannedCompletionDate)`) (Role: Values)
   - `Project Type` (Query: `tbl_Project.ProjectGroupDescription`) (Role: Rows)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Definition: (Complex condition))
+  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Definition: NOT (`EmployeeName` = `null`))
 
 **Actual vs Budget**
 
@@ -1877,6 +1879,6 @@ The following filters are applied to the entire report:
   - `Actual` (Query: `vw_Timesheet.MSR_Cumulative_Revenue`) (Role: Y)
   - `Budget` (Query: `vw_Timesheet.Msr_Budget`) (Role: Y)
 - Visual Level Filters:
-  - Filter on `DimDate`.`WeekNumberOfYear` (Type: Advanced, Definition: (Complex condition))
-  - Filter on `vw_Timesheet`.`[MSR_Cumulative_Revenue]` (Type: Advanced, Definition: (Complex condition))
+  - Filter on `DimDate`.`WeekNumberOfYear` (Type: Advanced, Definition: NOT (`WeekNumberOfYear` = `null`))
+  - Filter on `vw_Timesheet`.`[MSR_Cumulative_Revenue]` (Type: Advanced, Definition: NOT (`[MSR_Cumulative_Revenue]` = `null`))
 
