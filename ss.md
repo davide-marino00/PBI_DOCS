@@ -102,7 +102,8 @@ OUTPUT_FORMATS = ['md'] (around line 47).
 Modify the list to suit your needs:       
 For JSON only:        
 > OUTPUT_FORMATS = ['json']
-For both Markdown and JSON:    
+
+For both Markdown and JSON:         
 > OUTPUT_FORMATS = ['md', 'json']    
 
 Customizing Filenames
