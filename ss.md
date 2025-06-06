@@ -37,7 +37,8 @@ Log in to the Azure Portal.
 Search for "Azure OpenAI" or "AI Foundry" and create an instance.
 Access the instance, on the left side of the AI Foundry UI you will find the "Deployments" section. click on it.
 Deploy a model (base model):
-Choose a **gpt-4o-mini** model. Deployment name: use **gpt-4o-mini**. This name is what your script will use to call the model.
+Choose a **gpt-4o-mini** model. Deployment name: use **gpt-4o-mini**. This name is what your script will use to call the model.  
+Make sure the Model Version is **'2024-07-18'**
 
 Find Your Credentials:
 Go back to your Azure OpenAI resource page in the Azure Portal.
