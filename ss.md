@@ -1,5 +1,5 @@
-# **GhostDocWriter: AI-Powered Power BI Documentation**
-This guide provides all the necessary steps to set up and run GhostDocWriter, a tool that automatically generates documentation for your Power BI reports using Azure OpenAI.
+# ****GhostDocWriter**: AI-Powered Power BI Documentation**
+This guide provides all the necessary steps to set up and run ****GhostDocWriter****, a tool that automatically generates documentation for your Power BI reports using Azure OpenAI.
 
 *Prerequisites*
 Before you begin, ensure you have the following:
@@ -30,7 +30,7 @@ Bash
 Move the Extracted Folder
 
 The command will create a new folder with the same name as your report (e.g., Sales Report).
-Move this newly created folder into the Input_Folder within the GhostDocWriter project directory.
+Move this newly created folder into the Input_Folder within the ****GhostDocWriter**** project directory.
 
 **Part 2: Set Up Azure OpenAI Service**
 Next, you need to deploy a model in Azure and get the necessary credentials to connect your script to it.
@@ -54,8 +54,8 @@ Endpoint: The URL for your service (e.g., https://your-service.openai.azure.com/
 Key: Two secret keys are provided (KEY 1 and KEY 2). You only need to copy one.
 
 **Part 3: Configure the Application**
-Now, you will provide the credentials from Azure to the GhostDocWriter script using an environment file.
-Locate the .env file in the GhostDocWriter project directory.
+Now, you will provide the credentials from Azure to the ****GhostDocWriter**** script using an environment file.
+Locate the .env file in the **GhostDocWriter** project directory.
 Update the file with the values you just retrieved. The file should look like this:
 Code snippet
 
@@ -73,7 +73,7 @@ Note: .env file do not use "" or '' for values
 
 **Part 4: Run the Documentation Pipeline**
 The final step is to set up the Python environment and run the script.
-Open a Terminal in the root directory of the GhostDocWriter project.
+Open a Terminal in the root directory of the **GhostDocWriter** project.
 Create a Virtual Environment to keep your project dependencies isolated.
 
 python -m venv venv
