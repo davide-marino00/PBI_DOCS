@@ -52,14 +52,14 @@ Locate the .env file in the **GhostDocWriter** project directory.
 Update the file with the values you just retrieved. The file should look like this:
 
 #### --- REQUIRED: Path Configuration ---
-PBI_EXTRACT_ROOT_DIR=input_folder/Sales Report
-OUTPUT_DIR=ouput_folder
+PBI_EXTRACT_ROOT_DIR=input_folder/Sales Report  
+OUTPUT_DIR=ouput_folder  
 
 #### --- REQUIRED: Azure OpenAI Configuration ---
-AZURE_OPENAI_ENDPOINT=https://your-service.openai.azure.com/
-AZURE_OPENAI_API_KEY=your-secret-key-from-azure
-AZURE_OPENAI_API_VERSION=2024-07-18
-AZURE_OPENAI_CHAT_DEPLOYMENT_NAME=gpt-4o-mini
+AZURE_OPENAI_ENDPOINT=https://your-service.openai.azure.com/  
+AZURE_OPENAI_API_KEY=your-secret-key-from-azure  
+AZURE_OPENAI_API_VERSION=2024-07-18  
+AZURE_OPENAI_CHAT_DEPLOYMENT_NAME=gpt-4o-mini  
 
 **Note**: .env file do not use "" or '' for values
 
