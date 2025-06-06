@@ -19,7 +19,8 @@ https://github.com/pbi-tools/pbi-tools/releases/download/1.2.0/pbi-tools.1.2.0.z
 Extract the contents of the zip file into a folder on your computer.    
 
 Extract Your .pbix File  
-Open a Terminal (or PowerShell) directly in the folder where you extracted pbi-tools.  
+Open a Terminal (or PowerShell) directly in the folder where you extracted pbi-tools.
+(for Terminal, right click on the folder canvas where pbi-tools resides)
 Run the following command, replacing <path-to-your-pbix-file> with the actual path to your report.
 <!-- end list -->
 
