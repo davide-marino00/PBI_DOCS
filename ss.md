@@ -96,8 +96,8 @@ The script will now execute, generating the documentation in your specified outp
 **Advanced Configuration (Optional)**
 By default, the script generates a Markdown (.md) file. You can change this to output a JSON file (useful for integrations like Jira) or both.
 
-*Open the config.py file.*
-Locate the line       
+*Open the config.py file.*         
+Locate the line               
 OUTPUT_FORMATS = ['md'] (around line 47).      
 Modify the list to suit your needs:       
 For JSON only:        
