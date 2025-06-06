@@ -26,7 +26,7 @@ Run the following command, replacing <path-to-your-pbix-file> with the actual pa
 
 #### Example for Windows
 
->.\pbi-tools.exe extract "C:\Users\yourusername\Documents\Sales Report.pbix"
+>.\pbi-tools.exe extract "C:\Users\yourusername\Documents\yourreport.pbix"
 
 The command will create a new folder with the same name as your report (e.g., Documents\Sales Report).
 Move this newly created folder into the *input_folder* within the ****GhostDocWriter**** project directory.
@@ -43,6 +43,8 @@ Make sure the Model Version is **'2024-07-18'**
 Find Your Credentials:
 Go back to your Azure OpenAI resource page in the Azure Portal.
 On the left-hand menu, under Resource Management, click Keys and Endpoint.
+or From Azure AIFoundry instance, on the left-hand menu click Deployments --> then your click on your model.
+
 Here you will find two critical pieces of information:
 Endpoint: The URL for your service (e.g., https://your-service.openai.azure.com/).
 Key: Two secret keys are provided (KEY 1 and KEY 2). You only need to copy one.
@@ -53,7 +55,7 @@ Locate the .env file in the **GhostDocWriter** project directory.
 Update the file with the values you just retrieved. The file should look like this:
 
 #### --- REQUIRED: Path Configuration ---
-PBI_EXTRACT_ROOT_DIR=input_folder/Sales Report  
+PBI_EXTRACT_ROOT_DIR=input_folder/yourreport  
 OUTPUT_DIR=ouput_folder  
 
 #### --- REQUIRED: Azure OpenAI Configuration ---
