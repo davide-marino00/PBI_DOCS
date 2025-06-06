@@ -1,16 +1,17 @@
 # ****GhostDocWriter**: AI-Powered Power BI Documentation**
 This guide provides all the necessary steps to set up and run ****GhostDocWriter****, a tool that automatically generates documentation for your Power BI reports using Azure OpenAI.
 
-*Prerequisites*
+### *Prerequisites*
 Before you begin, ensure you have the following:
 
 Python 3.8+ installed on your machine.
 An Azure Subscription with permissions to create and manage Azure OpenAI resources.
 A Power BI report file (.pbix).
-Setup and Usage Guide
+
+*Setup and Usage Guide*
 The setup process is divided into four main parts. Follow them in order.
 
-**Part 1: Prepare Your Power BI File**
+## **Part 1: Prepare Your Power BI File**
 The first step is to extract the metadata from your .pbix file into a folder structure that the script can read. We will use the open-source pbi-tools for this.
 
 Download and Extract pbi-tools
@@ -23,7 +24,6 @@ Open a Terminal (or PowerShell) directly in the folder where you extracted pbi-t
 Run the following command, replacing <path-to-your-pbix-file> with the actual path to your report.
 <!-- end list -->
 
-Bash
 
 # Example for Windows
 .\pbi-tools.exe extract "C:\Users\Davide\Documents\Sales Report.pbix"
