@@ -15,11 +15,11 @@ The first step is to extract the metadata from your .pbix file into a folder str
 Download and Extract pbi-tools
 
 Download the latest version from the official GitHub releases: 
-[pbi-tools]https://github.com/pbi-tools/pbi-tools/releases/download/1.2.0/pbi-tools.1.2.0.zip
-Extract the contents of the zip file into a folder on your computer.
-Extract Your .pbix File
+https://github.com/pbi-tools/pbi-tools/releases/download/1.2.0/pbi-tools.1.2.0.zip    
+Extract the contents of the zip file into a folder on your computer.    
 
-Open a Terminal (or PowerShell) directly in the folder where you extracted pbi-tools.
+Extract Your .pbix File  
+Open a Terminal (or PowerShell) directly in the folder where you extracted pbi-tools.  
 Run the following command, replacing <path-to-your-pbix-file> with the actual path to your report.
 <!-- end list -->
 
