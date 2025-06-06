@@ -97,10 +97,13 @@ The script will now execute, generating the documentation in your specified outp
 By default, the script generates a Markdown (.md) file. You can change this to output a JSON file (useful for integrations like Jira) or both.
 
 *Open the config.py file.*
-Locate the line OUTPUT_FORMATS = ['md'] (around line 47).
-Modify the list to suit your needs:
-For JSON only: > OUTPUT_FORMATS = ['json']
-For both Markdown and JSON: > OUTPUT_FORMATS = ['md', 'json']
+Locate the line       
+OUTPUT_FORMATS = ['md'] (around line 47).      
+Modify the list to suit your needs:       
+For JSON only:        
+> OUTPUT_FORMATS = ['json']
+For both Markdown and JSON:    
+> OUTPUT_FORMATS = ['md', 'json']    
 
 Customizing Filenames
 You can change the names of output files in the .env file. Just ensure the file extensions (.md, .json) are kept.
