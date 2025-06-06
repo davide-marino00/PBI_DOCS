@@ -5,7 +5,7 @@ This guide provides all the necessary steps to set up and run ****GhostDocWriter
 Before you begin, ensure you have the following:
 
 Python 3.8+ installed on your machine.
-An Azure Subscription with permissions to create and manage Azure OpenAI resources.
+An Azure Subscription with permissions to create and manage Azure OpenAI/AI Foundry resources.
 A Power BI report file (.pbix).
 
 
