@@ -55,11 +55,11 @@ Now, you will provide the credentials from Azure to the ****GhostDocWriter**** s
 Locate the .env file in the **GhostDocWriter** project directory.
 Update the file with the values you just retrieved. The file should look like this:
 
-#### REQUIRED: Path Configuration ---
+#### REQUIRED: Path Configuration 
 PBI_EXTRACT_ROOT_DIR=input_folder/yourreport  
 OUTPUT_DIR=ouput_folder  
 
-#### REQUIRED: Azure OpenAI Configuration ---
+#### REQUIRED: Azure OpenAI Configuration    
 AZURE_OPENAI_ENDPOINT=https://your-service.openai.azure.com/  
 AZURE_OPENAI_API_KEY=your-secret-key-from-azure  
 AZURE_OPENAI_API_VERSION=2024-07-18  
