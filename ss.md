@@ -1,4 +1,4 @@
-**GhostDocWriter: AI-Powered Power BI Documentation**
+# **GhostDocWriter: AI-Powered Power BI Documentation**
 This guide provides all the necessary steps to set up and run GhostDocWriter, a tool that automatically generates documentation for your Power BI reports using Azure OpenAI.
 
 *Prerequisites*
