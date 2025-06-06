@@ -8,8 +8,7 @@ Python 3.8+ installed on your machine.
 An Azure Subscription with permissions to create and manage Azure OpenAI resources.
 A Power BI report file (.pbix).
 
-**Setup and Usage Guide**
-The setup process is divided into four main parts. Follow them in order.
+**Setup and Usage Guide** 
 
 ### **Part 1: Prepare Your Power BI File**
 The first step is to extract the metadata from your .pbix file into a folder structure that the script can read. We will use the open-source pbi-tools for this.
