@@ -1,6 +1,6 @@
 # Power BI Model & Report Documentation
 
-*Generated on: 2025-06-04 10:59:56*
+*Generated on: 2025-07-02 15:20:15*
 
 ## Table of Contents
 
@@ -28,20 +28,21 @@
     - [Out of Service](#page-out-of-service)
     - [Utilisation/Week](#page-utilisationweek)
     - [Utilisation/Month](#page-utilisationmonth)
-    - [Timesheet Overview/Category per Week](#page-timesheet-overviewcategory-per-week)
-    - [Timesheet Overview/Category per Month](#page-timesheet-overviewcategory-per-month)
+    - [Timesheet Overview/Category (Weekly)](#page-timesheet-overviewcategory-weekly)
+    - [Timesheet Overview/Category (Monthly)](#page-timesheet-overviewcategory-monthly)
     - [Timesheet Overview/Project](#page-timesheet-overviewproject)
     - [Timesheet Overview/Consultant (Weekly)](#page-timesheet-overviewconsultant-weekly)
     - [Timesheet Overview/Consultant (Monthly)](#page-timesheet-overviewconsultant-monthly)
     - [Timesheet (Details)](#page-timesheet-details)
+    - [Drill](#page-drill)
 
 ---
 
 ## <a name="overview"></a>Overview
 
-The Power BI data model appears to be designed for a business domain focused on time tracking and project management, likely within a professional services or project-based organization. The presence of tables such as 'vw_Timesheet' and 'vw_missing_timesheet' suggests a strong emphasis on capturing and analyzing employee work hours and the submission of timesheets, which are critical for billing, resource allocation, and performance evaluation. The inclusion of lookup tables like 'lkp_Project', 'lkp_Unit', and 'lkp_Code' indicates a structured approach to categorizing and filtering data related to specific projects, organizational units, and timesheet codes, enhancing the model's analytical capabilities.
+The Power BI data model appears to be designed for a business environment focused on project management and time tracking, likely within a professional services or consulting firm. The presence of tables such as 'vw_Timesheet' and 'vw_missing_timesheet' suggests that the model is aimed at monitoring employee time allocation to various projects, ensuring accurate reporting and analysis of time spent on tasks. The inclusion of lookup tables like 'lkp_Project', 'lkp_Unit', and 'lkp_Code' indicates a structured approach to categorizing and managing data related to projects, organizational units, and timesheet codes, which are essential for detailed reporting and performance evaluation.
 
-The relationships established between these tables facilitate comprehensive reporting and insights into time management practices. For instance, linking 'vw_Timesheet' with 'DimDate' allows for time-based analysis, while connections to project and unit lookup tables enable detailed breakdowns of hours worked by project and organizational structure. Additionally, the 'vw_missing_timesheet' table highlights a focus on identifying gaps in timesheet submissions, which is crucial for ensuring accurate project tracking and accountability. Overall, this data model is likely aimed at improving operational efficiency, enhancing project oversight, and supporting strategic decision-making through data-driven insights.
+The relationships established between these tables facilitate comprehensive analysis of time-related data, allowing stakeholders to identify trends, track project progress, and address issues such as missing timesheets. The 'DimDate' table further enhances the model by enabling time-based analysis, which is crucial for understanding productivity over different periods. Overall, this data model serves as a robust framework for analyzing employee time management, project performance, and operational efficiency within the organization.
 
 ---
 
@@ -62,70 +63,69 @@ The following relationships link the tables:
 * `vw_Timesheet`.[`ContractEndDate`] -> `DimDate`.[`ShortDate`] (**Inactive**)
 * `vw_Timesheet`.[`ContractStartDate`] -> `DimDate`.[`ShortDate`] (**Inactive**)
 
+---
+
 ### <a name="tables"></a>Tables
 
 #### <a name="table-dimdate"></a>Table: `DimDate`
 
-The 'DimDate' table serves as a comprehensive date dimension, enabling businesses to analyze and report on time-based data effectively. It provides essential date attributes, such as day, week, month, and quarter, facilitating detailed time-series analysis and enhancing the ability to track performance trends over various periods.
+The 'DimDate' table serves as a comprehensive date dimension, enabling businesses to analyze and report on time-based data effectively. It provides essential date attributes, such as day, week, month, and quarter, facilitating detailed time series analysis and enhancing the ability to track performance trends over various periods.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `CalendarQuarter` | `string` | The 'CalendarQuarter' column represents the fiscal quarter of the year (e.g., Q1, Q2, Q3, Q4) for each date entry in the DimDate table, facilitating time-based analysis and reporting. |
-| `CalendarYear` | `int64` | The 'CalendarYear' column (int64) in the 'DimDate' table represents the year component of a date, facilitating time-based analysis and reporting within the dataset. |
-| `DateKey` | `int64` | Column Description: The 'DateKey' column (int64) serves as a unique identifier for each date in the 'DimDate' table, facilitating efficient date-based queries and data enrichment processes. |
-| `DayName` | `string` | The 'DayName' column in the 'DimDate' table provides the full name of the day (e.g., Monday, Tuesday) corresponding to each date, facilitating time-based analysis and reporting. |
-| `DayNumberOfMonth` | `int64` | Column Description: The 'DayNumberOfMonth' column represents the numerical day of the month (ranging from 1 to 31) for each date entry in the 'DimDate' table, facilitating date-related analyses and reporting. |
-| `DayNumberOfWeek` | `int64` | The 'DayNumberOfWeek' column (int64) in the 'DimDate' table represents the numerical value of the day of the week, where 1 corresponds to Sunday and 7 corresponds to Saturday, facilitating date-related analyses and reporting. |
-| `DayNumberOfYear` | `int64` | The 'DayNumberOfYear' column represents the sequential day of the year (ranging from 1 to 365 or 366) for each date entry in the 'DimDate' table, facilitating time-based analysis and reporting. |
-| `MonthName` | `string` | The 'MonthName' column in the 'DimDate' table stores the full names of the months, providing a human-readable representation of the month for enhanced date-related reporting and analysis. |
-| `MonthNumberOfYear` | `int64` | Column Description: Represents the numerical value of the month (1 for January through 12 for December) to facilitate time-based analysis and reporting within the DimDate table. |
-| `ShortDate` | `dateTime` | The 'ShortDate' column in the 'DimDate' table represents a simplified date format, capturing the specific date without time details to facilitate efficient date-based analysis and reporting. |
+| `CalendarQuarter` | `string` | Column Description: Represents the fiscal quarter of the year (e.g., Q1, Q2, Q3, Q4) for each date entry, facilitating time-based analysis and reporting in the DimDate table. |
+| `CalendarYear` | `int64` | The 'CalendarYear' column (int64) in the 'DimDate' table represents the year component of the date, facilitating time-based analysis and reporting for scheduling and planning activities. |
+| `DateKey` | `int64` | Column Description: The 'DateKey' column (int64) serves as a unique identifier for each date in the 'DimDate' table, facilitating efficient date-based queries and enabling time-based analysis across various business metrics. |
+| `DayName` | `string` | The 'DayName' column in the 'DimDate' table stores the full name of the day (e.g., Monday, Tuesday) corresponding to each date, facilitating time-based analysis and reporting. |
+| `DayNumberOfMonth` | `int64` | Column Description: The 'DayNumberOfMonth' column (int64) in the 'DimDate' table represents the numerical day of the month, ranging from 1 to 31, facilitating date-related analyses and scheduling tasks. |
+| `DayNumberOfWeek` | `int64` | Column Description: The 'DayNumberOfWeek' column (int64) represents the numerical value of the day in the week, where 1 corresponds to Sunday and 7 corresponds to Saturday, facilitating date-related analyses and scheduling tasks within the DimDate table. |
+| `DayNumberOfYear` | `int64` | Column Description: The 'DayNumberOfYear' column represents the sequential day of the year (ranging from 1 to 365 or 366) for each date entry in the DimDate table, facilitating time-based analysis and reporting. |
+| `MonthName` | `string` | Column Description: The 'MonthName' column stores the full name of each month, facilitating easy reference and reporting for date-related analyses within the DimDate table. |
+| `MonthNumberOfYear` | `int64` | Column Description: Represents the numerical value of the month (1 for January through 12 for December) to facilitate date-related analyses and reporting within the DimDate table. |
+| `ShortDate` | `dateTime` | The 'ShortDate' column in the 'DimDate' table represents a simplified date format, capturing the specific date without time details, to facilitate efficient date-based querying and reporting. |
 | `WeekNumberOfYear` | `int64` | The 'WeekNumberOfYear' column (int64) in the 'DimDate' table represents the sequential week number of the year for each date, facilitating time-based analysis and reporting. |
 
 ##### Calculated Columns
 
 **`CurrentYearFlag`** (`string`)
 
-- **Description:** Indicates whether the date corresponds to the current calendar year, with values typically set to 'Yes' or 'No'.
+- **Description:** Column Description: Indicates whether the date corresponds to the current calendar year, with values typically set to 'Yes' or 'No' for efficient time-based analysis in the DimDate table.
 - **DAX Expression:**
 ```dax
 IF(YEAR(DimDate[ShortDate]) <= YEAR(TODAY()), 1, 0)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a calculated column called `CurrentYearFlag` in a data model, typically within a tool like Power BI or Excel. Here's a breakdown of what this expression does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `CurrentYearFlag` in a data model, typically within a tool like Power BI or Excel. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The `CurrentYearFlag` column is designed to indicate whether a date falls within the current year or not.
+1. **Purpose**: The `CurrentYearFlag` column is designed to indicate whether a date in the `DimDate` table falls within the current year or not.
 
-2. **Components**:
-   - `DimDate[ShortDate]`: This refers to a date field in a table called `DimDate`. It contains various dates that we want to evaluate.
-   - `YEAR(DimDate[ShortDate])`: This part extracts the year from each date in the `ShortDate` column.
-   - `YEAR(TODAY())`: This retrieves the current year based on today's date.
+2. **How It Works**:
+   - **YEAR(DimDate[ShortDate])**: This part extracts the year from the date in the `ShortDate` column of the `DimDate` table.
+   - **YEAR(TODAY())**: This part gets the current year based on today's date.
+   - **IF Statement**: The `IF` function checks if the year extracted from `DimDate[ShortDate]` is less than or equal to the current year. 
+     - If it is (meaning the date is in the current year or a previous year), it returns `1`.
+     - If it is not (meaning the date is in a future year), it returns `0`.
 
-3. **Logic**:
-   - The `IF` function checks if the year extracted from the `ShortDate` is less than or equal to the current year.
-   - If the condition is true (meaning the date is in the current year or earlier), it returns `1`.
-   - If the condition is false (meaning the date is in a future year), it returns `0`.
+3. **Outcome**: 
+   - The result is a column where each row will have a value of `1` if the date is in the current year or any previous year, and `0` if the date is in a future year. 
+   - This flag can be useful for filtering or analyzing data based on whether dates are current or future, helping businesses focus on relevant time periods for reporting or decision-making.
 
-4. **Outcome**: 
-   - The result is a column where each row will have a value of `1` if the date is in the current year or earlier, and `0` if the date is in a future year.
-   - This flag can be useful for filtering or analyzing data based on whether dates are relevant to the current year.
-
-In summary, this DAX expression helps to easily identify and flag dates that are either in the current year or earlier, allowing for better data analysis and reporting.
+In summary, the `CurrentYearFlag` column helps identify which dates are current or past, allowing for better analysis of time-sensitive data.
 
 ---
 
 #### <a name="table-hours_nd_percentage"></a>Table: `Hours_nd_Percentage`
 
-The 'Hours_nd_Percentage' table captures and categorizes various metrics related to hours worked and their corresponding percentage contributions, enabling businesses to analyze workforce productivity and resource allocation effectively. This table supports decision-making by providing insights into labor efficiency and performance trends across different departments or projects.
+The 'Hours_nd_Percentage' table captures and categorizes various metrics related to hours worked and their corresponding percentage contributions, enabling businesses to analyze workforce productivity and resource allocation effectively. This table serves as a critical tool for performance assessment and strategic decision-making regarding labor management.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `Hours_nd_Percentage` | `string` | The 'Hours_nd_Percentage' column contains string representations of hours worked alongside their corresponding percentage contributions, facilitating the analysis of employee productivity and workload distribution. |
-| `Hours_nd_Percentage Fields` | `string` | The 'Hours_nd_Percentage Fields' column contains string representations of various metrics related to hours worked and their corresponding percentages, facilitating data enrichment and analysis within the 'Hours_nd_Percentage' table. |
-| `Hours_nd_Percentage Order` | `string` | The 'Hours_nd_Percentage Order' column contains string values that represent the sequence or ranking of hours and percentage data, facilitating the organization and analysis of time-related metrics within the 'Hours_nd_Percentage' table. |
+| `Hours_nd_Percentage` | `string` | The 'Hours_nd_Percentage' column captures the allocation of hours and their corresponding percentage contributions to specific tasks within the scheduling framework, facilitating effective resource management and task prioritization. |
+| `Hours_nd_Percentage Fields` | `string` | The 'Hours_nd_Percentage Fields' column contains string representations of various time and percentage metrics related to scheduling and task enrichment activities. |
+| `Hours_nd_Percentage Order` | `string` | The 'Hours_nd_Percentage Order' column stores string values that represent the sequence or priority of hours and percentage allocations for scheduling enrichment tasks. |
 
 ---
 
@@ -137,94 +137,94 @@ The 'lkp_Code' table serves as a reference dataset that categorizes and organize
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `Code` | `string` | The 'Code' column contains unique string identifiers used to categorize and enrich data within the lookup table, facilitating efficient data retrieval and integration. |
-| `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Code' table indicates the qualification status of records, serving as a numerical identifier to categorize data for enrichment processes. |
-| `Sort` | `string` | The 'Sort' column in the 'lkp_Code' table contains string values that determine the order in which records are displayed or processed, facilitating organized data retrieval and presentation. |
+| `Code` | `string` | The 'Code' column in the 'lkp_Code' table stores unique string identifiers that categorize and define various entities for efficient data retrieval and reference. |
+| `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Code' table indicates the qualification status of codes, serving as a numerical identifier for categorizing and filtering data based on specific criteria. |
+| `Sort` | `string` | The 'Sort' column in the 'lkp_Code' table specifies the order in which codes should be displayed or processed, facilitating organized data retrieval and presentation. |
 
 ---
 
 #### <a name="table-lkp_fltr_employee"></a>Table: `lkp_fltr_Employee`
 
-The 'lkp_fltr_Employee' table serves as a reference for employee data, providing essential identifiers and names to facilitate filtering and reporting across various business analytics. This table enhances data integrity and usability by standardizing employee information for analysis and decision-making processes.
+The 'lkp_fltr_Employee' table serves as a reference dataset for employee information, providing essential details such as EmployeeId and EmployeeName to facilitate filtering and reporting across various business analytics and performance metrics in Power BI. This table enhances data integrity and enables efficient data retrieval for employee-related insights.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `EmployeeId` | `string` | The 'EmployeeId' column (string) uniquely identifies each employee in the 'lkp_fltr_Employee' table, facilitating data enrichment and integration processes. |
-| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees, facilitating the enrichment of data by providing identifiable references for each individual within the employee lookup table. |
+| `EmployeeId` | `string` | The 'EmployeeId' column (string) in the 'lkp_fltr_Employee' table uniquely identifies each employee, facilitating efficient data retrieval and management within employee-related processes. |
+| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees, facilitating easy identification and reference within the employee lookup table. |
 
 ---
 
 #### <a name="table-lkp_project"></a>Table: `lkp_Project`
 
-The 'lkp_Project' table serves as a reference for project-related data, providing essential details such as project identifiers, qualification metrics, billing amounts, and associated groups, enabling effective project management and financial analysis within the organization.
+The 'lkp_Project' table serves as a reference for project-related data, linking project identifiers with their respective qualification and billing metrics, while categorizing them into groups for streamlined reporting and analysis. This table enables businesses to efficiently track project performance and financials, facilitating informed decision-making and resource allocation.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `Billing` | `int64` | The 'Billing' column (int64) in the 'lkp_Project' table represents the billing amount associated with each project, facilitating financial tracking and reporting. |
-| `Group` | `string` | The 'Group' column in the 'lkp_Project' table categorizes projects into distinct classifications for enhanced data organization and retrieval. |
-| `Project` | `string` | The 'Project' column contains the names of various projects, serving as a key identifier for enriching data related to specific initiatives within the organization. |
-| `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Project' table indicates the qualification status of a project, with integer values representing different levels of qualification criteria met. |
+| `Billing` | `int64` | The 'Billing' column (int64) in the 'lkp_Project' table represents the unique identifier for billing records associated with each project, facilitating financial tracking and reporting. |
+| `Group` | `string` | The 'Group' column in the 'lkp_Project' table categorizes projects into distinct classifications for streamlined management and reporting. |
+| `Project` | `string` | The 'Project' column in the 'lkp_Project' table identifies the name of each project, serving as a key reference for categorizing and managing related scheduling tasks. |
+| `Qualify` | `int64` | The 'Qualify' column (int64) in the 'lkp_Project' table indicates the qualification status of a project, with numerical values representing different levels of qualification criteria met. |
 
 ---
 
 #### <a name="table-lkp_unit"></a>Table: `lkp_Unit`
 
-The 'lkp_Unit' table serves as a reference for organizational units within the business, detailing their attributes such as billable status and external classifications, which aids in resource allocation and financial reporting. This table is essential for ensuring accurate tracking and management of units across various departments and projects.
+The 'lkp_Unit' table serves as a reference for organizational units within the business, detailing their attributes such as billable status and external classifications. This table is essential for analyzing resource allocation and financial performance across different units, facilitating informed decision-making and strategic planning.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `BillableDep` | `int64` | The 'BillableDep' column (int64) in the 'lkp_Unit' table indicates the department responsible for billable activities, facilitating accurate tracking and reporting of revenue-generating units. |
-| `Organisatorische eenheid` | `string` | The 'Organisatorische eenheid' column identifies the specific organizational unit within the data enrichment process, facilitating the categorization and management of related data. |
-| `OWN-Sub-ExtT` | `string` | The 'OWN-Sub-ExtT' column in the 'lkp_Unit' table stores string values that represent external types associated with ownership subclasses, facilitating enriched data integration and classification. |
-| `Unit` | `string` | The 'Unit' column contains string values representing the various measurement units used to standardize and categorize data within the lkp_Unit reference table. |
+| `BillableDep` | `int64` | Column Description: The 'BillableDep' column (int64) in the 'lkp_Unit' table indicates the department responsible for billable activities, facilitating accurate tracking and reporting of revenue-generating units. |
+| `Organisatorische eenheid` | `string` | The 'Organisatorische eenheid' column in the 'lkp_Unit' table identifies the organizational unit associated with each entry, facilitating structured data management and reporting within the organization. |
+| `OWN-Sub-ExtT` | `string` | The 'OWN-Sub-ExtT' column in the 'lkp_Unit' table stores external type identifiers for owned sub-units, facilitating the classification and enrichment of scheduling tasks. |
+| `Unit` | `string` | The 'Unit' column in the 'lkp_Unit' table stores the names of measurement units used for categorizing and quantifying various items in the scheduling process. |
 
 ---
 
 #### <a name="table-vw_missing_timesheet"></a>Table: `vw_missing_timesheet`
 
-The 'vw_missing_timesheet' table provides a comprehensive overview of employees who have not submitted their timesheets, detailing the relevant time period, employee and manager information, and contract specifics. This table is essential for HR and management to identify compliance issues, ensure accurate payroll processing, and enhance workforce accountability.
+The 'vw_missing_timesheet' table serves as a critical resource for identifying employees who have not submitted their timesheets within a specified timeframe, enabling managers to address compliance issues and ensure accurate payroll processing. By tracking missing submissions alongside employee and contract details, this table aids in optimizing workforce management and enhancing accountability.
 
 ##### Columns
 
 | Name | Data Type | Description (Generated) |
 |------|-----------|-------------------------|
-| `ActualHours` | `double` | The 'ActualHours' column represents the total number of hours worked by an employee, recorded as a double to allow for precise decimal values, within the context of identifying and addressing missing timesheet entries. |
+| `ActualHours` | `double` | The 'ActualHours' column (double) in the 'vw_missing_timesheet' table represents the total number of hours worked by employees that have not been recorded in their timesheets, facilitating accurate tracking and reporting of labor hours. |
 | `Approved` | `boolean` | Indicates whether the timesheet entry has been approved (true) or not (false). |
-| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column represents the date and time when an employee's contract is scheduled to conclude, providing essential information for tracking contract durations within the context of missing timesheet records. |
-| `ContractHours` | `int64` | The 'ContractHours' column represents the total number of hours contracted for a specific employee or project, stored as an integer, to facilitate the identification of discrepancies in timesheet submissions. |
-| `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when an employee's contract begins, providing essential context for tracking timesheet submissions and compliance within the 'vw_missing_timesheet' table. |
-| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of contracts for employees who have missing timesheets, providing essential context for identifying compliance and payroll issues. |
-| `EmployeeID` | `string` | The 'EmployeeID' column (string) uniquely identifies each employee in the 'vw_missing_timesheet' table, facilitating the tracking and management of timesheet discrepancies. |
-| `EmployeeName` | `string` | The 'EmployeeName' column contains the full names of employees whose timesheets are missing, facilitating the identification and resolution of timesheet discrepancies. |
-| `Hours_` | `double` | The 'Hours_' column (double) in the 'vw_missing_timesheet' table represents the total number of hours recorded for each employee's timesheet entry, facilitating the identification of discrepancies in time reporting. |
-| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when the timesheet data was ingested into the system, facilitating tracking and auditing of data entry processes. |
-| `ManagerID` | `string` | The 'ManagerID' column (string) in the 'vw_missing_timesheet' table identifies the unique identifier of the manager responsible for overseeing the employee associated with the missing timesheet entries. |
+| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column represents the date and time when a contract is scheduled to conclude, providing essential information for tracking contract durations and ensuring timely timesheet submissions. |
+| `ContractHours` | `int64` | The 'ContractHours' column (int64) in the 'vw_missing_timesheet' table represents the total number of hours contracted for an employee, facilitating the identification of discrepancies in timesheet submissions. |
+| `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when an employee's contract begins, serving as a critical reference point for tracking timesheet submissions and compliance within the 'vw_missing_timesheet' table. |
+| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of contracts for employees who have missing timesheets, providing insight into potential compliance or payroll issues. |
+| `EmployeeID` | `string` | The 'EmployeeID' column (string) in the 'vw_missing_timesheet' table uniquely identifies each employee associated with missing timesheet entries, facilitating efficient tracking and resolution of timesheet discrepancies. |
+| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees whose timesheets are missing, facilitating the identification and follow-up on outstanding time reporting issues. |
+| `Hours_` | `double` | The 'Hours_' column (double) in the 'vw_missing_timesheet' table represents the total number of hours that employees have not reported on their timesheets, facilitating the identification of missing time entries for accurate payroll and project tracking. |
+| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the date and time when the timesheet data was ingested into the system, facilitating tracking and auditing of data processing activities. |
+| `ManagerID` | `string` | The 'ManagerID' column stores the unique identifier of the manager responsible for overseeing the timesheet entries, facilitating accountability and tracking within the 'vw_missing_timesheet' table. |
 | `ManagerName` | `string` | The 'ManagerName' column contains the names of managers responsible for overseeing employees who have missing timesheets, facilitating accountability and follow-up actions. |
-| `MissingHours` | `double` | The 'MissingHours' column (double) in the 'vw_missing_timesheet' table quantifies the total number of hours not recorded in timesheets, providing insights into potential discrepancies in employee work hour reporting. |
-| `Project` | `string` | The 'Project' column identifies the specific project associated with each entry in the missing timesheet records, facilitating the tracking and management of time allocation across various initiatives. |
-| `ProjectCode` | `string` | The 'ProjectCode' column contains a unique identifier for each project, facilitating the tracking and management of timesheet entries associated with specific projects in the 'vw_missing_timesheet' table. |
-| `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true signifying rejection and false indicating acceptance. |
-| `ReportReady` | `boolean` | Indicates whether the timesheet data is complete and ready for reporting purposes. |
-| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales, recorded as a double-precision floating-point number, within the context of tracking missing timesheet entries for accurate financial reporting. |
-| `SalesPrice` | `double` | The 'SalesPrice' column represents the monetary value of sales transactions, stored as a double data type, to facilitate accurate financial analysis and reporting within the 'vw_missing_timesheet' table. |
-| `ShortDate` | `dateTime` | The 'ShortDate' column captures the specific date associated with missing timesheet entries, facilitating timely follow-up and resolution of discrepancies. |
+| `MissingHours` | `double` | The 'MissingHours' column (double) in the 'vw_missing_timesheet' table quantifies the total number of hours not recorded in employee timesheets, facilitating the identification of discrepancies in time tracking. |
+| `Project` | `string` | The 'Project' column identifies the specific project associated with each entry in the missing timesheet records, facilitating tracking and resolution of unreported work hours. |
+| `ProjectCode` | `string` | The 'ProjectCode' column stores a unique identifier for each project associated with missing timesheets, facilitating the tracking and management of time allocation across various projects. |
+| `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true representing a rejection and false indicating acceptance. |
+| `ReportReady` | `boolean` | Indicates whether the timesheet report is ready for processing, with a value of true signifying readiness and false indicating that it is not yet prepared. |
+| `SalesAmount` | `double` | The 'SalesAmount' column represents the total monetary value of sales transactions associated with missing timesheet entries, recorded as a double for precision in financial calculations. |
+| `SalesPrice` | `double` | The 'SalesPrice' column represents the monetary value assigned to each sale, stored as a double to accommodate precise pricing calculations within the context of timesheet data analysis. |
+| `ShortDate` | `dateTime` | Column Description: The 'ShortDate' column captures the specific date and time when a timesheet entry is missing, facilitating the tracking and management of timesheet compliance within the 'vw_missing_timesheet' table. |
 | `SubUnit` | `string` | The 'SubUnit' column identifies the specific organizational subunit associated with each entry in the missing timesheet records, facilitating targeted follow-up and resolution of timesheet discrepancies. |
-| `TimesheetCode` | `string` | The 'TimesheetCode' column stores unique identifiers for timesheets, facilitating the tracking and management of employee work hours within the 'vw_missing_timesheet' table. |
-| `TimesheetDescription` | `string` | The 'TimesheetDescription' column provides a detailed narrative of the work activities recorded in the timesheet, facilitating better understanding and analysis of employee time allocation. |
-| `Week_` | `int64` | The 'Week_' column (int64) in the 'vw_missing_timesheet' table represents the numerical week of the year associated with each timesheet entry, facilitating the identification and analysis of missing timesheet submissions by week. |
-| `Year_` | `int64` | Column Description: The 'Year_' column (int64) represents the calendar year associated with each entry in the 'vw_missing_timesheet' table, facilitating the analysis of timesheet data over time. |
+| `TimesheetCode` | `string` | The 'TimesheetCode' column stores unique identifiers for timesheets, facilitating the tracking and management of missing timesheet entries within the 'vw_missing_timesheet' table. |
+| `TimesheetDescription` | `string` | The 'TimesheetDescription' column provides a textual summary of the tasks or activities recorded in the timesheet, facilitating the identification and analysis of missing entries in the 'vw_missing_timesheet' table. |
+| `Week_` | `int64` | The 'Week_' column (int64) in the 'vw_missing_timesheet' table represents the week number of the year associated with each timesheet entry, facilitating the identification of missing submissions by week. |
+| `Year_` | `int64` | Column Description: The 'Year_' column (int64) represents the calendar year associated with each entry in the 'vw_missing_timesheet' table, facilitating the identification and analysis of timesheet data by year. |
 
 ##### Calculated Columns
 
 **`BillableDep`** (`string`)
 
-- **Description:** The 'BillableDep' column identifies the department associated with billable hours for employees, facilitating accurate tracking and reporting of time spent on chargeable projects within the 'vw_missing_timesheet' table.
+- **Description:** The 'BillableDep' column indicates the department associated with billable hours for employees whose timesheets are missing, facilitating the identification of revenue-generating activities.
 - **DAX Expression:**
 ```dax
 IF(
@@ -233,22 +233,26 @@ IF(
 			    IF(RELATED(lkp_Unit[BillableDep]) <> 0, 1, 0)
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillableDep`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `BillableDep`. Let's break down what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the `lkp_Unit` table for the column `BillableDep`. This is done using the `RELATED` function, which pulls in data from a related table based on existing relationships in your data model.
+1. **Purpose**: The calculated column is designed to determine whether a certain unit (likely a project, task, or resource) is considered "billable" based on a related table called `lkp_Unit`.
 
-2. **Handle Blank Values**: If the related `BillableDep` value is blank (meaning there is no corresponding entry in the `lkp_Unit` table), the expression returns a value of `1`. This indicates that, in the absence of specific information, the default assumption is that the item is billable.
+2. **Logic**:
+   - The code first checks if the `BillableDep` value from the `lkp_Unit` table is blank (i.e., there is no value associated with it).
+   - If it is blank, the calculated column will return a value of **1**. This could indicate that if there is no specific billable dependency defined, the unit is treated as billable by default.
+   - If the `BillableDep` value is not blank, the code then checks if this value is not equal to **0**.
+     - If the `BillableDep` is not zero, it returns **1**, indicating that the unit is billable.
+     - If the `BillableDep` is zero, it returns **0**, indicating that the unit is not billable.
 
-3. **Check for Non-Zero Values**: If the related `BillableDep` value is not blank, the code then checks if this value is not equal to zero. If it is not zero, it again returns `1`, indicating that the item is considered billable.
+3. **Outcome**: 
+   - The final result of this calculated column will be either **1** (billable) or **0** (not billable) based on the conditions checked. 
+   - This helps in identifying which units can be billed for services or resources, allowing for better financial tracking and reporting.
 
-4. **Return Zero for Zero Values**: If the related `BillableDep` value is zero, the expression returns `0`, indicating that the item is not billable.
-
-### Summary:
-In summary, this DAX expression effectively categorizes items as billable or not based on the `BillableDep` value from the related `lkp_Unit` table. It assigns a value of `1` (billable) if there is no related data or if the related value is non-zero, and it assigns a value of `0` (not billable) if the related value is zero. This helps in identifying which items can be billed based on their associated data.
+In summary, this DAX expression effectively categorizes units as billable or not based on their relationship with the `lkp_Unit` table, providing a straightforward way to manage billing information.
 
 **`CC_ActiveEmployees`** (`string`)
 
-- **Description:** The 'CC_ActiveEmployees' column contains a string representation of the active employees in the company, used to identify those who may be missing timesheet submissions in the 'vw_missing_timesheet' table.
+- **Description:** Column Description: This column indicates the status of active employees, represented as a string, within the context of identifying missing timesheet entries in the 'vw_missing_timesheet' table.
 - **DAX Expression:**
 ```dax
 IF(vw_missing_timesheet[ShortDate] >= vw_missing_timesheet[ContractStartDate] && 
@@ -257,24 +261,24 @@ IF(vw_missing_timesheet[ShortDate] >= vw_missing_timesheet[ContractStartDate] &&
 			        , 0
 			    )
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `CC_ActiveEmployees` in a data model, specifically within a table named `vw_missing_timesheet`. Here's a breakdown of what this code does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `CC_ActiveEmployees` in a data table called `vw_missing_timesheet`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The calculated column is designed to identify whether an employee is currently active based on their contract dates.
+1. **Purpose**: The calculated column determines whether an employee is considered "active" based on their contract dates and a specific date (referred to as `ShortDate`).
 
 2. **Conditions Checked**:
-   - **Start Date**: The code first checks if the date in the column `ShortDate` (which likely represents a specific date being evaluated) is on or after the employee's `ContractStartDate`. This means the employee's contract must have started before or on this date for them to be considered active.
-   - **End Date**: Next, it checks if the `ShortDate` is on or before the `ContractEndDate`. This means the employee's contract must still be valid on this date. However, if the `ContractEndDate` is blank (meaning the employee has no specified end date), the employee is still considered active.
+   - **Contract Start Date**: The code checks if the `ShortDate` (which likely represents a specific date, such as the date of a timesheet entry) is on or after the employee's `ContractStartDate`. This means the employee should have started working on or before this date.
+   - **Contract End Date**: It also checks if the `ShortDate` is on or before the `ContractEndDate`. If the `ContractEndDate` is blank (meaning the employee's contract is still active or ongoing), this condition is satisfied regardless of the `ShortDate`.
 
 3. **Output**:
-   - If both conditions are met (the date is within the contract period or the end date is blank), the expression returns a value of `1`, indicating that the employee is active.
-   - If either condition is not met, it returns a value of `0`, indicating that the employee is not active.
+   - If both conditions are met (the `ShortDate` is within the range of the contract dates), the calculated column will return a value of **1**, indicating that the employee is active.
+   - If either condition is not met, it will return a value of **0**, indicating that the employee is not active.
 
 ### Summary:
-In summary, this DAX expression effectively flags employees as "active" (1) or "not active" (0) based on whether the date being evaluated falls within their contract period. This helps in analyzing employee status and managing workforce data efficiently.
+In summary, this DAX expression effectively flags employees as "active" (1) or "not active" (0) based on whether the date of interest falls within their contract period. This can help in analyzing employee activity and managing timesheet data more effectively.
 
 **`IncompleteFlag`** (`string`)
 
-- **Description:** The 'IncompleteFlag' column indicates whether a timesheet entry is incomplete, using a string value to signify its status for data enrichment and analysis.
+- **Description:** The 'IncompleteFlag' column indicates whether a timesheet entry is incomplete, represented as a string value, to facilitate the identification and management of missing or unsubmitted timesheets in the 'vw_missing_timesheet' view.
 - **DAX Expression:**
 ```dax
 if(vw_missing_timesheet[MissingHours] < 0, 1, 0)
@@ -283,19 +287,18 @@ if(vw_missing_timesheet[MissingHours] < 0, 1, 0)
 
 ### Explanation of the DAX Expression:
 
-- **Condition Check**: The expression checks the value in the `MissingHours` column of the `vw_missing_timesheet` table.
+- **Condition Check**: The expression checks the value of the column `MissingHours` in the `vw_missing_timesheet` table.
 - **Logic**: 
-  - If the value of `MissingHours` is **less than 0**, it means that there is an issue (for example, it could indicate that there are negative hours recorded, which typically shouldn't happen).
-  - In this case, the expression returns **1**, which can be interpreted as a flag indicating that there is an incomplete or problematic entry.
-  - If the value of `MissingHours` is **0 or greater**, the expression returns **0**, indicating that there is no issue with the hours recorded.
+  - If the value of `MissingHours` is **less than 0**, it means that there is an issue or a discrepancy with the recorded hours (for example, it could indicate that hours are missing or incorrectly logged).
+  - In this case, the expression returns a value of **1**, which can be interpreted as a flag indicating that the entry is incomplete or problematic.
+  - If the value of `MissingHours` is **0 or greater**, the expression returns **0**, indicating that there are no issues with the hours recorded.
 
 ### What It Achieves:
 
-- **Flagging Incomplete Entries**: The `IncompleteFlag` column will help identify records where there is a discrepancy or error in the `MissingHours` data. 
-- **Data Quality Control**: By flagging these entries, the business can easily filter or analyze records that may require further investigation or correction.
-- **Simplified Reporting**: This flag can be used in reports or dashboards to quickly highlight issues related to timesheet entries, allowing for better management of employee hours and ensuring accurate payroll processing.
+- **Flagging Incomplete Entries**: This calculated column effectively flags records where there are missing or negative hours, allowing users to easily identify which entries need attention or correction.
+- **Data Quality Improvement**: By highlighting these incomplete records, the organization can take action to ensure that all timesheets are accurate and complete, which is crucial for payroll, project tracking, and resource management.
 
-In summary, this DAX expression is a simple yet effective way to identify and flag records with negative missing hours, helping maintain data integrity and support operational decision-making.
+In summary, the `IncompleteFlag` column helps in identifying and managing entries with missing or negative hours, thereby supporting better data integrity and operational efficiency.
 
 **`MAIN_UNIT`** (`string`)
 
@@ -308,40 +311,39 @@ IF(
 			    RELATED(lkp_Unit[Unit])
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'MAIN_UNIT'. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `MAIN_UNIT`. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the 'lkp_Unit' table for the current row. Specifically, it looks for the 'Unit' field in that related table.
+1. **Check for Related Data**: The code uses the `RELATED` function to look up a value from another table called `lkp_Unit`. Specifically, it is trying to find the `Unit` associated with the current row in the main table.
 
-2. **Handle Missing Data**: 
-   - If there is no related value (meaning the 'Unit' field is blank or missing), the code will return the text "Unknown". This is a way to handle situations where the expected data is not available, ensuring that the column does not end up with a blank value.
-   - If there is a related value (meaning the 'Unit' field has data), it will return that value.
+2. **Handle Missing Data**: The `ISBLANK` function checks if the value retrieved from the `lkp_Unit` table is blank (i.e., there is no corresponding unit found). 
 
-3. **Purpose**: The overall purpose of this calculated column is to provide a clear and user-friendly representation of the 'Unit' information. If the unit is known, it shows the actual unit name; if it’s not known, it clearly indicates that with the word "Unknown".
+3. **Return Values Based on the Check**:
+   - If the `Unit` value is blank (meaning there is no related unit), the code returns the string "Unknown". This indicates that the system could not find a valid unit for that particular entry.
+   - If the `Unit` value is not blank (meaning a valid unit was found), it returns the actual unit value from the `lkp_Unit` table.
 
-In summary, this DAX expression ensures that every row in the 'MAIN_UNIT' column either displays the corresponding unit name from the related table or indicates that the unit is unknown, thus improving data clarity and usability.
+### Summary:
+In essence, this DAX expression ensures that for each row in the main table, there is a clear indication of the unit associated with it. If a unit is found, it displays that unit; if not, it labels it as "Unknown". This helps maintain clarity and consistency in reporting, especially when dealing with incomplete data.
 
 **`YearWeek`** (`string`)
 
-- **Description:** The 'YearWeek' column represents the year and week number in a string format, facilitating the identification and analysis of timesheet data for specific weeks within a given year.
+- **Description:** The 'YearWeek' column (string) in the 'vw_missing_timesheet' table represents the specific year and week number, facilitating the identification of timesheet entries that are missing for a given week in the reporting period.
 - **DAX Expression:**
 ```dax
 YEAR([ContractEndDate]) & "-" & 
 			FORMAT(WEEKNUM([ContractEndDate]), "00")
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named 'YearWeek' in a data model, and it combines two pieces of information: the year and the week number of a specific date, which is represented by the column `[ContractEndDate]`.
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'YearWeek' in a data model, specifically for a table that includes a date field named `ContractEndDate`. Here's a breakdown of what this expression does in simple business terms:
 
-Here's a breakdown of what this code does in simple business terms:
+1. **Extracting the Year**: The function `YEAR([ContractEndDate])` takes the date from the `ContractEndDate` column and extracts the year from it. For example, if the `ContractEndDate` is December 15, 2023, this part of the expression will return `2023`.
 
-1. **Extracting the Year**: The function `YEAR([ContractEndDate])` takes the date from the `[ContractEndDate]` column and extracts the year from it. For example, if the date is December 15, 2023, this part would return `2023`.
-
-2. **Calculating the Week Number**: The function `WEEKNUM([ContractEndDate])` calculates which week of the year the date falls into. For instance, if the date is December 15, 2023, it might return `50`, indicating that it is the 50th week of the year.
+2. **Calculating the Week Number**: The function `WEEKNUM([ContractEndDate])` calculates the week number of the year for the given `ContractEndDate`. Continuing with the previous example, if the `ContractEndDate` is in the 50th week of the year, this function will return `50`.
 
 3. **Formatting the Week Number**: The `FORMAT(..., "00")` function ensures that the week number is always displayed as a two-digit number. So, if the week number is `5`, it will be formatted as `05`.
 
-4. **Combining Year and Week Number**: The `& "-" &` part of the code concatenates (joins) the year and the formatted week number with a hyphen in between. So, if the year is `2023` and the week number is `50`, the final result will be `2023-50`.
+4. **Combining Year and Week Number**: The `&` operator is used to concatenate (join together) the year and the formatted week number with a hyphen in between. So, if the year is `2023` and the week number is `50`, the final result will be `2023-50`.
 
 ### Summary:
-The overall result of this DAX expression is a string that represents the year and the week number of the `[ContractEndDate]` in the format "YYYY-WW". For example, if the contract ends on December 15, 2023, the calculated column 'YearWeek' would show `2023-50`. This can be useful for reporting and analysis, allowing users to easily group or filter data by year and week.
+The overall purpose of this DAX expression is to create a unique identifier for each week of the year based on the `ContractEndDate`. The resulting 'YearWeek' column will look like `YYYY-WW`, where `YYYY` is the year and `WW` is the two-digit week number. This can be useful for reporting and analysis, allowing users to easily group or filter data by week and year.
 
 ##### Measures
 
@@ -356,16 +358,16 @@ CALCULATE(
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided is designed to create a measure called `Count_Negative_Consultant`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: This measure counts the number of unique consultants (employees) who have recorded negative hours in their timesheets. Negative hours typically indicate that there was an error in reporting or that hours were deducted for some reason.
+1. **Purpose**: This measure counts the number of unique consultants (employees) who have recorded negative hours in their timesheets. Negative hours might indicate that these consultants have made adjustments or corrections to their reported hours, such as deductions or errors.
 
 2. **Components**:
-   - **`CALCULATE`**: This function modifies the context in which data is evaluated. In this case, it is used to apply a specific filter to the data being counted.
-   - **`DISTINCTCOUNT('vw_missing_timesheet'[EmployeeName])`**: This part counts the unique names of employees from the `vw_missing_timesheet` table. It ensures that each employee is only counted once, even if they have multiple entries with negative hours.
-   - **`'vw_missing_timesheet'[MissingHours] < 0`**: This filter condition specifies that only those records where the `MissingHours` value is less than zero should be considered in the count. This means that only employees with negative hours will be counted.
+   - **`CALCULATE` Function**: This function modifies the context in which data is evaluated. In this case, it is used to apply a specific filter to the data being counted.
+   - **`DISTINCTCOUNT` Function**: This counts the number of unique entries in a specified column. Here, it counts unique employee names from the `vw_missing_timesheet` table.
+   - **Filter Condition**: The condition `'vw_missing_timesheet'[MissingHours] < 0` filters the data to include only those records where the `MissingHours` (the hours reported by the consultants) are less than zero.
 
-3. **Outcome**: The result of this measure is a single number that tells you how many different consultants have reported negative hours in their timesheets. This information can be useful for identifying issues in time reporting, understanding workload discrepancies, or addressing potential errors in timesheet submissions.
+3. **Outcome**: The measure ultimately returns the total number of distinct consultants who have negative hours recorded in their timesheets. This can help management identify potential issues with time reporting or highlight consultants who may need further review or support.
 
-In summary, `Count_Negative_Consultant` helps businesses track and manage consultants who may have discrepancies in their reported hours, allowing for better oversight and corrective actions if necessary.
+In summary, `Count_Negative_Consultant` provides insight into how many unique consultants have reported negative hours, which can be crucial for understanding time management and ensuring accurate reporting within the organization.
 
 **`CountNegativeMissingHours`**
 
@@ -376,18 +378,18 @@ CALCULATE(
 			    'vw_missing_timesheet'[MissingHours] < 0
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to create a measure called **CountNegativeMissingHours**. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to create a measure called **CountNegativeMissingHours**. Here’s a breakdown of what it does in simple business terms:
 
-1. **Purpose**: This measure counts the number of unique employees who have recorded negative missing hours in a timesheet.
+1. **Purpose**: This measure counts the number of unique employees who have recorded negative missing hours in the 'vw_missing_timesheet' table.
 
 2. **Components**:
-   - **CALCULATE**: This function modifies the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
-   - **DISTINCTCOUNT('vw_missing_timesheet'[EmployeeID])**: This part counts the number of unique Employee IDs from the 'vw_missing_timesheet' table. Essentially, it tells us how many different employees are involved.
-   - **'vw_missing_timesheet'[MissingHours] < 0**: This is a filter condition applied within the CALCULATE function. It specifies that we only want to consider records where the MissingHours value is less than zero, meaning we are looking for instances where employees have negative missing hours.
+   - **CALCULATE**: This function changes the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
+   - **DISTINCTCOUNT('vw_missing_timesheet'[EmployeeID])**: This part counts the number of unique Employee IDs in the 'vw_missing_timesheet' table. It ensures that each employee is only counted once, even if they have multiple entries.
+   - **'vw_missing_timesheet'[MissingHours] < 0**: This filter condition specifies that only records where the MissingHours are less than zero should be considered. In other words, it focuses on cases where employees have negative missing hours, which might indicate an error or a specific situation that needs attention.
 
-3. **Outcome**: The measure ultimately provides a count of how many distinct employees have negative missing hours recorded in the timesheet. This could indicate issues such as data entry errors or discrepancies in time reporting, which might need to be addressed by management or HR.
+3. **Outcome**: The measure ultimately provides a count of how many distinct employees have negative missing hours. This information can be useful for identifying potential issues in timesheet reporting or for understanding employee attendance patterns.
 
-In summary, **CountNegativeMissingHours** helps organizations identify and quantify employees with negative missing hours, allowing them to investigate potential problems in time tracking or reporting.
+In summary, **CountNegativeMissingHours** helps the business track and analyze instances where employees have reported negative hours, allowing for better management of timesheet accuracy and employee attendance.
 
 **`Dax_EmpCount`**
 
@@ -411,31 +413,32 @@ VAR ActiveEmployees =
 			        ),
 			        [MinActiveEmp] = 1 && [MissingHours] < 0
 			    )
+			
 			RETURN COUNTROWS(ActiveEmployees)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the number of active employees who are missing timesheet hours in a specific context. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the number of employees who are currently active but have missing timesheet hours for a specific period. Here's a breakdown of what it does in simple business terms:
 
-1. **Data Source**: The code works with a data table called `vw_missing_timesheet`, which likely contains information about employees, their hours worked, and their contractual hours.
+1. **Data Source**: The code uses a data source called `vw_missing_timesheet`, which likely contains records of employee hours worked, contract hours, and their active status.
 
-2. **Summarization**: The code first creates a summarized view of the data. It groups the information by:
+2. **Summarization**: The code first summarizes the data by grouping it based on several key attributes:
    - Employee Name
    - Year
    - Week
    - Unit (likely a department or team)
    - SubUnit (a more specific division within the unit)
 
-   For each group, it calculates two key pieces of information:
-   - **MissingHours**: This is calculated by taking the total hours worked (`SUM(vw_missing_timesheet[Hours_])`) and subtracting the maximum contractual hours (`MAX(vw_missing_timesheet[ContractHours])`). If this value is negative, it indicates that the employee has worked fewer hours than expected.
-   - **MinActiveEmp**: This captures the minimum value of active employees (`MIN(vw_missing_timesheet[CC_ActiveEmployees])`) for that group. If this value is 1, it means there is at least one active employee in that group.
+   For each group, it calculates two important values:
+   - **MissingHours**: This is calculated by taking the total hours worked by the employee in that week and subtracting their contracted hours. If this value is negative, it indicates that the employee has not logged enough hours compared to what they are contracted for.
+   - **MinActiveEmp**: This value captures the minimum number of active employees for that group, which helps identify if there is at least one active employee in that grouping.
 
-3. **Filtering**: After summarizing the data, the code filters this summarized data to find only those groups where:
-   - There is at least one active employee (`[MinActiveEmp] = 1`).
-   - The calculated missing hours are negative (`[MissingHours] < 0`), indicating that the employee has not logged enough hours.
+3. **Filtering**: After summarizing the data, the code filters the results to focus only on those groups where:
+   - There is at least one active employee (`MinActiveEmp = 1`).
+   - The calculated missing hours are negative (`MissingHours < 0`), meaning the employee has not logged enough hours.
 
-4. **Counting**: Finally, the code counts the number of rows in the filtered result, which represents the number of active employees who are missing timesheet hours.
+4. **Counting**: Finally, the code counts the number of rows that meet these criteria. Each row represents an active employee who has missing timesheet hours.
 
 ### Summary:
-In essence, this DAX measure calculates how many active employees have not logged enough hours in their timesheets for a given year and week, helping the business identify potential issues with timesheet compliance.
+In essence, this DAX measure calculates how many active employees have not logged enough hours in their timesheets for a given week and year. This information can be crucial for management to identify potential issues with timesheet compliance and ensure that all employees are accurately reporting their hours worked.
 
 **`Dax_MissingHours`**
 
@@ -455,20 +458,26 @@ VAR ActiveEmployees =
 			        ),
 			        [MinActiveEmp] = 1 && [MissingHours] < 0
 			    )
+			
 			RETURN 
 			    SUMX(ActiveEmployees, [MissingHours])
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate a measure called `Dax_MissingHours`, which focuses on identifying and summing up the negative missing hours for active employees in a specific context (like a week or year). Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate a measure called `Dax_MissingHours`, which focuses on identifying and summing up the missing hours for active employees in a specific context (like a week or year). Here’s a breakdown of what it does in simple business terms:
 
-1. **Identify Active Employees**: The code starts by creating a variable called `ActiveEmployees`. This variable filters a summarized table (`vw_missing_timesheet`) to focus on employees who are currently active. It does this by checking a specific condition: it only includes employees who have a minimum active status (`MinActiveEmp`) of 1.
+1. **Identify Active Employees**: The code first creates a variable called `ActiveEmployees`. This variable filters a summarized table (`vw_missing_timesheet`) to focus on employees who are currently active. It does this by checking two conditions:
+   - The employee must be marked as active (`MinActiveEmp = 1`).
+   - The total hours they worked must be less than their contracted hours (`MissingHours < 0`), indicating they have not met their expected working hours.
 
-2. **Calculate Missing Hours**: For each employee, the code calculates "MissingHours" by taking the total hours they have recorded (`SUM(vw_missing_timesheet[Hours_])`) and subtracting the maximum contract hours they are supposed to work (`MAX(vw_missing_timesheet[ContractHours])`). If this calculation results in a negative number, it indicates that the employee has worked fewer hours than expected.
+2. **Summarize Data**: The `SUMMARIZE` function is used to create a new table that groups data by employee name, year, week, unit, and subunit. For each group, it calculates:
+   - **MissingHours**: This is calculated as the total hours worked by the employee minus their contracted hours. If this value is negative, it indicates that the employee has not worked enough hours.
+   - **MinActiveEmp**: This captures the minimum value of a field that indicates whether the employee is active (1 for active, 0 for inactive).
 
-3. **Filter for Relevant Data**: The `FILTER` function ensures that only those employees who are active and have negative missing hours are included in the final calculation. This means the measure is specifically looking for employees who are underperforming in terms of hours worked.
+3. **Filter for Relevant Employees**: The `FILTER` function then narrows down this summarized data to only include those employees who are active and have missing hours (i.e., they worked fewer hours than expected).
 
-4. **Sum Up Missing Hours**: Finally, the `RETURN` statement uses `SUMX` to iterate over the filtered list of active employees and sums up their "MissingHours." This gives a total of all the negative hours across all active employees, highlighting the overall shortfall in hours worked.
+4. **Calculate Total Missing Hours**: Finally, the `RETURN` statement uses `SUMX` to iterate over the filtered list of active employees and sums up their `MissingHours`. This gives the total number of hours that active employees are missing based on the criteria defined.
 
-In summary, this DAX measure calculates the total number of hours that active employees are missing (i.e., not working enough hours compared to their contract) by summing up the negative differences between their actual hours worked and their expected hours. This can help management identify potential issues with employee attendance or workload management.
+### Summary:
+In essence, this DAX measure calculates the total number of hours that active employees have not worked compared to their contracted hours, focusing only on those who are currently active and have a deficit in their hours. This can help a business identify gaps in employee attendance or performance, allowing for better resource management and planning.
 
 **`ExpectedContractHoursWeekly`**
 
@@ -486,18 +495,18 @@ SUMX(
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided calculates the total expected contract hours for employees on a weekly basis. Here’s a breakdown of what it does in simple business terms:
 
-1. **Data Source**: The calculation is based on a table called `vw_missing_timesheet`, which likely contains records of timesheets for employees, including their contract hours and the week associated with each entry.
+1. **Data Source**: The calculation is based on a data table called `vw_missing_timesheet`, which likely contains records of timesheets for employees, including their contract hours and the week associated with each entry.
 
 2. **Grouping Data**: The `SUMMARIZE` function is used to group the data by two key pieces of information:
-   - **Week**: This represents the specific week for which we are calculating contract hours.
-   - **EmployeeID**: This identifies each employee.
+   - `Week_`: This represents the week for which we are calculating the expected contract hours.
+   - `EmployeeID`: This identifies each employee.
 
-3. **Calculating Maximum Contract Hours**: For each unique combination of week and employee, the code calculates the maximum contract hours from the `ContractHours` column. This means that if an employee has multiple entries for the same week, it will only consider the highest number of contract hours they are supposed to work for that week.
+3. **Calculating Maximum Contract Hours**: For each unique combination of week and employee, the code calculates the maximum contract hours using `MAX(vw_missing_timesheet[ContractHours])`. This means that if an employee has multiple entries for the same week, it will take the highest number of contract hours recorded for that week.
 
-4. **Summing Up Contract Hours**: The `SUMX` function then takes the results from the `SUMMARIZE` step and adds up all the maximum contract hours calculated for each employee across all weeks. 
+4. **Summing Up Contract Hours**: The `SUMX` function then takes the results from the `SUMMARIZE` step and sums up all the maximum contract hours calculated for each employee across all weeks. Essentially, it adds up the highest contract hours for each employee for each week.
 
 ### What It Achieves:
-The overall result of this DAX measure is the total expected contract hours for all employees, aggregated by week. This is useful for understanding how many hours are expected to be worked by employees in a given week, which can help in planning, resource allocation, and ensuring that staffing levels meet contractual obligations.
+The overall goal of this DAX measure is to provide a total of the expected contract hours for all employees, ensuring that if there are multiple entries for any employee in a given week, only the highest contract hours are considered. This helps in understanding the total expected workload for employees based on their contractual agreements, while avoiding double counting in cases where there are multiple records for the same week.
 
 **`MissingHoursOut`**
 
@@ -507,17 +516,17 @@ MAX(vw_missing_timesheet[ContractHours]) - MAX(vw_missing_timesheet[Hours_])
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided calculates the difference between two values related to hours worked and contracted hours for employees or contractors. Here’s a breakdown of what it does in simple business terms:
 
-1. **MAX(vw_missing_timesheet[ContractHours])**: This part of the expression retrieves the maximum value of "ContractHours" from the `vw_missing_timesheet` table. "ContractHours" represents the total number of hours that an employee or contractor is supposed to work according to their contract.
+1. **MAX(vw_missing_timesheet[ContractHours])**: This part of the expression retrieves the maximum value of contracted hours from the `vw_missing_timesheet` table. Contracted hours refer to the total number of hours that an employee or contractor is expected to work as per their contract.
 
-2. **MAX(vw_missing_timesheet[Hours_])**: This part retrieves the maximum value of "Hours_" from the same table. "Hours_" represents the actual hours that the employee or contractor has logged or reported working.
+2. **MAX(vw_missing_timesheet[Hours_])**: This part retrieves the maximum value of actual hours worked (or logged) from the same table. This represents the total number of hours that the employee or contractor has actually worked.
 
-3. **Overall Calculation**: The expression subtracts the maximum actual hours worked (Hours_) from the maximum contracted hours (ContractHours). 
+3. **Calculation**: The expression then subtracts the maximum actual hours worked from the maximum contracted hours. 
 
 ### What It Achieves:
-- The result of this calculation gives you the maximum number of hours that are missing or unaccounted for. In other words, it tells you how many hours an employee or contractor has not worked compared to what they were contracted to work.
+The result of this calculation gives you the maximum number of hours that are missing or unaccounted for. In other words, it shows how many hours an employee or contractor has not worked compared to what they were supposed to work according to their contract. 
 
 ### Business Implication:
-- This measure helps in identifying gaps in hours worked versus hours expected, which can be crucial for payroll, project management, and ensuring that resources are being utilized effectively. It can also highlight potential issues with time reporting or resource allocation.
+This measure is useful for identifying gaps in hours worked, which can help in managing workforce efficiency, ensuring compliance with contracts, and addressing any issues related to underperformance or missed work hours. It can also assist in payroll and resource planning by highlighting discrepancies between expected and actual work hours.
 
 **`PercentageCompleteness`**
 
@@ -529,23 +538,23 @@ DIVIDE(
 			    0
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the percentage of completeness regarding missing hours in relation to expected contract hours. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided calculates the "Percentage Completeness" of timesheet submissions in a business context. Here’s a breakdown of what it does in simple terms:
 
-1. **SUM(vw_missing_timesheet[MissingHours])**: This part of the code adds up all the missing hours recorded in the `vw_missing_timesheet` table. Essentially, it tells us how many hours are missing from the timesheets.
+1. **SUM(vw_missing_timesheet[MissingHours])**: This part of the code adds up all the hours that are missing from timesheets. Essentially, it gives you the total number of hours that employees have not reported.
 
-2. **[ExpectedContractHoursWeekly]**: This is a measure that represents the total number of hours that are expected to be worked in a week according to the contract. It serves as a benchmark for comparison.
+2. **[ExpectedContractHoursWeekly]**: This is a measure that represents the total number of hours that employees are expected to work in a week according to their contracts. It serves as a benchmark for comparison.
 
-3. **SUM(vw_missing_timesheet[MissingHours]) - [ExpectedContractHoursWeekly]**: Here, the code calculates the difference between the total missing hours and the expected contract hours. If the result is positive, it indicates that the missing hours exceed what was expected; if negative, it means the missing hours are less than expected.
+3. **SUM(vw_missing_timesheet[MissingHours]) - [ExpectedContractHoursWeekly]**: Here, the code calculates the difference between the total missing hours and the expected hours. If the result is positive, it indicates that the missing hours exceed what was expected, suggesting a shortfall in timesheet submissions.
 
-4. **DIVIDE(..., [ExpectedContractHoursWeekly], 0)**: This function divides the result of the previous calculation (the difference between missing hours and expected hours) by the expected contract hours. The `DIVIDE` function is used instead of a simple division to handle cases where the denominator (expected hours) might be zero, in which case it returns 0 instead of an error.
+4. **DIVIDE(..., [ExpectedContractHoursWeekly], 0)**: This function divides the result from the previous step (the difference between missing hours and expected hours) by the expected contract hours. The `DIVIDE` function is used instead of a simple division to handle cases where the denominator (expected hours) might be zero. If it is zero, the function will return 0 instead of causing an error.
 
 ### What It Achieves:
-The overall measure, `PercentageCompleteness`, calculates how much the missing hours deviate from the expected contract hours as a percentage. 
+The final result of this DAX expression is a percentage that indicates how far off the actual timesheet submissions are from what is expected. 
 
-- If the result is positive, it indicates that there are more missing hours than expected, suggesting a shortfall in timesheet submissions.
-- If the result is negative, it indicates that the missing hours are less than expected, which could imply better compliance with timesheet submissions.
+- If the percentage is positive, it means that there are more missing hours than expected, indicating a problem with timesheet compliance.
+- If the percentage is zero or negative, it suggests that the timesheet submissions are meeting or exceeding expectations.
 
-In summary, this measure helps the business understand the extent of timesheet compliance by comparing actual missing hours against what is expected, expressed as a percentage. This can be useful for identifying areas where improvements are needed in timesheet reporting.
+In summary, this measure helps the business understand the completeness of timesheet submissions relative to what is expected, allowing for better management of employee hours and compliance tracking.
 
 **`UniqueEmployeesPerUnit`**
 
@@ -562,28 +571,27 @@ SUMX(
 			    [IncompleteFlag]
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate a measure called `UniqueEmployeesPerUnit`. Let's break it down step by step in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to calculate a measure called `UniqueEmployeesPerUnit`. Let's break it down into simpler terms to understand what it achieves:
 
-1. **Data Source**: The measure uses a data source called `vw_missing_timesheet`, which likely contains records of employees and their timesheet submissions, including information about whether their submissions are complete or incomplete.
+1. **Data Source**: The measure uses a table called `vw_missing_timesheet`, which likely contains records of employees and their timesheet submissions, including information about whether their submissions are complete or incomplete.
 
-2. **Grouping Data**: The `SUMMARIZE` function is used to group the data by three key attributes:
+2. **Grouping Data**: The `SUMMARIZE` function is used to create a new table that groups the data by three columns:
    - `Week_`: This represents the week of the year.
-   - `EmployeeName`: This identifies each employee.
-   - `MAIN_UNIT`: This likely refers to the department or unit within the organization that the employee belongs to.
+   - `EmployeeName`: This is the name of the employee.
+   - `MAIN_UNIT`: This indicates the main unit or department the employee belongs to.
 
-   While grouping, it also creates a new column called `IncompleteFlag`, which captures the maximum value of the `IncompleteFlag` for each combination of week, employee, and unit. The `IncompleteFlag` probably indicates whether an employee has submitted their timesheet (with a value of 0 for complete and 1 for incomplete).
+   For each unique combination of these three columns, the code also calculates a new column called `IncompleteFlag`, which takes the maximum value of the `IncompleteFlag` for that group. This flag likely indicates whether any of the timesheet submissions for that employee in that week are incomplete (e.g., 1 for incomplete, 0 for complete).
 
-3. **Calculating the Measure**: After summarizing the data, the `SUMX` function iterates over each group created by `SUMMARIZE`. For each group, it sums up the `IncompleteFlag` values. This means it counts how many times an employee has an incomplete timesheet for each week and unit.
+3. **Calculating the Sum**: After summarizing the data, the `SUMX` function iterates over the summarized table. It sums up the values in the `IncompleteFlag` column for each group. This means it counts how many unique employees have at least one incomplete timesheet submission for each unit in each week.
 
-4. **Final Outcome**: The final result of this measure is the total count of incomplete timesheet submissions across all employees and units for the specified weeks. This measure helps the business understand how many employees have not submitted their timesheets, which can be crucial for payroll processing and ensuring compliance with reporting requirements.
-
-In summary, `UniqueEmployeesPerUnit` calculates the total number of incomplete timesheet submissions by employees, grouped by week and unit, helping the organization track and manage timesheet compliance effectively.
+### What It Achieves:
+In summary, this DAX measure calculates the total number of unique employees who have incomplete timesheet submissions, grouped by week and by their main unit. This information can be valuable for management to identify which units or weeks have higher instances of incomplete timesheets, allowing them to take action to improve compliance and ensure that all employees are submitting their timesheets on time.
 
 ---
 
 #### <a name="table-vw_timesheet"></a>Table: `vw_Timesheet`
 
-The 'vw_Timesheet' table serves as a comprehensive record of employee timesheet submissions, capturing essential details such as financial year, submission dates, and associated project and managerial information. This table enables businesses to analyze labor allocation, project costs, and managerial oversight, facilitating informed decision-making and resource management.
+The 'vw_Timesheet' table serves as a comprehensive record of employee timesheet submissions, capturing essential details such as financial year, submission dates, and associated project and personnel identifiers. This data enables management to analyze labor allocation, project costs, and employee productivity, facilitating informed decision-making and resource optimization.
 
 ##### Columns
 
@@ -591,66 +599,66 @@ The 'vw_Timesheet' table serves as a comprehensive record of employee timesheet 
 |------|-----------|-------------------------|
 | `Approved` | `boolean` | Indicates whether the timesheet entry has been approved (true) or not (false). |
 | `Client` | `string` | The 'Client' column in the 'vw_Timesheet' table identifies the specific client associated with each timesheet entry, facilitating accurate billing and project tracking. |
-| `Code2` | `string` | The 'Code2' column in the 'vw_Timesheet' table represents a secondary identifier or classification code associated with each timesheet entry, facilitating enhanced data categorization and reporting. |
-| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column captures the date and time when an employee's contract is set to expire, providing essential information for managing workforce planning and contract renewals within the timesheet data. |
-| `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when an employee's contract begins, providing essential context for timesheet entries and payroll calculations. |
-| `ContractStatusToday` | `string` | The 'ContractStatusToday' column indicates the current status of the contract associated with each timesheet entry, providing essential context for evaluating project progress and resource allocation. |
-| `ContractStatusTodayPBI` | `string` | Column Description: This column indicates the current status of contracts as of today, providing a real-time snapshot for analysis within the timesheet data. |
-| `ContractTransferDate` | `dateTime` | The 'ContractTransferDate' column records the date and time when a contract was transferred, providing essential context for timesheet entries related to contract changes. |
-| `CostAmount` | `double` | The 'CostAmount' column represents the total monetary cost associated with the recorded time entries in the 'vw_Timesheet' table, expressed as a double-precision floating-point number for precise financial calculations. |
-| `CostPrice` | `double` | The 'CostPrice' column represents the monetary value associated with the cost of labor for each entry in the timesheet, expressed as a double to allow for precise financial calculations. |
-| `Currency` | `string` | The 'Currency' column in the 'vw_Timesheet' table specifies the type of currency used for financial entries, facilitating accurate monetary calculations and reporting. |
-| `DebtorName` | `string` | The 'DebtorName' column stores the name of the individual or entity responsible for payment, facilitating the tracking and management of outstanding invoices within the timesheet records. |
-| `EmployeeID` | `string` | The 'EmployeeID' column (string) in the 'vw_Timesheet' table uniquely identifies each employee, facilitating the association of timesheet entries with the corresponding personnel for accurate tracking and reporting of work hours. |
-| `EmployeeIDName` | `string` | The 'EmployeeIDName' column in the 'vw_Timesheet' table stores the unique identifier and name of each employee, facilitating the association of timesheet entries with specific personnel for accurate reporting and analysis. |
-| `EmployeeKey` | `int64` | The 'EmployeeKey' column (int64) uniquely identifies each employee in the 'vw_Timesheet' table, facilitating the association of timesheet entries with specific personnel for accurate tracking and reporting. |
-| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees associated with each timesheet entry, facilitating the identification and tracking of individual work hours and contributions. |
-| `Employer` | `string` | The 'Employer' column in the 'vw_Timesheet' table captures the name of the organization for which the employee is working, facilitating accurate tracking of labor costs and resource allocation. |
+| `Code2` | `string` | The 'Code2' column in the 'vw_Timesheet' table represents a secondary identifier or classification code used to categorize or differentiate specific time entries for enhanced reporting and analysis. |
+| `ContractEndDate` | `dateTime` | The 'ContractEndDate' column in the 'vw_Timesheet' table represents the date and time when an employee's contract is scheduled to conclude, facilitating accurate tracking of contract durations for payroll and resource planning. |
+| `ContractStartDate` | `dateTime` | The 'ContractStartDate' column captures the date and time when a contract becomes effective, serving as a reference point for tracking timesheet entries related to that contract within the 'vw_Timesheet' table. |
+| `ContractStatusToday` | `string` | Column Description: Indicates the current status of the contract associated with the timesheet entry, represented as a string value. |
+| `ContractStatusTodayPBI` | `string` | The 'ContractStatusTodayPBI' column indicates the current status of contracts as of today, providing essential insights for performance tracking and decision-making within the timesheet reporting framework. |
+| `ContractTransferDate` | `dateTime` | The 'ContractTransferDate' column records the date and time when a contract was transferred, providing essential timing information for tracking contract changes within the timesheet management process. |
+| `CostAmount` | `double` | The 'CostAmount' column represents the total monetary cost associated with the recorded time entries in the 'vw_Timesheet' table, expressed as a double-precision floating-point number. |
+| `CostPrice` | `double` | The 'CostPrice' column represents the monetary value associated with the cost of labor or resources for each entry in the timesheet, expressed as a double to allow for precise financial calculations. |
+| `Currency` | `string` | The 'Currency' column in the 'vw_Timesheet' table specifies the type of currency used for financial entries, facilitating accurate cost tracking and reporting across different currencies. |
+| `DebtorName` | `string` | The 'DebtorName' column stores the name of the individual or entity responsible for payment, facilitating the tracking and management of financial obligations within the timesheet records. |
+| `EmployeeID` | `string` | The 'EmployeeID' column (string) in the 'vw_Timesheet' table uniquely identifies each employee, facilitating accurate tracking and reporting of their timesheet entries. |
+| `EmployeeIDName` | `string` | The 'EmployeeIDName' column in the 'vw_Timesheet' table uniquely identifies each employee by their name, facilitating easy reference and reporting on timesheet entries. |
+| `EmployeeKey` | `int64` | The 'EmployeeKey' column (int64) in the 'vw_Timesheet' table uniquely identifies each employee associated with their respective timesheet entries, facilitating accurate tracking and reporting of work hours. |
+| `EmployeeName` | `string` | The 'EmployeeName' column stores the full names of employees associated with each timesheet entry, facilitating easy identification and reporting of labor hours. |
+| `Employer` | `string` | The 'Employer' column in the 'vw_Timesheet' table identifies the organization or company that employs the individual associated with the recorded timesheet entries. |
 | `EmployerCode` | `int64` | The 'EmployerCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the employer associated with each timesheet entry, facilitating accurate payroll and reporting processes. |
-| `ExtraDetails` | `string` | The 'ExtraDetails' column contains additional contextual information or notes related to each timesheet entry, providing insights that enhance the understanding of the recorded hours and activities. |
+| `ExtraDetails` | `string` | The 'ExtraDetails' column contains additional contextual information or notes related to each timesheet entry, providing insights that may not be captured by standard fields. |
 | `FinancialYear` | `int64` | The 'FinancialYear' column (int64) in the 'vw_Timesheet' table represents the fiscal year associated with each timesheet entry, facilitating financial reporting and analysis. |
-| `Hours` | `double` | The 'Hours' column (double) in the 'vw_Timesheet' table represents the total number of hours worked by an employee during a specified time period, facilitating accurate payroll and project tracking. |
-| `HoursperWeek` | `int64` | The 'HoursperWeek' column (int64) in the 'vw_Timesheet' table represents the total number of hours worked by an employee in a given week, facilitating analysis of labor allocation and productivity. |
-| `HoursType` | `string` | The 'HoursType' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or holiday hours, to facilitate accurate reporting and analysis of employee time worked. |
-| `HoursTypeCode` | `string` | The 'HoursTypeCode' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or leave, facilitating accurate reporting and analysis of employee work hours. |
+| `Hours` | `double` | The 'Hours' column (double) in the 'vw_Timesheet' table represents the total number of hours worked on various tasks, facilitating accurate tracking and reporting of employee time allocation. |
+| `HoursperWeek` | `int64` | Column Description: The 'HoursperWeek' column (int64) in the 'vw_Timesheet' table represents the total number of hours worked by an employee each week, facilitating effective time management and resource allocation. |
+| `HoursType` | `string` | The 'HoursType' column categorizes the type of hours recorded in the timesheet, such as regular, overtime, or holiday hours, to facilitate accurate reporting and analysis of employee work patterns. |
+| `HoursTypeCode` | `string` | The 'HoursTypeCode' column categorizes the type of hours recorded in the timesheet, enabling efficient tracking and reporting of different work hour classifications. |
 | `Index` | `int64` | The 'Index' column (int64) in the 'vw_Timesheet' table serves as a unique identifier for each timesheet entry, facilitating efficient data retrieval and organization. |
-| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when the timesheet data was ingested into the system, facilitating accurate tracking and auditing of data entry. |
-| `InternalPMID` | `string` | The 'InternalPMID' column stores a unique identifier for internal project management instances, facilitating the tracking and association of timesheet entries with specific projects. |
-| `InternalPMKey` | `int64` | The 'InternalPMKey' column (int64) in the 'vw_Timesheet' table serves as a unique identifier for project managers, facilitating the association of timesheet entries with their respective project management records. |
-| `IPM_ManagerName` | `string` | The 'IPM_ManagerName' column stores the name of the Integrated Project Management (IPM) manager responsible for overseeing project-related timesheet entries, facilitating accountability and resource management. |
-| `IPMIDName` | `string` | The 'IPMIDName' column in the 'vw_Timesheet' table stores the names of individuals associated with specific IPM IDs, facilitating the tracking and management of timesheet entries linked to those identifiers. |
-| `JobTitle` | `string` | The 'JobTitle' column in the 'vw_Timesheet' table captures the specific role or position of an employee, providing essential context for analyzing timesheet data and resource allocation. |
-| `Join_Key` | `string` | The 'Join_Key' column serves as a unique identifier for linking timesheet records to related datasets, facilitating data integration and analysis. |
-| `ManagerID` | `string` | The 'ManagerID' column stores the unique identifier of the manager responsible for overseeing the timesheet entries, facilitating accountability and reporting within the organization. |
-| `ManagerIDName` | `string` | The 'ManagerIDName' column contains the names of managers associated with each timesheet entry, facilitating the identification of supervisory oversight for reported hours. |
-| `ManagerKey` | `int64` | The 'ManagerKey' column (int64) in the 'vw_Timesheet' table identifies the unique key associated with the manager responsible for overseeing the timesheet entries. |
-| `ManagerName` | `string` | The 'ManagerName' column stores the name of the employee's direct supervisor, facilitating the identification of managerial oversight for timesheet entries. |
-| `OHWWorkBookings` | `string` | The 'OHWWorkBookings' column stores string representations of work booking details related to overtime hours worked, facilitating the tracking and analysis of employee time allocation in the vw_Timesheet table. |
-| `Project` | `string` | The 'Project' column in the 'vw_Timesheet' table identifies the specific project associated with each recorded time entry, facilitating accurate tracking and reporting of resource allocation and project costs. |
-| `ProjectCode` | `string` | The 'ProjectCode' column in the 'vw_Timesheet' table uniquely identifies the specific project associated with each timesheet entry, facilitating accurate tracking and reporting of time spent on various projects. |
-| `ProjectProfile` | `string` | The 'ProjectProfile' column contains a string that identifies the specific project associated with each timesheet entry, facilitating detailed tracking and reporting of time spent on various projects. |
-| `ProjectProfileCode` | `int64` | The 'ProjectProfileCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the associated project profile for each timesheet entry, facilitating efficient tracking and reporting of project-related labor costs. |
-| `ProjectType` | `string` | The 'ProjectType' column categorizes the nature of the projects associated with each timesheet entry, enabling better analysis of resource allocation and project management. |
-| `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true representing rejection and false indicating acceptance. |
-| `ReportReady` | `boolean` | Indicates whether the timesheet is ready for reporting, with a value of true signifying readiness and false indicating further processing is required. |
-| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales transactions, recorded as a double to accommodate precise financial calculations within the context of timesheet data analysis. |
-| `SalesPrice` | `double` | The 'SalesPrice' column represents the monetary value assigned to each sale, stored as a double to accommodate precise pricing calculations within the timesheet data context. |
-| `Status` | `string` | The 'Status' column indicates the current approval state of each timesheet entry, reflecting whether it is pending, approved, or rejected. |
-| `Taxed` | `boolean` | Indicates whether the hours recorded in the timesheet are subject to taxation. |
-| `Tier` | `string` | The 'Tier' column categorizes the level of service or priority associated with each timesheet entry, enabling better resource allocation and management. |
-| `TimesheetCode` | `string` | The 'TimesheetCode' column stores unique identifiers for each timesheet entry, facilitating the tracking and management of employee work hours and project allocations. |
-| `TimesheetDate` | `dateTime` | The 'TimesheetDate' column captures the specific date and time when the timesheet entry was recorded, facilitating accurate tracking and reporting of employee work hours. |
-| `TimesheetDescription` | `string` | The 'TimesheetDescription' column contains detailed textual descriptions of the tasks and activities recorded in the timesheet, providing context and insights into the work performed during the reporting period. |
-| `Unit` | `string` | The 'Unit' column in the 'vw_Timesheet' table represents the measurement unit associated with the recorded time entries, facilitating accurate reporting and analysis of work hours. |
+| `IngestDatetime` | `dateTime` | The 'IngestDatetime' column records the precise date and time when timesheet data was ingested into the system, facilitating accurate tracking and auditing of data entry. |
+| `InternalPMID` | `string` | The 'InternalPMID' column stores a unique identifier for internal project management instances, facilitating the tracking and association of timesheet entries with specific projects within the vw_Timesheet table. |
+| `InternalPMKey` | `int64` | The 'InternalPMKey' column (int64) serves as a unique identifier for project managers within the 'vw_Timesheet' table, facilitating the association of timesheet entries with their respective project management records. |
+| `IPM_ManagerName` | `string` | The 'IPM_ManagerName' column stores the name of the Integrated Project Management (IPM) manager responsible for overseeing the timesheet entries in the vw_Timesheet table. |
+| `IPMIDName` | `string` | The 'IPMIDName' column in the 'vw_Timesheet' table stores the names of individuals associated with specific IPMIDs, facilitating the tracking and management of timesheet entries related to those identifiers. |
+| `JobTitle` | `string` | The 'JobTitle' column in the 'vw_Timesheet' table captures the specific role or position of an employee, providing context for the hours worked and tasks performed during the reporting period. |
+| `Join_Key` | `string` | The 'Join_Key' column serves as a unique identifier for linking timesheet records to related datasets, facilitating efficient data integration and analysis. |
+| `ManagerID` | `string` | The 'ManagerID' column (string) in the 'vw_Timesheet' table identifies the unique identifier of the manager responsible for overseeing the associated timesheet entries. |
+| `ManagerIDName` | `string` | The 'ManagerIDName' column in the 'vw_Timesheet' table stores the names of managers associated with each timesheet entry, facilitating easy identification of managerial oversight for time tracking and reporting purposes. |
+| `ManagerKey` | `int64` | The 'ManagerKey' column (int64) in the 'vw_Timesheet' table uniquely identifies the manager associated with each timesheet entry, facilitating the tracking and management of employee work hours and approvals. |
+| `ManagerName` | `string` | The 'ManagerName' column stores the name of the manager responsible for overseeing the timesheet entries, facilitating accountability and tracking of employee work hours. |
+| `OHWWorkBookings` | `string` | The 'OHWWorkBookings' column contains string representations of scheduled work bookings for operational hours, facilitating the tracking and management of time allocation within the timesheet framework. |
+| `Project` | `string` | The 'Project' column in the 'vw_Timesheet' table identifies the specific project associated with each recorded time entry, facilitating accurate tracking and reporting of time spent on various initiatives. |
+| `ProjectCode` | `string` | The 'ProjectCode' column in the 'vw_Timesheet' table uniquely identifies the associated project for each timesheet entry, facilitating accurate tracking and reporting of time spent on specific projects. |
+| `ProjectProfile` | `string` | The 'ProjectProfile' column in the 'vw_Timesheet' table captures the specific project details associated with each timesheet entry, enabling effective tracking and analysis of time spent on various projects. |
+| `ProjectProfileCode` | `int64` | The 'ProjectProfileCode' column (int64) in the 'vw_Timesheet' table uniquely identifies the project profile associated with each timesheet entry, facilitating accurate tracking and reporting of project-related labor costs. |
+| `ProjectType` | `string` | The 'ProjectType' column categorizes the nature of the projects associated with each timesheet entry, enabling better analysis and reporting of resource allocation across different project types. |
+| `Rejected` | `boolean` | Indicates whether a timesheet entry has been rejected, with a value of true representing a rejection and false indicating acceptance. |
+| `ReportReady` | `boolean` | Indicates whether the timesheet is ready for reporting, with a value of true signifying readiness and false indicating that further action is required. |
+| `SalesAmount` | `double` | The 'SalesAmount' column represents the total revenue generated from sales transactions, recorded as a double precision value, within the context of timesheet data analysis for financial reporting and performance evaluation. |
+| `SalesPrice` | `double` | The 'SalesPrice' column represents the monetary value assigned to each sale recorded in the timesheet, expressed as a double-precision floating-point number for precise financial calculations. |
+| `Status` | `string` | The 'Status' column indicates the current state of each timesheet entry, reflecting whether it is pending, approved, or rejected. |
+| `Taxed` | `boolean` | Indicates whether the hours recorded in the timesheet are subject to taxation, with a value of true representing taxed hours and false representing non-taxed hours. |
+| `Tier` | `string` | The 'Tier' column categorizes the level of service or priority associated with each timesheet entry, helping to streamline task management and resource allocation. |
+| `TimesheetCode` | `string` | The 'TimesheetCode' column stores unique identifiers for each timesheet entry, facilitating the tracking and management of employee work hours and project allocations within the vw_Timesheet table. |
+| `TimesheetDate` | `dateTime` | The 'TimesheetDate' column captures the specific date and time when the timesheet entry was recorded, facilitating accurate tracking of work hours and project timelines. |
+| `TimesheetDescription` | `string` | The 'TimesheetDescription' column provides a detailed narrative of the tasks and activities recorded in the timesheet, facilitating better understanding and analysis of employee work efforts. |
+| `Unit` | `string` | The 'Unit' column in the 'vw_Timesheet' table represents the specific measurement unit associated with the time entries, facilitating accurate tracking and reporting of hours worked across various tasks. |
 | `UnitCode` | `string` | The 'UnitCode' column in the 'vw_Timesheet' table represents a unique identifier for the organizational unit associated with each timesheet entry, facilitating accurate tracking and reporting of labor costs by department. |
-| `WorkEmail` | `string` | The 'WorkEmail' column stores the professional email addresses of employees, facilitating communication and data management within the timesheet records. |
-| `YearWeek` | `string` | The 'YearWeek' column represents the year and week number in a string format, facilitating time-based analysis and reporting of timesheet entries within the vw_Timesheet table. |
+| `WorkEmail` | `string` | The 'WorkEmail' column stores the professional email addresses of employees, facilitating communication and coordination related to timesheet submissions and approvals. |
+| `YearWeek` | `string` | The 'YearWeek' column (string) in the 'vw_Timesheet' table represents the year and week number of the timesheet entries, facilitating time-based reporting and analysis of work hours. |
 
 ##### Calculated Columns
 
 **`Approved_With_V_Z`** (`string`)
 
-- **Description:** The 'Approved_With_V_Z' column indicates the approval status of timesheets, specifying whether they have been approved with a specific validation process or criteria denoted by 'V_Z'.
+- **Description:** The 'Approved_With_V_Z' column indicates the approval status of timesheets, specifically identifying those that have been approved with a versioning or validation process denoted by 'V_Z'.
 - **DAX Expression:**
 ```dax
 IF(
@@ -662,21 +670,21 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `Approved_With_V_Z`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The calculated column is designed to determine whether a timesheet is considered "approved" based on specific criteria.
+1. **Purpose**: The calculated column determines whether a timesheet is considered "approved" based on specific criteria.
 
-2. **Conditions**: The code checks two main conditions:
-   - **First Condition**: It checks if the `Approved` column has a value of `TRUE`. This means that if the timesheet is marked as approved, it meets the criteria.
-   - **Second Condition**: It checks if the `TimesheetCode` is either "V" or "Z". This means that if the timesheet has a code of "V" or "Z", it also meets the criteria for being considered approved.
+2. **Conditions Checked**:
+   - The first condition checks if the `Approved` column is marked as `TRUE`. This means that if the timesheet has been officially approved, it meets the criteria.
+   - The second condition checks if the `TimesheetCode` for that entry is either "V" or "Z". These codes likely represent specific types of timesheets that are automatically considered approved regardless of the `Approved` status.
 
-3. **Output**: 
-   - If either of the conditions is met (the timesheet is approved or the code is "V" or "Z"), the calculated column will return a value of `1`. This indicates that the timesheet is approved according to the defined rules.
+3. **Output**:
+   - If either of the conditions is met (the timesheet is approved or it has a code of "V" or "Z"), the calculated column will return a value of `1`. This indicates that the timesheet is approved.
    - If neither condition is met, it will return a value of `0`, indicating that the timesheet is not approved.
 
-In summary, this DAX expression effectively flags timesheets as approved (1) or not approved (0) based on whether they are explicitly marked as approved or have specific codes ("V" or "Z"). This can help in reporting and analysis by easily identifying which timesheets meet the approval criteria.
+4. **Summary**: In essence, this DAX expression helps to flag timesheets as approved (1) or not approved (0) based on whether they are officially approved or if they fall under specific codes (V or Z). This can be useful for reporting and analysis, allowing users to quickly identify which timesheets are considered approved based on these criteria.
 
 **`BillableDep`** (`string`)
 
-- **Description:** The 'BillableDep' column identifies the department associated with billable hours recorded in the timesheet, facilitating accurate tracking and reporting of labor costs by department.
+- **Description:** The 'BillableDep' column in the 'vw_Timesheet' table identifies the department associated with billable hours, facilitating accurate tracking and reporting of chargeable time for client projects.
 - **DAX Expression:**
 ```dax
 IF(
@@ -687,28 +695,22 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillableDep`. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the `BillableDep` column of the `lkp_Unit` table. This is done using the `RELATED` function, which pulls in data from a related table based on existing relationships in your data model.
+1. **Purpose**: The calculated column `BillableDep` is designed to determine whether a certain unit is billable based on its related data.
 
-2. **Handle Blank Values**: 
-   - If the `BillableDep` value from the related table is **blank** (meaning there is no associated value), the expression returns **1**. This could indicate that the absence of a value is treated as a positive condition for whatever analysis is being performed.
+2. **Logic**:
+   - The code first checks if the related value from the `lkp_Unit` table for `BillableDep` is blank (i.e., there is no value).
+   - If it is blank, the calculated column will return a value of **1**. This indicates that if there is no information about whether the unit is billable, it defaults to being considered billable.
+   - If the related `BillableDep` value is not blank, the code then checks if this value is not equal to **0**.
+     - If the value is not **0**, it returns **1**, meaning the unit is considered billable.
+     - If the value is **0**, it returns **0**, indicating that the unit is not billable.
 
-3. **Check for Non-Zero Values**: 
-   - If the `BillableDep` value is **not blank**, the code then checks if this value is **not equal to zero**. 
-   - If it is not zero, the expression again returns **1**. This suggests that a non-zero value is also considered a positive condition.
+3. **Outcome**: The final result of this calculation is a column that will have a value of **1** (billable) or **0** (not billable) based on the conditions checked. This helps in identifying which units can be billed for services or products, based on their related data.
 
-4. **Return Zero for Zero Values**: 
-   - If the `BillableDep` value is zero, the expression returns **0**. This indicates that a zero value is treated as a negative condition.
-
-### Summary:
-In summary, this DAX expression effectively categorizes the `BillableDep` values into two groups:
-- It assigns a value of **1** if there is either no related `BillableDep` value (blank) or if the related value is non-zero.
-- It assigns a value of **0** if the related `BillableDep` value is zero.
-
-This calculated column can be useful for flagging records that are either billable or have a certain level of activity, helping in reporting or analysis related to billable hours or costs.
+In summary, this DAX expression effectively categorizes units as billable or not based on the presence and value of a related field, ensuring that any unit without specific information is treated as billable by default.
 
 **`BillablePrj`** (`string`)
 
-- **Description:** Column Description: The 'BillablePrj' column identifies the specific project associated with billable hours recorded in the timesheet, facilitating accurate client invoicing and project cost tracking.
+- **Description:** The 'BillablePrj' column identifies the project associated with billable hours recorded in the timesheet, facilitating accurate client invoicing and project cost tracking.
 - **DAX Expression:**
 ```dax
 IF(
@@ -719,28 +721,28 @@ IF(
 			    0
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillablePrj` in a data model, specifically for a table named `vw_Timesheet`. Here's a breakdown of what this expression does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `BillablePrj` in a data model, specifically in a table named `vw_Timesheet`. Here's a breakdown of what this code does in simple business terms:
 
-1. **Purpose**: The `BillablePrj` column is designed to identify whether a particular timesheet entry is billable or not. A billable entry is one that can be charged to a client or project.
+1. **Purpose**: The `BillablePrj` column is designed to determine whether a particular timesheet entry is considered "billable" or not. A billable entry is one that can be charged to a client or customer.
 
-2. **Conditions Checked**:
-   - **Sales Price Check**: The first condition checks if the `SalesPrice` for the timesheet entry is greater than 0. If there is a positive sales price, it indicates that the entry is likely billable.
-   - **Project Profile Code Check**: The second condition checks if the `ProjectProfileCode` is equal to 81. This specific code likely represents a type of project that is always considered billable.
-   - **Project Name Search**: The third condition uses the `SEARCH` function to look for the phrase "Customer Success Services" within the `Project` field. If this phrase is found, it suggests that the project is related to customer success services, which are typically billable.
+2. **Conditions for Billability**: The code checks three specific conditions to decide if an entry is billable:
+   - **Sales Price Check**: It first checks if the `SalesPrice` for the entry is greater than 0. If there is a positive sales price, it indicates that the work done can be billed to a client.
+   - **Project Profile Code Check**: It then checks if the `ProjectProfileCode` is equal to 81. This specific code likely represents a type of project that is always considered billable.
+   - **Project Name Check**: Finally, it looks for the phrase "Customer Success Services" within the `Project` field. If this phrase is found, it suggests that the project is related to customer success services, which are typically billable.
 
 3. **Output**: 
-   - If any of the three conditions are met (i.e., if the sales price is greater than 0, the project profile code is 81, or the project name includes "Customer Success Services"), the expression returns a value of `1`, indicating that the timesheet entry is billable.
-   - If none of these conditions are met, it returns a value of `0`, indicating that the entry is not billable.
+   - If any of the three conditions are met (i.e., if the sales price is greater than 0, the project profile code is 81, or the project name includes "Customer Success Services"), the calculated column will return a value of **1**. This indicates that the entry is billable.
+   - If none of the conditions are met, it returns a value of **0**, indicating that the entry is not billable.
 
-In summary, this DAX expression effectively flags timesheet entries as billable or non-billable based on specific criteria related to sales price, project profile, and project name. This helps in tracking which work can be charged to clients, ensuring accurate billing and financial reporting.
+In summary, this DAX expression effectively flags timesheet entries as billable or non-billable based on specific criteria related to sales price, project profile, and project name. This helps in identifying which work can be charged to clients, aiding in accurate billing and financial reporting.
 
 **`cc_Employer`** (`string`)
 
-- **Description:** The 'cc_Employer' column stores the name of the employer associated with each timesheet entry, facilitating the identification of the organization responsible for employee hours worked.
+- **Description:** The 'cc_Employer' column in the 'vw_Timesheet' table stores the name of the employer associated with each timesheet entry, facilitating the tracking and management of employee work hours by employer.
 
 **`Employee_WeeklyHours`** (`string`)
 
-- **Description:** The 'Employee_WeeklyHours' column captures the total number of hours worked by each employee during the week, represented as a string for flexibility in formatting.
+- **Description:** The 'Employee_WeeklyHours' column captures the total number of hours worked by each employee during the week, represented as a string for flexible formatting and reporting within the timesheet data.
 - **DAX Expression:**
 ```dax
 CONCATENATE(
@@ -748,22 +750,27 @@ CONCATENATE(
 			    " - " & ('vw_Timesheet'[HoursperWeek])
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet creates a new calculated column called `Employee_WeeklyHours` in a data model, specifically from a table named `vw_Timesheet`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet creates a new calculated column called `Employee_WeeklyHours` in a data model, specifically from a table named `vw_Timesheet`. 
+
+Here’s a breakdown of what it does in simple business terms:
 
 1. **Combining Information**: The code takes two pieces of information from the `vw_Timesheet` table:
    - The name of the employee (`EmployeeName`).
-   - The number of hours that employee works in a week (`HoursperWeek`).
+   - The number of hours that employee works per week (`HoursperWeek`).
 
-2. **Formatting the Output**: It combines these two pieces of information into a single text string. The format of the output will be:
-   - The employee's name followed by a hyphen and then the number of hours they work per week. For example, if the employee's name is "John Doe" and he works 40 hours per week, the result would be "John Doe - 40".
+2. **Formatting the Output**: It combines these two pieces of information into a single string. The format of the output will be:
+   - The employee's name followed by a dash (" - ") and then the number of hours they work per week.
 
-3. **Purpose**: This calculated column is useful for creating a clear and concise representation of each employee's weekly working hours alongside their name. It can be helpful for reporting, analysis, or visualization purposes, making it easier to see at a glance how many hours each employee is scheduled to work.
+3. **Example Output**: If an employee named "John Doe" works 40 hours per week, the resulting value in the `Employee_WeeklyHours` column would be:
+   - "John Doe - 40"
 
-In summary, this DAX expression effectively creates a user-friendly label that combines employee names with their corresponding weekly hours, enhancing the readability of the data.
+4. **Purpose**: This calculated column is useful for quickly viewing and understanding how many hours each employee works per week, all in one easy-to-read format. It can help in reporting, analysis, and decision-making regarding workforce management.
+
+In summary, this DAX expression effectively creates a clear and concise representation of each employee's name alongside their weekly working hours, making it easier to analyze employee workloads at a glance.
 
 **`GroupCat`** (`string`)
 
-- **Description:** The 'GroupCat' column categorizes timesheet entries into specific groups, facilitating streamlined reporting and analysis of time allocation across different projects or departments.
+- **Description:** The 'GroupCat' column categorizes timesheet entries into specific groups, facilitating the organization and analysis of time allocation across various projects or tasks.
 - **DAX Expression:**
 ```dax
 IF(
@@ -780,25 +787,28 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called 'GroupCat' in a data model, likely related to project management or timesheet tracking. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Project Group**: The first part of the code checks if there is a corresponding project group for each project listed in the 'vw_Timesheet' table. It does this by looking up the project in the 'lkp_Project' table using the `LOOKUPVALUE` function. If a project group is found (i.e., it is not blank), it retrieves that group.
+1. **Purpose**: The 'GroupCat' column categorizes projects based on their group affiliation and whether they are billable or not.
 
-2. **Assign Group Category**: 
-   - If a project group is found, the 'GroupCat' column will be populated with the name of that project group.
-   - If no project group is found (meaning the lookup returned blank), the code then checks if the project is billable by looking at the 'BillablePrj' column in the 'vw_Timesheet' table.
-     - If 'BillablePrj' equals 1 (indicating that the project is billable), it assigns the value "Billable" to the 'GroupCat' column.
-     - If 'BillablePrj' does not equal 1 (indicating that the project is not billable), it assigns the value "Other Unbillable".
+2. **Lookup for Group**: 
+   - The code first checks if there is a corresponding group for a project in the `lkp_Project` table. It does this by looking up the project name from the `vw_Timesheet` table in the `lkp_Project` table.
+   - If a match is found (meaning the project has a defined group), it retrieves the group name.
 
-### Summary:
-In summary, this DAX expression categorizes each project in the 'vw_Timesheet' table into one of three groups:
-- The specific project group from the 'lkp_Project' table if it exists.
-- "Billable" if the project is billable but has no specific group.
-- "Other Unbillable" if the project is not billable and has no specific group.
+3. **Handling Blank Values**:
+   - If the lookup returns a blank (meaning there is no group associated with the project), the code moves to the next step.
 
-This categorization helps in analyzing projects based on their billing status and associated groups, which can be useful for reporting and decision-making.
+4. **Billable Check**:
+   - If there is no group found, it checks if the project is billable by looking at the `BillablePrj` column in the `vw_Timesheet` table.
+   - If `BillablePrj` equals 1 (indicating the project is billable), it assigns the category "Billable".
+   - If `BillablePrj` does not equal 1, it assigns the category "Other Unbillable".
+
+5. **Final Output**:
+   - The final result of this calculation is either the group name (if found) or one of two categories: "Billable" or "Other Unbillable", depending on the project's billable status.
+
+In summary, this DAX expression helps categorize projects into groups or identifies them as billable or unbillable, providing clarity on project status for reporting and analysis.
 
 **`IsContractActive`** (`string`)
 
-- **Description:** Indicates whether the associated contract is currently active, with values reflecting the contract's status in relation to timesheet entries.
+- **Description:** Indicates whether the associated contract is currently active, represented as a string value in the vw_Timesheet table.
 - **DAX Expression:**
 ```dax
 IF(
@@ -807,24 +817,24 @@ IF(
 			    "Not Active"
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named **IsContractActive** in a data model, specifically for a table called **vw_Timesheet**. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called **IsContractActive** in a data model, specifically within a table named **vw_Timesheet**. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The goal of this calculated column is to determine whether a contract is currently active or not.
+1. **Purpose**: The calculated column determines whether a contract is currently active or not.
 
 2. **Conditions Checked**:
-   - **ISBLANK('vw_Timesheet'[ContractEndDate])**: This part checks if the **ContractEndDate** field is empty (or blank). If it is blank, it implies that the contract does not have a specified end date, which typically means the contract is ongoing or active.
+   - **ISBLANK('vw_Timesheet'[ContractEndDate])**: This part checks if the **ContractEndDate** field is empty (or blank). If it is blank, it implies that there is no end date set for the contract, which typically means the contract is ongoing or active.
    - **'vw_Timesheet'[ContractEndDate] > TODAY()**: This part checks if the **ContractEndDate** is greater than today's date. If the end date is in the future, it means the contract is still active.
 
-3. **Result**:
-   - If either of the above conditions is true (the contract has no end date or the end date is in the future), the calculated column will return **"Active"**.
-   - If neither condition is true (meaning there is a specified end date that is in the past), it will return **"Not Active"**.
+3. **Output**:
+   - If either of the above conditions is true (meaning the contract has no end date or the end date is still in the future), the calculated column will return **"Active"**.
+   - If neither condition is true (meaning there is an end date that has already passed), it will return **"Not Active"**.
 
 ### Summary:
-In summary, this DAX expression effectively labels each contract in the **vw_Timesheet** table as either **"Active"** or **"Not Active"** based on whether the contract has an end date that is either missing or still in the future. This helps users quickly identify which contracts are currently valid and ongoing.
+In summary, this DAX expression effectively labels each contract in the **vw_Timesheet** table as either "Active" or "Not Active" based on whether the contract has an end date that is either blank or still in the future. This helps users quickly identify which contracts are currently valid and ongoing.
 
 **`MAIN_UNIT`** (`string`)
 
-- **Description:** The 'MAIN_UNIT' column in the 'vw_Timesheet' table identifies the primary organizational unit responsible for the recorded time entries, facilitating effective resource allocation and reporting.
+- **Description:** The 'MAIN_UNIT' column in the 'vw_Timesheet' table identifies the primary organizational unit responsible for the recorded time entries, facilitating effective resource allocation and project management.
 - **DAX Expression:**
 ```dax
 IF(
@@ -833,21 +843,21 @@ IF(
 			    RELATED(lkp_Unit[Unit])
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column called `MAIN_UNIT`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named 'MAIN_UNIT'. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Related Data**: The code first checks if there is a related value in the `lkp_Unit` table for the current row. Specifically, it looks for the `Unit` field in that related table.
+1. **Check for Related Data**: The code first checks if there is a related value in the 'lkp_Unit' table for the current row. Specifically, it looks for the 'Unit' field in that related table.
 
 2. **Handle Missing Data**: 
-   - If there is no related value (meaning the `Unit` field is blank), the code will return the text "Unknown". This is a way to handle situations where the expected data is missing, ensuring that the output is clear and informative.
-   - If there is a related value (meaning the `Unit` field has data), it will return that value from the `lkp_Unit` table.
+   - If there is no related value (meaning the 'Unit' field is blank or missing), the code will return the text "Unknown". This is a way to handle situations where the expected data is not available, ensuring that the output is clear and informative.
+   - If there is a related value (meaning the 'Unit' field has data), it will return that value.
 
-3. **Purpose**: The overall purpose of this calculated column is to provide a clear and user-friendly representation of the unit associated with each row of data. If the unit is not available, it explicitly states "Unknown" instead of leaving it blank, which helps in understanding and analyzing the data better.
+3. **Purpose**: The overall purpose of this calculated column is to provide a clear and user-friendly representation of the 'Unit' associated with each row. If the unit is known, it shows that unit; if not, it indicates that the unit is "Unknown". This helps in maintaining data integrity and clarity in reporting or analysis.
 
-In summary, this DAX expression ensures that every entry in the `MAIN_UNIT` column either shows the corresponding unit name or indicates that the unit is unknown, improving data clarity and usability.
+In summary, this DAX expression ensures that every row in the 'MAIN_UNIT' column either displays the corresponding unit name or indicates that the unit is unknown, making it easier for users to understand the data at a glance.
 
 **`MonthNumber`** (`string`)
 
-- **Description:** The 'MonthNumber' column (string) in the 'vw_Timesheet' table represents the numerical designation of the month (e.g., "01" for January, "02" for February) to facilitate time-based reporting and analysis of timesheet data.
+- **Description:** Column Description: The 'MonthNumber' column stores the numerical representation of the month (e.g., "01" for January, "02" for February) as a string, facilitating time-based analysis and reporting within the timesheet data.
 - **DAX Expression:**
 ```dax
 MONTH([TimesheetDate])
@@ -856,57 +866,59 @@ MONTH([TimesheetDate])
 
 ### What It Does:
 - **Extracts the Month**: This expression takes a date value from the column `[TimesheetDate]` and extracts the month part of that date.
-- **Returns a Number**: The result is a number that represents the month. For example:
-  - If `[TimesheetDate]` is January 15, 2023, the expression will return `1`.
-  - If `[TimesheetDate]` is July 22, 2023, it will return `7`.
-  
-### Purpose:
-- **Simplifies Analysis**: By converting dates into month numbers, it makes it easier to analyze data by month. For instance, you can quickly group or filter timesheet data by month to see trends or totals.
-- **Facilitates Reporting**: This calculated column can be used in reports to show monthly performance, track hours worked, or compare data across different months.
+- **Returns a Number**: The result is a number between 1 and 12, where:
+  - 1 represents January,
+  - 2 represents February,
+  - 3 represents March,
+  - and so on, up to
+  - 12, which represents December.
 
-In summary, this DAX expression helps in transforming date information into a more usable format for analysis and reporting, specifically focusing on the month of each timesheet entry.
+### Business Purpose:
+- **Simplifies Analysis**: By converting dates into month numbers, it makes it easier to analyze data on a monthly basis. For example, you can quickly group or filter data by month.
+- **Facilitates Reporting**: This calculated column can be used in reports to show trends, performance, or other metrics aggregated by month, helping stakeholders understand patterns over time.
+
+In summary, this DAX expression helps in transforming date information into a more usable format for analysis and reporting, focusing specifically on the month aspect of the date.
 
 **`NR_EMP_COLUMN`** (`string`)
 
-- **Description:** The 'NR_EMP_COLUMN' stores the unique employee identification numbers as strings, facilitating the association of timesheet entries with specific employees in the vw_Timesheet view.
+- **Description:** The 'NR_EMP_COLUMN' in the 'vw_Timesheet' table represents the unique identifier for employees, facilitating the tracking and management of timesheet entries associated with each individual.
 - **DAX Expression:**
 ```dax
 DISTINCTCOUNT(vw_Timesheet[EmployeeName])
 ```
 - **DAX Explanation (Generated):** The DAX expression `DISTINCTCOUNT(vw_Timesheet[EmployeeName])` is used to calculate the number of unique employees listed in the `EmployeeName` column of the `vw_Timesheet` table.
 
-### In Simple Business Terms:
+### What it Achieves:
+- **Count of Unique Employees**: This expression counts how many different employees are present in the timesheet data. For example, if the timesheet includes entries for the same employee multiple times, this function will only count that employee once.
+- **Data Analysis**: This is useful for understanding workforce participation, tracking how many distinct employees have logged hours, or analyzing employee engagement over a specific period.
 
-1. **Purpose**: This expression helps to determine how many different employees have recorded their timesheets. 
-
-2. **What It Does**: 
-   - It looks at the `EmployeeName` column in the `vw_Timesheet` table.
-   - It counts only the unique names, meaning if the same employee appears multiple times in the timesheet, they are only counted once.
-
-3. **Outcome**: The result of this calculation gives you a clear picture of how many individual employees are contributing to the timesheet data, which can be useful for understanding workforce participation, resource allocation, or project involvement.
-
-In summary, this DAX expression is a straightforward way to quantify the distinct number of employees who have logged their time, providing valuable insights into employee engagement and activity.
+### In Simple Terms:
+Imagine you have a list of employees who worked on various projects, and some employees worked on multiple projects. This DAX expression helps you find out how many different employees contributed to the projects, regardless of how many times they appear in the list.
 
 **`Own-Sub-ExtT`** (`string`)
 
-- **Description:** The 'Own-Sub-ExtT' column in the 'vw_Timesheet' table captures the classification of time entries as either owned, subcontracted, or external, facilitating accurate tracking and reporting of resource allocation.
+- **Description:** The 'Own-Sub-ExtT' column in the 'vw_Timesheet' table captures the classification of time entries as either owned, subcontracted, or external, facilitating accurate tracking and reporting of resource allocation and project costs.
 - **DAX Expression:**
 ```dax
 RELATED(lkp_Unit[OWN-Sub-ExtT])
 ```
-- **DAX Explanation (Generated):** The DAX expression `RELATED(lkp_Unit[OWN-Sub-ExtT])` is used in a calculated column to retrieve a specific value from a related table. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX expression `RELATED(lkp_Unit[OWN-Sub-ExtT])` is used in a calculated column to retrieve a specific value from a related table. Here’s a breakdown of what it does in simple business terms:
 
-1. **Context**: This expression is typically used in a table that has a relationship with another table called `lkp_Unit`. The relationship is established based on a common key or identifier.
+1. **Context**: This expression is typically used in a data model where there are two tables that have a relationship. For example, you might have a main table (let's call it "Sales") and a lookup table (let's call it "lkp_Unit").
 
-2. **Purpose**: The expression is designed to pull in data from the `lkp_Unit` table, specifically the column named `OWN-Sub-ExtT`. This means that for each row in the current table where this calculated column is being created, it will look up the corresponding value from the `lkp_Unit` table.
+2. **Purpose**: The purpose of this expression is to pull in a value from the "lkp_Unit" table into the "Sales" table. Specifically, it retrieves the value from the column named "OWN-Sub-ExtT" in the "lkp_Unit" table.
 
-3. **Result**: The result of this expression is that each row in the current table will have a new column that contains the value of `OWN-Sub-ExtT` from the `lkp_Unit` table, based on the relationship defined between the two tables. This allows you to enrich your current data with additional information from the `lkp_Unit` table.
+3. **How it Works**: 
+   - The `RELATED` function looks for a matching row in the "lkp_Unit" table based on the relationship defined in the data model.
+   - It then fetches the value from the "OWN-Sub-ExtT" column of that matching row.
 
-In summary, this DAX expression helps to enhance your dataset by bringing in relevant information from a related table, making it easier to analyze and report on the data with additional context.
+4. **Outcome**: By using this expression, each row in the "Sales" table will now have an additional column that contains the corresponding "OWN-Sub-ExtT" value from the "lkp_Unit" table. This allows for enhanced analysis and reporting, as you can now use this additional information in your calculations or visualizations.
+
+In summary, this DAX expression enriches the data in the main table by linking it to relevant information from a related table, enabling better insights and decision-making.
 
 **`QualifyPrj`** (`string`)
 
-- **Description:** The 'QualifyPrj' column contains string values that categorize or qualify the projects associated with each timesheet entry, facilitating enhanced project management and reporting.
+- **Description:** The 'QualifyPrj' column in the 'vw_Timesheet' table captures the project qualification status as a string, indicating whether the associated time entries meet specific project criteria for reporting and analysis.
 - **DAX Expression:**
 ```dax
 IF(
@@ -915,27 +927,26 @@ IF(
 			    RELATED(lkp_Project[Qualify])
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named 'QualifyPrj'. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `QualifyPrj`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The calculated column 'QualifyPrj' is designed to determine a qualifying value for each row in the current table based on related data from another table called 'lkp_Project'.
+1. **Purpose**: The calculated column is designed to determine a qualification status for projects based on related data from another table called `lkp_Project`.
 
-2. **Checking for Blank Values**: The expression starts by checking if the 'Qualify' field from the 'lkp_Project' table is blank (i.e., it has no value) for the related project. This is done using the `ISBLANK` function combined with `RELATED`, which fetches the value from the related table.
+2. **Logic**:
+   - The code checks if the `Qualify` field from the `lkp_Project` table is blank (i.e., it has no value).
+   - If the `Qualify` field is blank, the calculated column will return a value of **1**. This could indicate a default or a specific status, such as "not qualified" or "unknown."
+   - If the `Qualify` field is not blank (meaning it has a value), the calculated column will return the actual value from the `Qualify` field in the `lkp_Project` table.
 
-3. **Conditional Logic**: 
-   - If the 'Qualify' value is blank (meaning there is no qualification information available for that project), the expression returns a value of **1**. This could signify a default or placeholder value indicating that the project is considered qualified in the absence of specific information.
-   - If the 'Qualify' value is not blank (meaning there is a qualification value available), it returns the actual value from the 'Qualify' field in the 'lkp_Project' table.
+3. **Outcome**: The result of this calculation is that for each row in the table where this calculated column is being created, you will either get a default value of **1** (if there is no qualification information available) or the specific qualification value from the related project (if it exists). 
 
-4. **Outcome**: The result of this calculation is that each row in the current table will have a 'QualifyPrj' value that either reflects the qualification status from the related project or defaults to 1 if no qualification information is available. This helps in ensuring that every project has a qualifying value, which can be useful for further analysis or reporting.
-
-In summary, this DAX expression ensures that every project has a qualifying value, either by pulling it from a related table or defaulting to 1 when no information is available.
+In summary, this DAX expression helps to ensure that every project has a qualification status, either by providing a default value when no information is available or by using the existing qualification data when it is present.
 
 **`ReportingEntity`** (`string`)
 
-- **Description:** The 'ReportingEntity' column identifies the organization or department responsible for the timesheet entries, facilitating accurate reporting and analysis of labor allocation.
+- **Description:** The 'ReportingEntity' column identifies the specific organization or department responsible for the timesheet entries, facilitating accurate reporting and analysis of labor allocation within the 'vw_Timesheet' table.
 
 **`RReady_With_V_Z`** (`string`)
 
-- **Description:** Column Description: Indicates the readiness status of a resource with respect to a specific project or task, represented as a string value in the context of timesheet data.
+- **Description:** Column Description: Indicates the readiness status of a resource for a specific task, represented as a string, within the context of timesheet management and scheduling.
 - **DAX Expression:**
 ```dax
 IF(
@@ -947,18 +958,18 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a calculated column named `RReady_With_V_Z`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: The calculated column determines whether a certain condition is met for each row in the data. It outputs either a `1` (true) or a `0` (false).
+1. **Purpose**: The calculated column determines whether a certain condition is met for each row in the data. It outputs either a 1 (true) or a 0 (false) based on specific criteria.
 
 2. **Conditions Checked**:
-   - The first condition checks if the column `[ReportReady]` is `TRUE`. This means that if the report is ready, the condition is satisfied.
+   - The first condition checks if the value in the column `[ReportReady]` is `TRUE`. This means that if the report is ready, the condition is satisfied.
    - The second condition checks if the value in the column `vw_Timesheet[TimesheetCode]` is either "V" or "Z". This means that if the timesheet code is one of these two specific codes, the condition is also satisfied.
 
 3. **Output**:
-   - If either of the conditions is true (the report is ready or the timesheet code is "V" or "Z"), the calculated column will return `1`.
-   - If neither condition is met, it will return `0`.
+   - If either of the conditions is true (i.e., the report is ready or the timesheet code is "V" or "Z"), the calculated column will return a value of 1.
+   - If neither condition is met, it will return a value of 0.
 
 ### Summary:
-In summary, this calculated column helps identify rows where either the report is ready or the timesheet code is specifically "V" or "Z". It effectively flags these rows with a `1` for further analysis or processing, while all other rows are flagged with a `0`. This can be useful for filtering or aggregating data based on readiness or specific timesheet codes.
+In summary, this DAX expression is used to flag rows in the dataset where either the report is ready or the timesheet code is "V" or "Z". A value of 1 indicates that one of these conditions is met, while a value of 0 indicates that neither condition is satisfied. This can be useful for filtering or analyzing data based on readiness or specific timesheet codes.
 
 ##### Measures
 
@@ -972,16 +983,16 @@ IF(
 			    "Not Active"
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure named `ContractStatus2`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure called `ContractStatus2`. Here's a breakdown of what it does in simple business terms:
 
-1. **Condition Check**: The measure first checks the value of another measure called `[ContractStatusMeasure]`. It specifically looks to see if this measure equals "Active".
+1. **Condition Check**: The measure first checks the value of another measure called `[ContractStatusMeasure]`. It specifically looks to see if this value is equal to "Active".
 
 2. **Return Value Based on Condition**:
-   - If the condition is true (meaning the contract status is "Active"), the measure returns the value of another measure called `[HoursDifference]`. This likely represents the difference in hours related to the contract, such as hours worked or hours remaining.
+   - If the condition is true (meaning the contract status is "Active"), the measure returns the value of another measure called `[HoursDifference]`. This likely represents the difference in hours related to the contract, such as the number of hours worked or remaining.
    - If the condition is false (meaning the contract status is not "Active"), the measure returns the text "Not Active".
 
 ### Summary:
-In essence, `ContractStatus2` is designed to provide a clear output based on the status of a contract. If the contract is active, it shows the relevant hours difference; if not, it simply indicates that the contract is not active. This helps users quickly understand the status of contracts and their associated hours.
+In essence, `ContractStatus2` helps to determine the status of a contract. If the contract is currently active, it provides a numerical value (the hours difference). If the contract is not active, it simply indicates that by returning the text "Not Active". This measure is useful for reporting or analysis where understanding the status of contracts and their associated hours is important.
 
 **`ContractStatusMeasure`**
 
@@ -995,18 +1006,18 @@ IF(
 ```
 - **DAX Explanation (Generated):** This DAX code snippet is used to create a measure called `ContractStatusMeasure`, which determines the status of a contract based on its end date. Here’s a breakdown of what it does in simple business terms:
 
-1. **Check for Contract End Date**: The measure first looks at the maximum value of the `ContractEndDate` from the `vw_Timesheet` table. This means it is checking the latest end date of contracts that are relevant to the current context (like a specific employee or project).
+1. **Check for End Date**: The measure first looks at the maximum value of the `ContractEndDate` from the `vw_Timesheet` table. This is essentially checking the latest end date of any contract associated with the timesheet data.
 
 2. **Evaluate Conditions**:
-   - **Is the End Date Blank?**: The measure checks if this maximum end date is blank (i.e., there is no end date specified). If there is no end date, it implies that the contract is ongoing or has not been finalized.
-   - **Is the End Date in the Future?**: If there is an end date, it checks whether this date is greater than today’s date. If the end date is in the future, it means the contract is still active.
+   - **Is Blank**: It checks if this maximum end date is blank (meaning there is no end date specified for the contract).
+   - **Is Future Date**: It also checks if the maximum end date is greater than today’s date (meaning the contract is still active because it hasn’t ended yet).
 
-3. **Return Status**:
-   - If either of the above conditions is true (the end date is blank or it is in the future), the measure returns "Active". This indicates that the contract is currently valid and ongoing.
-   - If neither condition is met (meaning the end date is not blank and is in the past), it returns "Not Active", indicating that the contract has ended.
+3. **Determine Status**:
+   - If either of the above conditions is true (the end date is blank or it is a future date), the measure returns "Active". This indicates that the contract is currently valid and ongoing.
+   - If neither condition is true (meaning there is a specific end date that is in the past), it returns "Not Active". This indicates that the contract has ended.
 
 ### Summary:
-In summary, this measure effectively categorizes contracts as "Active" or "Not Active" based on whether they have a future end date or no end date at all. This helps businesses quickly assess the status of contracts and manage their resources accordingly.
+In summary, this measure helps businesses quickly identify whether contracts are currently active or not based on their end dates. If a contract has no end date or is set to end in the future, it is considered "Active"; otherwise, it is "Not Active". This can be useful for tracking contract statuses and managing resources effectively.
 
 **`CurrentWeekCard`**
 
@@ -1018,16 +1029,14 @@ WEEKNUM(TODAY())
 
 Here's a breakdown of what it does:
 
-1. **TODAY()**: This function retrieves the current date. For example, if today is October 10, 2023, this function will return that date.
+1. **TODAY()**: This function retrieves the current date. For example, if today is October 15, 2023, this function will return that date.
 
-2. **WEEKNUM()**: This function takes a date as input and returns the week number of that date within the year. The week number is typically calculated starting from January 1st. 
+2. **WEEKNUM()**: This function takes a date as input and returns the week number of that date within the year. The week number is typically calculated based on the first week of the year, which can vary depending on the system used (e.g., whether the week starts on Sunday or Monday).
 
 So, when you combine these two functions, `WEEKNUM(TODAY())` effectively tells you which week of the year it is right now. 
 
-For example, if today is October 10, 2023, this expression might return "41", indicating that it is the 41st week of the year.
-
 ### In Business Terms:
-This measure helps businesses understand which week of the year they are currently in. This can be useful for reporting, planning, and analysis purposes, such as tracking weekly sales performance, monitoring project timelines, or aligning marketing campaigns with specific weeks of the year.
+This measure is useful for reporting and analysis purposes. For instance, if you want to track sales, performance, or any other metrics on a weekly basis, this measure helps you identify the current week. This can be particularly important for businesses that operate on a weekly cycle, allowing them to make timely decisions based on the most recent data.
 
 **`Dax_EmpCount_Approved`**
 
@@ -1044,12 +1053,12 @@ CALCULATE(
 
 2. **Components**:
    - **`CALCULATE`**: This function changes the context in which data is evaluated. In this case, it is used to apply a specific filter to the data.
-   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. It ensures that each employee is only counted once, even if they have multiple timesheet entries.
-   - **`vw_Timesheet[Approved] = FALSE()`**: This condition filters the data to include only those timesheet entries where the `Approved` status is set to FALSE. In other words, it focuses on timesheets that have not been approved.
+   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. It ensures that each employee is only counted once, even if they have multiple entries in the timesheet.
+   - **`vw_Timesheet[Approved] = FALSE()`**: This condition filters the data to include only those timesheet entries where the `Approved` status is set to `FALSE`. In other words, it focuses on timesheets that have not been approved.
 
 3. **Outcome**: The measure ultimately provides a count of distinct employees who have submitted timesheets that are still pending approval. This information can be useful for tracking outstanding approvals and managing workflow within the organization.
 
-In summary, `Dax_EmpCount_Approved` helps businesses understand how many employees are waiting for their timesheets to be approved, which can aid in identifying bottlenecks in the approval process.
+In summary, `Dax_EmpCount_Approved` helps businesses understand how many employees are waiting for their timesheets to be approved, allowing for better management of timesheet processing and approvals.
 
 **`Dax_EmpCount_RReady`**
 
@@ -1060,18 +1069,18 @@ CALCULATE(
 			    vw_Timesheet[ReportReady] = FALSE()
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `Dax_EmpCount_RReady`. Here's a breakdown of what this measure does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `Dax_EmpCount_RReady`. Here's a breakdown of what it does in simple business terms:
 
 1. **Purpose**: This measure calculates the number of unique employees whose timesheets are not marked as "Report Ready."
 
 2. **Components**:
    - **`CALCULATE`**: This function changes the context in which data is evaluated. It allows us to apply filters to our calculations.
-   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. Essentially, it tells us how many different employees are present in the data.
-   - **`vw_Timesheet[ReportReady] = FALSE()`**: This condition filters the data to include only those records where the `ReportReady` field is set to FALSE. In other words, it focuses on timesheets that are not ready for reporting.
+   - **`DISTINCTCOUNT(vw_Timesheet[EmployeeName])`**: This part counts the number of unique employee names in the `vw_Timesheet` table. Essentially, it tells us how many different employees have submitted timesheets.
+   - **`vw_Timesheet[ReportReady] = FALSE()`**: This condition filters the data to include only those timesheets where the `ReportReady` status is set to FALSE. In other words, it focuses on timesheets that are not ready for reporting.
 
-3. **What it achieves**: The measure ultimately provides a count of distinct employees who have timesheets that are still pending or not ready for reporting. This can be useful for management to identify how many employees still need to submit or finalize their timesheets before reports can be generated.
+3. **Outcome**: The measure ultimately provides the total count of distinct employees who have timesheets that are still pending or not ready for reporting. This can help a business understand how many employees still need to finalize their timesheets before they can be processed or reported.
 
-In summary, `Dax_EmpCount_RReady` helps businesses track the number of employees with incomplete timesheets, enabling better management of reporting processes.
+In summary, `Dax_EmpCount_RReady` helps track the number of employees with incomplete timesheets, which is useful for ensuring timely reporting and identifying any potential delays in the timesheet submission process.
 
 **`DISTINCT_COUNT_EMP`**
 
@@ -1081,17 +1090,17 @@ DISTINCTCOUNT(vw_Timesheet[EmployeeName])
 ```
 - **DAX Explanation (Generated):** The DAX expression `DISTINCTCOUNT(vw_Timesheet[EmployeeName])` is used to calculate the number of unique employees who have recorded timesheet entries in a dataset.
 
-Here's a breakdown of what it does:
+### Breakdown of the Expression:
 
-- **DISTINCTCOUNT**: This function counts the number of distinct (unique) values in a specified column. In this case, it is counting unique entries.
+- **DISTINCTCOUNT**: This function counts the number of unique values in a specified column. In this case, it is counting unique entries.
   
 - **vw_Timesheet[EmployeeName]**: This refers to the column named `EmployeeName` in the `vw_Timesheet` table. This column contains the names of employees who have submitted timesheets.
 
 ### What It Achieves:
-The measure `DISTINCT_COUNT_EMP` will return the total number of different employees who have logged their hours in the timesheet. For example, if three employees (Alice, Bob, and Charlie) have submitted timesheets, the result of this measure will be 3. If Alice submits multiple timesheets, she will still only be counted once.
 
-### Business Implication:
-This measure is useful for understanding workforce engagement and activity. It helps businesses track how many individual employees are actively participating in timesheet reporting, which can be important for project management, resource allocation, and overall workforce analysis.
+When you use this measure, it provides a total count of different employees who have logged their hours in the timesheet. For example, if three employees submitted timesheets, the result of this measure would be 3, regardless of how many times each employee submitted their timesheet. 
+
+In summary, this measure helps businesses understand how many distinct employees are actively participating in timesheet reporting, which can be useful for tracking workforce engagement, project involvement, or resource allocation.
 
 **`HoursDifference`**
 
@@ -1112,22 +1121,18 @@ VAR TotalValue =
 			RETURN 
 			    DIVIDE(SUM(vw_Timesheet[Hours]), TotalValue, 0)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet defines a measure called `Msr_HoursPercentage`, which calculates the percentage of hours worked by a specific group, project, or employee relative to the total hours worked across all selected categories.
+- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate the percentage of hours worked by a specific group, project, or employee relative to the total hours worked across all selected categories in a report or dashboard. Here’s a breakdown of what it does in simple business terms:
 
-Here’s a breakdown of what it does in simple business terms:
-
-1. **Total Hours Calculation**: 
-   - The variable `TotalValue` is created to calculate the total number of hours worked. It uses the `CALCULATE` function to sum up the hours from the `vw_Timesheet` table.
-   - The `ALLSELECTED` function is used to ensure that the total hours are calculated based on the current selections made in the report for `GroupCat`, `Project`, and `EmployeeName`. This means it respects any filters applied by the user but ignores any other filters that might limit the data.
+1. **TotalValue Calculation**:
+   - The first part of the code defines a variable called `TotalValue`. This variable calculates the total number of hours worked by summing up the `Hours` column from the `vw_Timesheet` table.
+   - The `CALCULATE` function is used here to modify the context of the calculation. It considers all selected filters for `GroupCat`, `Project`, and `EmployeeName`, meaning it will sum the hours for all entries that are currently selected in the report, regardless of any other filters that might be applied.
 
 2. **Percentage Calculation**:
-   - The `RETURN` statement then calculates the percentage of hours worked by the current context (which could be a specific group, project, or employee) by dividing the sum of hours for that context (`SUM(vw_Timesheet[Hours])`) by the `TotalValue` calculated earlier.
-   - The `DIVIDE` function is used for this division, which is a safer way to handle division in DAX because it can return a specified value (in this case, 0) if the denominator (`TotalValue`) is zero, preventing errors.
+   - The `RETURN` statement then calculates the percentage of hours worked by the current context (which could be a specific group, project, or employee) by dividing the sum of hours for that context by the `TotalValue` calculated earlier.
+   - The `DIVIDE` function is used for this division, which is a safe way to perform division in DAX. If the `TotalValue` is zero (which would mean no hours were recorded), it will return 0 instead of causing an error.
 
-3. **Final Outcome**:
-   - The final result of this measure is a percentage that shows how much of the total hours worked (based on the current selections) is attributed to the specific context being evaluated (like a specific employee or project). This helps in understanding the contribution of different parts of the organization to the overall hours worked.
-
-In summary, `Msr_HoursPercentage` provides insights into how individual or grouped efforts contribute to total hours worked, allowing for better analysis of productivity and resource allocation.
+### Summary:
+In summary, this measure calculates the percentage of hours worked by a specific group, project, or employee compared to the total hours worked across all selected categories. This helps in understanding how much of the total effort is contributed by a particular segment, which can be useful for performance analysis, resource allocation, and reporting.
 
 **`Static Total Employees`**
 
@@ -1139,20 +1144,18 @@ CALCULATE(
 			    vw_Timesheet[ContractStatusToday] = "Valid"
 			)
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is used to create a measure called 'Static Total Employees'. Let's break down what it does in simple business terms:
+- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a measure called "Static Total Employees." Let's break it down into simpler terms to understand what it achieves:
 
-1. **Purpose**: The measure calculates the total number of unique employees who have a "Valid" contract status as of today.
+1. **DISTINCTCOUNT(vw_Timesheet[EmployeeName])**: This part of the code counts the number of unique employees listed in the `EmployeeName` column of the `vw_Timesheet` table. Essentially, it tells us how many different employees are present in the dataset.
 
-2. **Components**:
-   - **DISTINCTCOUNT(vw_Timesheet[EmployeeName])**: This part counts the number of unique employee names in the `vw_Timesheet` table. It ensures that each employee is only counted once, even if they appear multiple times in the data.
-   
-   - **ALL(vw_Timesheet)**: This function removes any filters that might be applied to the `vw_Timesheet` table. By doing this, it ensures that the count of employees is not affected by any other filters that might be in place in the report or dashboard. Essentially, it looks at all the data in the `vw_Timesheet` table without any restrictions.
+2. **CALCULATE(...)**: The `CALCULATE` function modifies the context in which the data is evaluated. In this case, it is used to apply specific filters to the counting operation.
 
-   - **vw_Timesheet[ContractStatusToday] = "Valid"**: This condition filters the data to only include employees whose contract status is marked as "Valid". This means that only employees who currently have a valid contract will be counted.
+3. **ALL(vw_Timesheet)**: This function removes any existing filters that might be applied to the `vw_Timesheet` table. By doing this, it ensures that the count of employees is not affected by any other filters that might be in place in the report or dashboard. It allows the measure to consider all records in the `vw_Timesheet` table.
 
-3. **Overall Calculation**: When you put it all together, this measure counts the number of unique employees who have a valid contract, ignoring any other filters that might be applied to the data. This is useful for getting a clear picture of how many employees are actively valid under their contracts at any given time.
+4. **vw_Timesheet[ContractStatusToday] = "Valid"**: This condition filters the data to only include employees whose contract status is marked as "Valid." This means that only employees who are currently active or valid according to the contract status will be counted.
 
-In summary, the 'Static Total Employees' measure provides a straightforward count of all employees with valid contracts, ensuring that the count is accurate and not influenced by other data filters.
+### Summary:
+In summary, this DAX measure calculates the total number of unique employees who have a valid contract status, ignoring any other filters that might be applied in the report. It provides a clear view of how many employees are currently considered valid, which is useful for understanding workforce status and planning.
 
 **`TotalActualHours`**
 
@@ -1165,10 +1168,10 @@ SUM(vw_Timesheet[Hours])
 Here's a breakdown of what it does:
 
 - **SUM**: This function adds up all the values in a specified column.
-- **vw_Timesheet**: This refers to a table (or view) that contains timesheet data. It likely includes various columns related to employee hours worked, projects, dates, etc.
+- **vw_Timesheet**: This refers to a table (or view) that contains timesheet data. It includes various columns related to employee hours worked, among other details.
 - **[Hours]**: This is the specific column within the `vw_Timesheet` table that contains the number of hours each employee has logged.
 
-In simple terms, this measure totals all the hours worked by employees as recorded in the timesheet. It helps businesses understand the total labor hours spent on various tasks or projects, which is essential for tracking productivity, managing resources, and calculating costs.
+In simple terms, this measure totals all the hours worked by employees as recorded in the timesheet. It provides a single number that represents the overall actual hours worked, which can be useful for reporting, payroll, or project management purposes.
 
 **`TotalContractedHours`**
 
@@ -1179,18 +1182,19 @@ SUMX(
 			    MAX(vw_Timesheet[HoursPerWeek])
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is used to calculate a measure called 'TotalContractedHours'. Let's break it down in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is used to calculate a measure called 'TotalContractedHours'. Here’s a breakdown of what it does in simple business terms:
 
-1. **SUMX Function**: This function is used to perform a calculation over a table and then sum up the results. In this case, it will iterate through a list of employees and calculate a value for each one.
+1. **Context of the Calculation**: The measure is focused on a table called `vw_Timesheet`, which likely contains records of timesheets for employees, including their names and the hours they are contracted to work each week.
 
-2. **VALUES Function**: The `VALUES(vw_Timesheet[EmployeeName])` part creates a unique list of employee names from the 'vw_Timesheet' table. This means that if there are multiple entries for the same employee, each employee will only be counted once in the calculation.
+2. **VALUES Function**: The `VALUES(vw_Timesheet[EmployeeName])` part retrieves a unique list of employee names from the `vw_Timesheet` table. This means that if there are multiple entries for the same employee, it will only consider each employee once.
 
-3. **MAX Function**: For each employee in the unique list, the `MAX(vw_Timesheet[HoursPerWeek])` function finds the maximum number of hours that employee is contracted to work in a week. This is important because it ensures that if an employee has different entries for different weeks, only the highest contracted hours are considered.
+3. **SUMX Function**: The `SUMX` function is an iterator that goes through each unique employee name obtained from the `VALUES` function. For each employee, it performs a calculation and then sums up the results.
 
-4. **Putting It All Together**: The `SUMX` function then takes the maximum contracted hours for each employee (as calculated by the `MAX` function) and adds them all together. 
+4. **MAX Function**: Inside the `SUMX`, the `MAX(vw_Timesheet[HoursPerWeek])` function is used. This function finds the maximum value of `HoursPerWeek` for each employee. Essentially, it looks at all the hours recorded for each employee and picks the highest number of hours they are contracted to work in a week.
 
-### What It Achieves:
-In summary, this DAX measure calculates the total contracted hours for all employees by summing up the maximum hours each employee is contracted to work per week. This gives a clear picture of the total capacity of contracted work hours across the organization, ensuring that only the highest contracted hours for each employee are counted. This can be useful for workforce planning, budgeting, and understanding overall labor capacity.
+5. **Final Calculation**: The overall effect of this measure is to calculate the total contracted hours for all employees by summing up the maximum weekly hours for each unique employee. 
+
+In summary, the 'TotalContractedHours' measure calculates the total number of hours that all employees are contracted to work per week, based on the highest recorded hours for each employee in the timesheet data. This can help management understand the total workforce capacity in terms of contracted hours.
 
 **`TotalHoursDeltaComplete`**
 
@@ -1202,23 +1206,24 @@ In summary, this DAX measure calculates the total contracted hours for all emplo
 ```dax
 [TotalActualHours]-[TotalContractedHours]
 ```
-- **DAX Explanation (Generated):** The DAX expression you provided calculates the difference between two measures: **TotalActualHours** and **TotalContractedHours**. 
+- **DAX Explanation (Generated):** The DAX expression you've provided calculates the difference between two measures: **TotalActualHours** and **TotalContractedHours**. 
 
 Here's a breakdown of what this means in simple business terms:
 
-1. **TotalActualHours**: This measure represents the total number of hours that have actually been worked or logged on a project or task. It reflects the real effort put in by employees or resources.
+1. **TotalActualHours**: This measure represents the total number of hours that have actually been worked or logged by employees on a project or task.
 
-2. **TotalContractedHours**: This measure indicates the total number of hours that were agreed upon in a contract or plan for the project or task. It represents the expected or planned effort.
+2. **TotalContractedHours**: This measure indicates the total number of hours that were agreed upon in a contract for the project or task. This is the expected or planned amount of work.
 
-3. **The Calculation**: The expression `[TotalActualHours] - [TotalContractedHours]` subtracts the total contracted hours from the total actual hours. 
+3. **TotalHoursDeltaCompleteNr**: The result of the expression `[TotalActualHours] - [TotalContractedHours]` is essentially the difference between the actual hours worked and the hours that were contracted. 
 
-4. **What It Achieves**: The result of this calculation gives you the **TotalHoursDeltaCompleteNr**, which shows the difference between what was actually worked and what was planned. 
+### What It Achieves:
+- **Positive Result**: If the result is positive, it means that more hours were worked than were originally contracted. This could indicate that the project is taking longer than expected or that additional work was required.
+  
+- **Negative Result**: If the result is negative, it means that fewer hours were worked than contracted. This could suggest that the project is ahead of schedule or that less work was needed than anticipated.
 
-   - If the result is positive, it means that more hours were worked than were contracted, indicating potential overwork or additional effort beyond what was planned.
-   - If the result is negative, it means that fewer hours were worked than were contracted, suggesting that the project may be under-resourced or that tasks were completed more efficiently than expected.
-   - If the result is zero, it indicates that the actual hours worked matched the contracted hours perfectly.
+- **Zero Result**: If the result is zero, it indicates that the actual hours worked match the contracted hours, suggesting that the project is on track according to the original agreement.
 
-In summary, this measure helps businesses understand how actual work compares to what was planned, allowing for better resource management and project planning.
+In summary, this DAX measure helps businesses understand how actual work hours compare to what was planned, allowing for better project management and resource allocation decisions.
 
 **`TotalHoursTracked`**
 
@@ -1232,14 +1237,17 @@ IF (
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `TotalHoursTracked`. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Blank Values**: The expression starts by checking if the total sum of hours from the `vw_Timesheet` table is blank (i.e., there are no hours recorded). This is done using the `ISBLANK` function.
+1. **Purpose**: The measure calculates the total number of hours tracked in a timesheet.
 
-2. **Return Zero if Blank**: If the sum of hours is blank (meaning no hours have been tracked), the measure will return a value of **0**. This is important because it ensures that when there are no recorded hours, the measure reflects that by showing zero instead of leaving it blank.
+2. **Checking for Blank Values**: The code first checks if the total sum of hours from the `vw_Timesheet` table is blank (i.e., there are no hours recorded). This is done using the `ISBLANK` function.
 
-3. **Return Total Hours if Not Blank**: If there are hours recorded (i.e., the sum is not blank), the measure will return the actual total sum of hours tracked from the `vw_Timesheet` table.
+3. **Returning Values**:
+   - If the sum of hours is blank (meaning no hours have been recorded), the measure returns **0**. This is important because it ensures that when there are no entries, the measure does not show a blank value, which could be misleading.
+   - If there are hours recorded (the sum is not blank), it simply returns the total sum of hours tracked.
 
-### Summary:
-In summary, the `TotalHoursTracked` measure calculates the total hours recorded in the timesheet. If no hours are recorded, it returns zero; otherwise, it returns the total hours tracked. This helps in reporting and analysis by providing a clear and meaningful value, ensuring that users can easily understand the amount of time tracked without encountering blank values.
+4. **Final Outcome**: The result of this measure will either be the total hours tracked (if there are any) or 0 (if there are no hours tracked). This helps users easily understand how many hours have been logged without encountering any blank values in reports or dashboards.
+
+In summary, `TotalHoursTracked` provides a clear and user-friendly way to see the total hours worked, ensuring that users always receive a numeric value (either the total hours or zero) for better reporting and analysis.
 
 **`TotalHoursTrackedMissing`**
 
@@ -1251,16 +1259,16 @@ IF (
 			    SUM(vw_Timesheet[Hours])
 			)
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is a measure named `TotalHoursTrackedMissing`. Here's a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is designed to create a measure called `TotalHoursTrackedMissing`. Here's a breakdown of what it does in simple business terms:
 
-1. **Check for Blank Values**: The measure first checks if the total hours tracked (from the `vw_Timesheet` table) is blank. This means it is looking to see if there are any recorded hours for the timesheet.
+1. **Check for Blank Values**: The measure first checks if the total sum of hours from the `vw_Timesheet` table is blank (i.e., there are no hours recorded). This is done using the `ISBLANK` function.
 
-2. **Return Value Based on Check**:
-   - If the total hours are blank (meaning no hours have been recorded), the measure will return the text "Empty". This indicates that there are no hours tracked for the selected context (like a specific employee, project, or time period).
-   - If there are hours recorded (i.e., the total is not blank), it will return the actual sum of the hours tracked.
+2. **Return "Empty" if No Hours**: If the sum of hours is indeed blank (meaning no hours have been tracked), the measure returns the text "Empty". This indicates that there is no data available for hours tracked.
+
+3. **Return Total Hours if Present**: If there are hours recorded (the sum is not blank), the measure simply returns the total sum of hours tracked from the `vw_Timesheet` table.
 
 ### Summary:
-In essence, this measure helps to identify whether any hours have been logged in the timesheet. If no hours are logged, it clearly indicates that with the word "Empty". If hours are logged, it provides the total number of hours tracked. This is useful for reporting and analysis, as it allows users to quickly see if there is missing data in their timesheet records.
+In essence, this measure helps to identify whether any hours have been logged in the timesheet. If no hours are logged, it clearly indicates this by returning "Empty". If hours are logged, it provides the total number of hours tracked. This is useful for reporting and analysis, as it allows users to quickly understand if there is data available or if they need to investigate further.
 
 **`trackedDiff`**
 
@@ -1272,24 +1280,27 @@ In essence, this measure helps to identify whether any hours have been logged in
 			        ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])
 			    )
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided calculates a measure called `trackedDiff`, which is designed to find the difference between two values related to hours tracked for employees. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided calculates a measure called `trackedDiff`, which essentially determines the difference between the total hours tracked for a specific context (like an employee or a project) and the maximum hours tracked per week for that same context.
 
-1. **Total Hours Tracked**: The measure starts with `[TotalHoursTracked]`, which represents the total number of hours that have been logged or tracked for a specific employee or group of employees.
+Here’s a breakdown of what each part does in simple business terms:
 
-2. **Maximum Hours Per Week**: The next part of the calculation uses the `CALCULATE` function to determine the maximum number of hours that have been recorded in a week for the same employee. This is done by:
-   - Using `MAXX` to find the highest value of `HoursPerWeek` from a distinct list of hours recorded in the `vw_Timesheet` table.
-   - The `ALLEXCEPT` function is used to ensure that this calculation is only considering the data for the specific employee (identified by `EmployeeID`), ignoring any other filters that might be applied to the data.
+1. **[TotalHoursTracked]**: This part represents the total number of hours that have been logged or tracked. It could be the total hours worked by an employee or the total hours for a specific project.
 
-3. **Calculating the Difference**: Finally, the measure subtracts the maximum hours per week (calculated in the previous step) from the total hours tracked. 
+2. **CALCULATE(...)**: This function modifies the context in which the data is evaluated. It allows us to perform calculations based on specific filters or conditions.
+
+3. **MAXX(DISTINCT(vw_Timesheet[HoursPerWeek]), vw_Timesheet[HoursPerWeek])**: This part finds the maximum number of hours tracked in a week from the timesheet data. 
+   - **DISTINCT(vw_Timesheet[HoursPerWeek])**: This ensures that we are only looking at unique weekly hour values.
+   - **MAXX(...)**: This function then takes those unique values and finds the highest one.
+
+4. **ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])**: This part removes all filters from the `vw_Timesheet` table except for the filter on `EmployeeID`. This means that the calculation of maximum hours per week will consider all records for the specific employee, regardless of any other filters that might be applied.
 
 ### What It Achieves:
-The `trackedDiff` measure effectively shows how much the total hours tracked for an employee exceed the maximum hours they have recorded in any single week. 
+The overall measure `trackedDiff` calculates how many hours an employee has tracked beyond their maximum tracked hours in any single week. 
 
-- **Positive Value**: If the result is positive, it indicates that the employee has logged more hours overall than their highest weekly total, suggesting they may be working consistently more than their peak week.
-  
-- **Negative Value**: If the result is negative, it means that the total hours tracked are less than or equal to their maximum weekly hours, indicating that they have not exceeded their peak performance in terms of hours worked.
+- If the result is positive, it indicates that the employee has tracked more hours than their highest weekly total, suggesting they are working extra hours.
+- If the result is zero or negative, it indicates that the employee has not exceeded their maximum weekly hours tracked.
 
-In summary, this measure helps in assessing employee workload and performance by comparing their total tracked hours against their maximum weekly hours, providing insights into their work patterns.
+In summary, `trackedDiff` helps in understanding whether an employee is working more than their usual maximum hours in a week, which can be useful for workload management and ensuring employee well-being.
 
 **`trackedDiff2`**
 
@@ -1305,25 +1316,37 @@ In summary, this measure helps in assessing employee workload and performance by
 			        ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])
 			    )
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you've provided calculates a measure called `trackedDiff2`. Let's break it down into simpler terms to understand what it achieves:
+- **DAX Explanation (Generated):** The DAX code snippet you've provided is a measure named `trackedDiff2`. Let's break it down step by step to understand what it calculates in simple business terms.
 
-1. **Total Hours Tracked**: The measure starts with `[TotalHoursTracked]`, which represents the total number of hours that have been tracked for a specific context (like an employee or a project).
+### Components of the Measure:
 
-2. **Calculating the Maximum Hours Per Week**:
-   - The `CALCULATE` function is used to modify the context in which the data is evaluated.
-   - Inside `CALCULATE`, the `MAXX` function is used to find the maximum value of `HoursPerWeek` from a distinct list of hours recorded in the `vw_Timesheet` table. This means it looks at all the unique values of hours worked per week and finds the highest one.
+1. **[TotalHoursTracked]**: This part of the measure represents the total number of hours that have been tracked for a specific context, such as a particular employee or time period.
 
-3. **Removing Filters**:
-   - The `REMOVEFILTERS(vw_Timesheet[HoursPerWeek])` part ensures that any existing filters on the `HoursPerWeek` column are ignored. This allows the calculation to consider all possible values of hours worked per week, not just those that might be currently filtered in the report.
+2. **CALCULATE Function**: This function modifies the context in which data is evaluated. It allows us to change filters and perform calculations based on those changes.
 
-4. **Keeping Employee Context**:
-   - The `ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])` function keeps the context of the `EmployeeID` while removing other filters. This means that the calculation will still be specific to each employee, but it won't be limited by any other filters that might be applied to the `vw_Timesheet` table.
+3. **MAXX Function**: This function is used to find the maximum value from a set of values. In this case, it is applied to a distinct list of hours worked per week.
 
-5. **Final Calculation**:
-   - The overall calculation subtracts the maximum hours per week (found in the previous steps) from the total hours tracked. 
+4. **DISTINCT(vw_Timesheet[HoursPerWeek])**: This part creates a unique list of hours worked per week from the `vw_Timesheet` table. It ensures that we are only considering different values of hours worked.
 
-### Summary:
-In simple business terms, `trackedDiff2` calculates the difference between the total hours an employee has tracked and the maximum hours they have worked in a week, regardless of any specific week filters. This measure helps to identify how much more or less an employee has worked compared to their highest recorded weekly hours, providing insights into their workload and productivity.
+5. **REMOVEFILTERS(vw_Timesheet[HoursPerWeek])**: This removes any filters that might be applied to the `HoursPerWeek` column, allowing the calculation to consider all possible values of hours worked per week.
+
+6. **ALLEXCEPT(vw_Timesheet, vw_Timesheet[EmployeeID])**: This keeps the filter context for `EmployeeID` while removing other filters from the `vw_Timesheet` table. This means the calculation will focus on the specific employee's data while ignoring other filters.
+
+### What It Achieves:
+
+Putting it all together, the measure `trackedDiff2` calculates the difference between:
+
+- **Total Hours Tracked**: The total hours recorded for a specific employee or context.
+- **Maximum Hours Per Week**: The maximum number of hours that have been recorded for that employee, regardless of any specific week or filter applied to the hours worked.
+
+### In Business Terms:
+
+This measure helps to identify how much the total hours tracked for an employee exceed the maximum hours they have worked in any given week. 
+
+- If the result is positive, it indicates that the employee has tracked more hours than their maximum weekly workload, which could suggest overtime or additional work.
+- If the result is zero or negative, it indicates that the tracked hours are within or below their maximum weekly capacity.
+
+In summary, `trackedDiff2` provides insights into employee workload management by comparing total tracked hours against their maximum weekly hours, helping businesses monitor and manage employee productivity and workload effectively
 
 **`UTI_TotalBillableHours`**
 
@@ -1340,19 +1363,18 @@ Var FilteredHours =
 			RETURN 
 			    SUMX(FilteredHours, vw_Timesheet[Hours])
 ```
-- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to calculate the total billable hours from a timesheet data source, specifically focusing on certain projects that qualify for billing. Here’s a breakdown of what it does in simple business terms:
+- **DAX Explanation (Generated):** The DAX code snippet you provided is designed to calculate the total billable hours from a timesheet data source, specifically focusing on certain criteria. Here’s a breakdown of what it does in simple business terms:
 
 1. **Variable Definition**: The code starts by defining a variable called `FilteredHours`. This variable will hold a filtered version of the `vw_Timesheet` data.
 
-2. **Filtering Criteria**: The `Filter` function is used to create this filtered dataset. It includes two main conditions:
-   - **Condition 1**: The project qualifies for billing (`vw_Timesheet[QualifyPrj] = 1`) and is marked as a billable project (`vw_Timesheet[BillablePrj] = 1`).
-   - **Condition 2**: Alternatively, it includes any projects that contain the phrase "Customer Success Services" in their name. This is checked using the `SEARCH` function, which looks for that specific text within the `vw_Timesheet[Project]` field.
+2. **Filtering Criteria**: The `Filter` function is used to create this filtered dataset. It looks at each entry in the `vw_Timesheet` and applies two main conditions:
+   - **Condition 1**: The project qualifies as billable if `QualifyPrj` equals 1 (indicating it is a qualifying project) **and** `BillablePrj` equals 1 (indicating it is a billable project).
+   - **Condition 2**: Alternatively, if the project name contains the phrase "Customer Success Services", it will also be included in the filtered dataset. This is checked using the `SEARCH` function, which looks for that specific text within the `Project` field.
 
-3. **Calculating Total Hours**: After filtering the timesheet data based on the above criteria, the code uses the `SUMX` function to calculate the total hours worked. `SUMX` iterates over the `FilteredHours` variable and sums up the `Hours` field from the filtered dataset.
+3. **Calculating Total Hours**: After filtering the timesheet data based on the above criteria, the `RETURN` statement uses the `SUMX` function. This function takes the filtered dataset (`FilteredHours`) and sums up the `Hours` for each entry that meets the filtering conditions.
 
-4. **Final Output**: The result of this measure, `UTI_TotalBillableHours`, is the total number of hours that meet the specified criteria for billable projects. This measure helps the business understand how many hours can be billed to clients, focusing on qualified projects and specific customer success services.
-
-In summary, this DAX measure effectively calculates the total billable hours from timesheets, ensuring that only relevant projects are included in the calculation.
+### Summary:
+In summary, this DAX measure calculates the total number of billable hours from a timesheet by including only those hours that are associated with qualifying and billable projects or projects related to "Customer Success Services". This helps the business understand how many hours can be billed to clients based on specific project criteria.
 
 **`UTI_TOTALHOURS`**
 
@@ -1362,23 +1384,25 @@ CALCULATE(SUM(vw_Timesheet[Hours]), vw_Timesheet[QualifyPrj] = 1)
 ```
 - **DAX Explanation (Generated):** The DAX code snippet you provided is used to create a measure called `UTI_TOTALHOURS`. Here's a breakdown of what it does in simple business terms:
 
-1. **Purpose**: This measure calculates the total number of hours worked on specific projects that qualify under certain criteria.
+1. **Purpose**: This measure calculates the total number of hours worked on specific projects that meet a certain qualification criteria.
 
 2. **Components**:
    - **SUM(vw_Timesheet[Hours])**: This part of the code adds up all the values in the `Hours` column from the `vw_Timesheet` table. Essentially, it totals the hours recorded in timesheets.
-   - **CALCULATE**: This function modifies the context in which the data is evaluated. It allows us to apply filters to the data before performing the calculation.
-   - **vw_Timesheet[QualifyPrj] = 1**: This condition acts as a filter. It specifies that only the rows where the `QualifyPrj` column equals 1 should be included in the total. In other words, it focuses on projects that meet a certain qualification criterion.
+   - **CALCULATE**: This function modifies the context in which the data is evaluated. In this case, it is used to filter the data before summing the hours.
+   - **vw_Timesheet[QualifyPrj] = 1**: This condition filters the data to include only those records where the `QualifyPrj` column equals 1. This means it only considers projects that are marked as qualified.
 
-3. **Outcome**: The measure `UTI_TOTALHOURS` will return the total hours worked on projects that are marked as qualifying (where `QualifyPrj` is 1). This is useful for reporting and analysis, as it helps stakeholders understand how many hours are being spent on projects that meet specific standards or requirements.
+3. **Outcome**: The measure `UTI_TOTALHOURS` will return the total hours worked on projects that are qualified (where `QualifyPrj` is 1). This is useful for reporting and analysis, as it helps the business understand how many hours are being spent on projects that meet specific criteria, allowing for better resource allocation and project management.
 
-In summary, this DAX measure helps businesses track and analyze the total hours worked on eligible projects, providing insights into resource allocation and project management.
+In summary, this DAX measure helps businesses track and analyze the total hours worked on qualified projects, providing insights into productivity and project performance.
 
 **`UTILIZATION_New`**
 
 - **DAX Expression:**
 ```dax
-VAR _TotalBillableHours = [UTI_TotalBillableHours]
+-- Calculate the Billable Hour Ratio for Active Employees
+			VAR _TotalBillableHours = [UTI_TotalBillableHours]
 			VAR _TotalHours = [UTI_TOTALHOURS]
+			
 			RETURN
 			    IF(NOT(ISBLANK([Msr_ActiveContacts])), 
 			            IF(NOT(ISBLANK([UTI_TOTALHOURS])), 
@@ -1386,25 +1410,22 @@ VAR _TotalBillableHours = [UTI_TotalBillableHours]
 			            )
 			    )
 ```
-- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a measure called 'UTILIZATION_New', which essentially assesses how effectively time is being utilized in a business context, particularly in relation to billable hours.
-
-Here's a breakdown of what this code does in simple terms:
+- **DAX Explanation (Generated):** This DAX code snippet is designed to calculate a measure called 'UTILIZATION_New', which focuses on determining the utilization ratio of active employees in a business context. Here's a breakdown of what it does in simple terms:
 
 1. **Variables Defined**:
-   - `_TotalBillableHours`: This variable captures the total number of hours that are billable to clients.
-   - `_TotalHours`: This variable captures the total number of hours worked by employees.
+   - **_TotalBillableHours**: This variable captures the total number of hours that employees have billed to clients. It represents the productive time that can be charged for services rendered.
+   - **_TotalHours**: This variable captures the total hours worked by employees, which includes both billable and non-billable hours.
 
 2. **Return Logic**:
-   - The code uses a series of checks to ensure that certain conditions are met before performing the calculation:
-     - **Check for Active Contacts**: It first checks if there are any active contacts (represented by `[Msr_ActiveContacts]`). If there are no active contacts, the calculation does not proceed.
-     - **Check for Total Hours**: Next, it checks if the total hours worked (`[UTI_TOTALHOURS]`) is not blank. If it is blank, the calculation does not proceed.
-   
-3. **Calculation of Utilization**:
-   - If both checks pass, it calculates the utilization by dividing the total billable hours by the total hours worked. 
-   - If the result of this division is blank (which can happen if total hours worked is zero), it returns 0 instead of a blank value. This ensures that the measure always provides a numerical output.
+   - The measure first checks if there are any active contacts (employees) using `[Msr_ActiveContacts]`. If there are no active employees, the measure will not proceed further.
+   - Next, it checks if the total hours worked (`_TotalHours`) is not blank. If it is blank, it means there is no data to calculate the utilization ratio.
+   - If both checks pass, it calculates the utilization ratio by dividing the total billable hours by the total hours worked. This ratio indicates what percentage of the employees' total working hours are billable.
+
+3. **Handling Division**:
+   - The `DIVIDE` function is used to perform the division safely. If the result of the division is blank (which can happen if `_TotalHours` is zero), it returns 0 instead of an error. This ensures that the measure always returns a valid number.
 
 ### Summary:
-In summary, this DAX measure calculates the utilization rate by determining the proportion of billable hours to total hours worked, but only if there are active contacts and total hours are available. If any of the necessary data is missing, it ensures that the measure returns a meaningful value (0) instead of leaving it blank. This helps businesses understand how effectively their workforce is being utilized in terms of billable work.
+In summary, this DAX measure calculates the billable hour ratio for active employees, providing insights into how effectively employees are utilizing their time for billable work compared to their total working hours. A higher ratio indicates better utilization, which is often a key performance indicator in service-oriented businesses.
 
 ---
 
@@ -1414,23 +1435,357 @@ In summary, this DAX measure calculates the utilization rate by determining the 
 
 The following filters are applied to the entire report:
 
-- Filter on `DimDate`.`CurrentYearFlag` (Type: Advanced, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data related to dates, specifically the `CurrentYearFlag` from the `DimDate` table.
+- Filter on `DimDate`.`CurrentYearFlag` (Type: Advanced, Explanation: In simple business terms, the filter definition JSON you provided is specifying a condition that focuses on a particular piece of data related to dates.
 
-### Breakdown of the Filter:
+Here's what it means:
 
-1. **Target Data**: The filter is applied to the `CurrentYearFlag` column in the `DimDate` table. This column typically indicates whether a date falls within the current year.
+- **`CurrentYearFlag`**: This is a field (or column) in the `DimDate` table that indicates whether a date falls within the current year. 
+- **`= 1`**: This part of the filter means that we are only interested in records where the `CurrentYearFlag` is equal to 1.
 
-2. **Filter Condition**: The filter is set to include only those records where the `CurrentYearFlag` is equal to `1`. 
+So, when this filter is applied, it will **include only the data for dates that are in the current year**. Any data from previous years or future years will be **excluded**. 
 
-3. **Meaning of `CurrentYearFlag`**: 
-   - A value of `1` in the `CurrentYearFlag` column signifies that the date is part of the current year.
-   - Conversely, any date with a `CurrentYearFlag` of `0` would indicate that it is not in the current year.
-
-### Summary in Business Terms:
-
-When this filter is applied, it will **include only the dates from the `DimDate` table that are in the current year**. Any dates that are from previous years or future years will be **excluded** from the analysis. This allows users to focus solely on data relevant to the current year, which can be particularly useful for year-to-date reporting, current year performance analysis, or any other time-sensitive evaluations.)
+In summary, this filter helps you focus on the data that is relevant to the current year, allowing for analysis or reporting that is timely and specific to the present timeframe.)
 
 ### <a name="report-pages"></a>Report Pages
+
+#### <a name="page-drill"></a>Page: Drill
+
+*Internal Name: `b37e6790682a16090ad7`, Ordinal: 15*
+
+##### Page Level Filters
+
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
+
+In simple business terms, the filter is saying:
+
+- **Include only the following Timesheet Codes**: 
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
+
+This means that when this filter is applied, only records (or entries) that have a `TimesheetCode` matching one of these specified values will be shown in your report or analysis. Any records with a `TimesheetCode` that is not one of these six values will be excluded from the results.
+
+In summary, this filter narrows down the data to focus specifically on these six types of timesheet codes, allowing for a more targeted analysis of relevant entries.)
+- Filter on `DimDate`.`CalendarYear` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Field**: The filter is applied to the field `DimDate.CalendarYear`. This field typically contains the years in which your data is recorded, such as 2020, 2021, 2022, etc.
+
+2. **Filter Meaning**: The phrase "(All values)" indicates that **no specific filtering is being applied** to the `CalendarYear` field. This means that all years available in the data will be included in the report or visualization.
+
+3. **Data Inclusion**: Since the filter is set to include "All values," every year present in the `DimDate.CalendarYear` field will be shown. For example, if your dataset includes the years 2019, 2020, 2021, and 2022, all these years will be part of the analysis.
+
+4. **No Exclusions**: There are no exclusions or restrictions on the data. This means that you will not miss any data from any year; everything is considered.
+
+### Summary:
+In summary, this filter allows you to see data from every year in your dataset without any limitations. It ensures that all years are included in your analysis, providing a complete view of the data over time.)
+- Filter on `DimDate`.`MonthNumberOfYear` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Field**: The filter is applied to the field `DimDate.MonthNumberOfYear`. This field represents the month of the year, typically ranging from 1 (January) to 12 (December).
+
+2. **Filter Action**: The phrase "(All values)" indicates that **no specific filtering is being applied** to the `MonthNumberOfYear` field. This means that all months from January to December are included in the data being analyzed.
+
+3. **Data Inclusion**: Since the filter is set to include "All values," every month will be considered in any calculations, visualizations, or reports. There are no exclusions; therefore, you will see data for every month of the year.
+
+### Summary:
+In summary, this filter allows you to see data for all months of the year without any restrictions. It ensures that your analysis includes every month, providing a complete view of the data across the entire year.)
+- Filter on `DimDate`.`WeekNumberOfYear` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Field**: The filter is applied to the field `DimDate`.`WeekNumberOfYear`. This field typically represents the week number of the year (e.g., Week 1, Week 2, etc.).
+
+2. **Filter Action**: The phrase "(All values)" indicates that **no specific filtering is being applied** to the `WeekNumberOfYear` field. This means that all week numbers from the dataset will be included in the analysis.
+
+3. **Data Inclusion**: Since the filter is set to include "(All values)", every week number available in the `DimDate` table will be considered. For example, if your dataset includes weeks 1 through 52, all of these weeks will be shown in your reports.
+
+4. **No Exclusions**: There are no exclusions or restrictions on the data. This means that you will not miss any weeks, and the analysis will reflect the complete range of week numbers.
+
+### Summary:
+In summary, this filter allows you to see data for every week of the year without any limitations. It ensures that all week numbers are included in your reports, providing a comprehensive view of the data across all weeks.)
+- Filter on `lkp_Unit`.`Unit` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the specified field, which in this case is `lkp_Unit`.`Unit`. This means that no specific criteria are being applied to limit the data.
+
+2. **Data Included**: When this filter is applied, every single unit from the `Unit` field in the `lkp_Unit` table will be included in the report. There are no exclusions, so all units will be visible.
+
+3. **Data Excluded**: Since the filter is set to include all values, there are no exclusions. Every unit is considered, and none are filtered out.
+
+### Summary:
+In simple terms, this filter allows you to see all units available in the dataset without any restrictions. It ensures that every piece of data related to units is included in your analysis, providing a complete view of the information.)
+- Filter on `vw_Timesheet`.`Approved` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Field**: The filter is applied to the field `vw_Timesheet`.`Approved`. This field likely indicates whether timesheets have been approved or not.
+
+2. **Filter Meaning**: The expression `"(All values)"` means that **no filtering is being applied** to the `Approved` field. In other words, all records, regardless of whether they are approved or not, will be included in the analysis.
+
+3. **Data Inclusion**: Since the filter includes "All values," it means:
+   - Timesheets that are marked as **Approved** will be included.
+   - Timesheets that are marked as **Not Approved** will also be included.
+   - Any other statuses (if applicable) will also be included.
+
+### Summary:
+This filter allows you to see the complete picture of all timesheet records, without excluding any based on their approval status. It ensures that your analysis considers every entry in the `vw_Timesheet` dataset, providing a comprehensive view of the data.)
+- Filter on `vw_Timesheet`.`BillableDep` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `BillableDep` from the `vw_Timesheet` view. This means that no specific criteria are applied to limit the data.
+
+2. **Data Included**: When this filter is applied, every possible entry in the `BillableDep` field will be shown. For example, if `BillableDep` includes departments like "Sales," "Marketing," and "Development," all these departments will be included in the report.
+
+3. **Data Excluded**: Since the filter is set to include all values, there are no exclusions. No data related to `BillableDep` will be left out; everything is considered.
+
+### Summary:
+In simple terms, this filter ensures that all departments related to billable timesheets are visible in your report, allowing you to see the complete picture without any restrictions.)
+- Filter on `vw_Timesheet`.`BillablePrj` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the `BillablePrj` field in the `vw_Timesheet` view. This means that no specific criteria are applied to limit the data.
+
+2. **Data Included**: When this filter is applied, every single entry related to `BillablePrj` will be shown in your report. This includes all projects that are billable, regardless of any other conditions or attributes.
+
+3. **Data Excluded**: Since the filter is set to include all values, there are no exclusions. Every project that falls under the `BillablePrj` category will be visible.
+
+### Summary:
+In simple terms, this filter allows you to see everything related to billable projects without any restrictions. You will not miss any data, as it captures all entries in that category.)
+- Filter on `vw_Timesheet`.`EmployeeName` (Type: Categorical, Explanation: The provided Power BI filter definition JSON specifies a condition that focuses on the `EmployeeName` field from the `vw_Timesheet` data view. Here’s a breakdown of what this filter does in simple business terms:
+
+- **Target Field**: The filter is applied to the `EmployeeName` column in the `vw_Timesheet` view, which contains the names of employees.
+
+- **Inclusion Criteria**: The filter states that only records where the `EmployeeName` is exactly 'Sujeev Bhagyanath' should be included in the analysis or report.
+
+- **Exclusion Criteria**: All other employee names will be excluded from the data being analyzed. This means that if an employee's name is anything other than 'Sujeev Bhagyanath', their records will not appear in the results.
+
+In summary, this filter is used to focus exclusively on the data related to the employee named 'Sujeev Bhagyanath', ignoring all other employees in the dataset.)
+- Filter on `vw_Timesheet`.`Hours` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the target field, which in this case is `vw_Timesheet`.`Hours`. This means that no specific criteria are applied to limit the data being shown.
+
+2. **Data Included**: When this filter is applied, every single entry in the `Hours` column from the `vw_Timesheet` view will be included in the analysis. There are no restrictions, so all hours logged by employees will be considered.
+
+3. **Data Excluded**: Since the filter includes all values, there are no exclusions. Every record related to hours worked is available for reporting and analysis.
+
+### Summary:
+In simple terms, this filter allows you to see **everything** related to hours worked without omitting any data. It’s like saying, “Show me all the hours recorded, without any filters or limits.”)
+- Filter on `vw_Timesheet`.`HoursperWeek` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `vw_Timesheet`.`HoursperWeek`. This means that when you apply this filter, you are not excluding any data related to the hours worked per week.
+
+2. **Data Included**: Every record in the `vw_Timesheet` table that has a value for `HoursperWeek` will be included in your analysis. This could range from employees who worked 0 hours to those who worked the maximum hours recorded.
+
+3. **Data Excluded**: Since the filter is set to include all values, there are no exclusions. No specific hours per week are filtered out, so you will see a complete picture of all the hours worked by employees.
+
+### Summary:
+In summary, applying this filter means you will see all the data related to `HoursperWeek` without any restrictions. This is useful when you want to analyze the total hours worked by all employees without omitting any specific groups or values.)
+- Filter on `vw_Timesheet`.`ManagerName` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `vw_Timesheet`.`ManagerName`. This means that no specific manager is being filtered in or out.
+
+2. **Data Inclusion**: When this filter is applied, every manager's data from the `vw_Timesheet` view will be included in the report. There are no restrictions, so you will see timesheet entries for all managers.
+
+3. **Data Exclusion**: Since the filter is set to "(All values)", there are no exclusions. No manager's data is being left out; every manager's information is available for analysis.
+
+### Summary:
+In simple terms, this filter allows you to see the complete picture of timesheet data for every manager without any limitations. You can analyze the performance, hours worked, or any other metrics related to all managers in the dataset.)
+- Filter on `vw_Timesheet`.`QualifyPrj` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and dashboards. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the specified field, which in this case is `vw_Timesheet`.`QualifyPrj`. 
+
+2. **Data Inclusion**: This means that when you apply this filter, you are not excluding any projects or entries from the `QualifyPrj` field. Every single project that exists in the `vw_Timesheet` view will be considered in your analysis.
+
+3. **No Restrictions**: Since the filter is set to "(All values)", there are no restrictions or conditions applied. You will see all the data related to projects, regardless of their characteristics or statuses.
+
+### Summary:
+In simple terms, this filter allows you to see everything related to projects in your timesheet data without omitting any information. It’s like saying, “Show me all the projects, no matter what.”)
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all possible values** for the field `vw_Timesheet`.`TimesheetCode`. This means that no specific criteria are applied to limit the data shown based on the `TimesheetCode`.
+
+2. **Data Inclusion**: Since the filter is set to "(All values)", every entry in the `TimesheetCode` field will be included in the report or visualization. This means that all timesheet codes, regardless of their specific values, will be displayed.
+
+3. **No Exclusions**: There are no exclusions or restrictions applied. This filter does not filter out any timesheet codes, so you will see every code that exists in the dataset.
+
+### Summary:
+When this filter is applied, you will see all timesheet codes in your report, allowing for a comprehensive view of all the data related to timesheets without any limitations.)
+- Filter on `vw_Timesheet`.`Unit` (Type: Categorical, Explanation: The provided Power BI filter definition is specifying a condition for the data that will be included in a report or visualization. Let's break it down in simple business terms:
+
+- **Target Data**: The filter is applied to a specific field called `Unit` within a data source named `vw_Timesheet`. This field likely represents different departments, teams, or business units within an organization.
+
+- **Filter Condition**: The filter condition is defined as "`Unit` IN ('Empl M-Cloud - Data & Analytics')". This means that only the records where the `Unit` is exactly "Empl M-Cloud - Data & Analytics" will be included in the analysis.
+
+- **Inclusion and Exclusion**:
+  - **Included**: Any data entries (or rows) in the `vw_Timesheet` where the `Unit` is "Empl M-Cloud - Data & Analytics" will be shown in the report.
+  - **Excluded**: All other entries where the `Unit` is anything other than "Empl M-Cloud - Data & Analytics" will be filtered out and not displayed.
+
+In summary, this filter is used to focus the analysis specifically on the "Empl M-Cloud - Data & Analytics" unit, allowing users to see only the relevant data for that particular team or department while ignoring all other units.)
+- Filter on `vw_Timesheet`.`QualifyPrj` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the specified field, which in this case is `vw_Timesheet`.`QualifyPrj`. 
+
+2. **Data Inclusion**: This means that when you apply this filter, you are not excluding any projects or entries from the `QualifyPrj` field. Every project that exists in the `vw_Timesheet` view will be included in your analysis or report.
+
+3. **No Restrictions**: Since the filter is set to "(All values)", there are no restrictions or conditions applied. You will see all the data related to projects, regardless of their characteristics or statuses.
+
+### Summary:
+In simple terms, this filter allows you to see everything related to projects in your timesheet data without omitting any information. It ensures a complete view of all projects, making it useful when you want to analyze or report on the entire dataset without any limitations.)
+- Filter on `vw_Timesheet`.`Rejected` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Data**: The filter is applied to a specific dataset or table, which in this case is `vw_Timesheet`.`Rejected`. This likely refers to a view or table that contains records of timesheets that have been rejected.
+
+2. **Filter Meaning**: The phrase "(All values)" indicates that no specific filtering criteria are being applied. This means that all records from the `vw_Timesheet`.`Rejected` dataset will be included in the report or visualization.
+
+3. **Inclusion of Data**: Since the filter is set to "(All values)", every rejected timesheet record will be shown. There are no exclusions or limitations on the data being displayed.
+
+### Summary:
+When this filter is applied, you will see all the rejected timesheet records without any restrictions. This is useful when you want to analyze or review every instance of rejected timesheets without missing any data.)
+- Filter on `vw_Timesheet`.`ReportReady` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the data source. This means that no specific criteria are applied to limit the data being shown.
+
+2. **Data Inclusion**: When this filter is applied to the target `vw_Timesheet`.`ReportReady`, it means that every single entry in the `ReportReady` dataset will be included in the report. There are no restrictions or exclusions based on any conditions.
+
+3. **Practical Impact**: As a result, users will see a complete view of all timesheet records available in the `vw_Timesheet` view. This is useful when you want to analyze the entire dataset without filtering out any specific records.
+
+### Summary:
+In summary, the filter "(All values)" ensures that all data from the `vw_Timesheet`.`ReportReady` is included in the report, allowing for a comprehensive analysis without any exclusions.)
+- Filter on `vw_Timesheet`.`Project` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and dashboards. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the `vw_Timesheet`.`Project` data. This means that no specific projects are being excluded or included; rather, every project in the dataset will be shown.
+
+2. **Data Inclusion**: When this filter is applied, it ensures that all projects from the `vw_Timesheet` view are available for analysis. You will see data related to every project without any restrictions.
+
+3. **No Exclusions**: Since the filter is set to "(All values)", there are no projects being filtered out. This is useful when you want a comprehensive view of all projects, rather than focusing on a specific subset.
+
+### Summary:
+In summary, this filter allows you to see all projects in the `vw_Timesheet` view without any limitations, providing a complete picture of the data related to all projects.)
+
+##### Visuals on this Page
+
+**actionButton**
+
+- Type: `actionButton`
+- Name: `27e6b6fd18af776e6acc`
+- Fields Used: _(None detected)_
+
+**tableEx**
+
+- Type: `tableEx`
+- Name: `a2c6ac67ed4bc6ae0822`
+- Fields Used:
+  - `TimesheetDate` (Query: `PBI_TIMESHEET.TimesheetDate`) (Role: Values)
+  - `SubUnit` (Query: `PBI_TIMESHEET.Unit`) (Role: Values)
+  - `EmployeeName` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Values)
+  - `Hours` (Query: `Sum(PBI_TIMESHEET.Hours)`) (Role: Values)
+  - `HoursperWeek` (Query: `Sum(PBI_TIMESHEET.HoursperWeek)`) (Role: Values)
+  - `Approved` (Query: `PBI_TIMESHEET.Approved`) (Role: Values)
+  - `ReportReady` (Query: `PBI_TIMESHEET.ReportReady`) (Role: Values)
+  - `Rejected` (Query: `PBI_TIMESHEET.Rejected`) (Role: Values)
+  - `Project` (Query: `PBI_TIMESHEET.Project`) (Role: Values)
+  - `ManagerName` (Query: `PBI_TIMESHEET.ManagerName`) (Role: Values)
+  - `Week` (Query: `DimDate.WeekNumberOfYear`) (Role: Values)
+  - `Index` (Query: `Sum(PBI_TIMESHEET.Index)`) (Role: Values)
+  - `Year` (Query: `Sum(DimDate.CalendarYear)`) (Role: Values)
+  - `Unit` (Query: `lkp_Unit.Unit`) (Role: Values)
+  - `QualifyPrj` (Query: `Sum(vw_Timesheet.QualifyPrj)`) (Role: Values)
+  - `BillablePrj` (Query: `Sum(vw_Timesheet.BillablePrj)`) (Role: Values)
+  - `ExtraDetails` (Query: `vw_Timesheet.ExtraDetails`) (Role: Values)
+  - `Month` (Query: `Sum(DimDate.MonthNumberOfYear)`) (Role: Values)
+  - `TimesheetCode` (Query: `vw_Timesheet.TimesheetCode`) (Role: Values)
+  - `BillableDep` (Query: `Sum(vw_Timesheet.BillableDep)`) (Role: Values)
 
 #### <a name="page-out-of-service"></a>Page: Out of Service
 
@@ -1438,28 +1793,46 @@ When this filter is applied, it will **include only the dates from the `DimDate`
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`ContractStatusTodayPBI` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_Timesheet` view, particularly the `ContractStatusTodayPBI` column. Here’s a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`ContractStatusTodayPBI` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is designed to focus on a specific subset of data from the `vw_Timesheet` table, specifically looking at the `ContractStatusTodayPBI` field.
 
-1. **Target Data**: The filter is applied to the `ContractStatusTodayPBI` field within the `vw_Timesheet` dataset. This field likely indicates the current status of contracts related to timesheets.
+Here's what the filter does:
 
-2. **Inclusion Criteria**: The filter specifies that only records where the `ContractStatusTodayPBI` is equal to `'Not Valid'` should be included in the analysis. This means that any timesheet entries or contracts that have a status of "Not Valid" will be part of the data being analyzed.
+- **Target Field**: The filter is applied to the `ContractStatusTodayPBI` column in the `vw_Timesheet` table.
+- **Included Data**: The filter specifies that only records where the `ContractStatusTodayPBI` value is **exactly** 'Not Valid' should be included in the analysis or report.
+- **Excluded Data**: Any records where the `ContractStatusTodayPBI` value is anything other than 'Not Valid' will be excluded from the results.
 
-3. **Exclusion Criteria**: Conversely, any records where the `ContractStatusTodayPBI` is anything other than `'Not Valid'` will be excluded from the analysis. This means that valid contracts or any other statuses will not be considered in the results.
+In summary, when this filter is applied, you will only see timesheet records that have a contract status of 'Not Valid', allowing you to focus on this specific condition in your analysis.)
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Advanced, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition you've provided is a bit abstract, but let's break it down in simple terms.
 
-In summary, when this filter is applied, the analysis will only show data related to contracts that are currently marked as "Not Valid," effectively filtering out all other contract statuses. This can help stakeholders focus on issues or areas that need attention regarding invalid contracts.)
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `vw_Timesheet` view are included based on the `TimesheetCode` field. Here's a breakdown of what this filter does in simple business terms:
+### Understanding the Filter Definition
 
-1. **Target Data**: The filter is applied to the `TimesheetCode` column in the `vw_Timesheet` view.
+The filter definition is:
+```json
+"NOT ((Unparsed condition))"
+```
 
-2. **Filter Logic**: The filter specifies that we want to **exclude** any records where the `TimesheetCode` starts with the letter "D". 
+1. **NOT**: This indicates that we are excluding certain data based on a condition. In other words, we want to see everything **except** what meets the criteria defined in the condition.
 
-3. **Inclusion Criteria**: As a result, only records with `TimesheetCode` values that do **not** begin with "D" will be included in the analysis or report. 
+2. **(Unparsed condition)**: This part is not specified, but it typically represents a logical condition that would determine which records to exclude. For example, it could be something like "TimesheetCode is equal to 'ABC'" or "TimesheetCode is in a specific list."
 
-### Summary:
-- **Included**: Timesheet codes like "A123", "B456", "C789", etc. (anything that does not start with "D").
-- **Excluded**: Timesheet codes like "D001", "D234", "D567", etc. (any code that starts with "D").
+### What This Means for `vw_Timesheet`.`TimesheetCode`
 
-In essence, this filter helps focus the analysis on timesheets that are not categorized under any codes starting with "D", allowing for a clearer view of other categories.)
+When this filter is applied to the `vw_Timesheet`.`TimesheetCode`, it means:
+
+- **Inclusion of Data**: All records from the `vw_Timesheet` table will be included **except** those that meet the criteria defined in the "Unparsed condition."
+  
+- **Exclusion of Data**: Any records where the `TimesheetCode` matches the condition specified (once it is defined) will be excluded from the report or visualization.
+
+### Example Scenario
+
+If the "Unparsed condition" were defined as "TimesheetCode is equal to 'ABC'", then applying this filter would result in:
+
+- **Included**: All timesheet records with codes other than 'ABC'.
+- **Excluded**: All timesheet records with the code 'ABC'.
+
+### Summary
+
+In summary, this filter is designed to show all timesheet records except those that meet a specific condition related to the `TimesheetCode`. The exact records excluded depend on the details of the "Unparsed condition," which would need to be defined to understand the full impact of the filter.)
 
 ##### Visuals on this Page
 
@@ -1534,17 +1907,14 @@ In essence, this filter helps focus the analysis on timesheets that are not cate
   - `WeekNumberOfYear` (Query: `DimDate.WeekNumberOfYear`) (Role: Columns)
   - `Sum of Hours` (Query: `Sum(PBI_TIMESHEET.Hours)`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which employee names are included in a report or visualization based on the `vw_Timesheet` data source. Let's break it down in simple business terms:
+  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is saying that we want to include all records where the `EmployeeName` field is not empty or missing. 
 
-1. **Data Source**: The filter is applied to a view called `vw_Timesheet`, which likely contains timesheet data for employees.
+Here's a breakdown of what this means:
 
-2. **Target Field**: The specific field being filtered is `EmployeeName`, which represents the names of employees in the timesheet data.
+- **`EmployeeName` = null**: This part checks if the `EmployeeName` is empty or has no value (null).
+- **NOT**: This means we want to exclude those records where `EmployeeName` is null.
 
-3. **Filter Logic**: The filter is set up to **exclude** any records where the `EmployeeName` is `null`. In other words, it is looking for employee names that actually exist and are not empty or missing.
-
-4. **What This Means**: When this filter is applied, only those employees who have a valid name (i.e., their name is not `null`) will be included in the results. Any records where the employee name is missing will be ignored or excluded from the analysis.
-
-In summary, this filter ensures that the report only shows data for employees who have a name listed, thereby improving the quality and relevance of the information presented.)
+So, when this filter is applied to the target `vw_Timesheet`.`EmployeeName`, it will only show data for employees who have a name listed. Any records where the employee's name is missing will be filtered out and not displayed in the report. Essentially, you will only see timesheet entries for employees who have a valid name.)
 
 **barChart**
 
@@ -1561,20 +1931,15 @@ In summary, this filter ensures that the report only shows data for employees wh
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition JSON is designed to control which records from the `lkp_Unit` table are included in your analysis, specifically focusing on the `OWN-Sub-ExtT` column.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the field `OWN-Sub-ExtT` is empty or has no value (i.e., is null).
 
-### Breakdown of the Filter:
+Here's a breakdown of what this means:
 
-1. **Source Table**: The filter is applied to the `lkp_Unit` table, referred to as `o` in the JSON.
+- **Target Field**: The filter is applied to the field `OWN-Sub-ExtT` in the `lkp_Unit` table.
+- **Condition**: The filter specifies "NOT (`OWN-Sub-ExtT` = null)", which means it is looking for records where `OWN-Sub-ExtT` does **not** equal null.
+- **Inclusion/Exclusion**: As a result, this filter will include only those records where `OWN-Sub-ExtT` has a valid value (i.e., it is not empty). Any records where `OWN-Sub-ExtT` is null will be excluded from the data being analyzed or displayed.
 
-2. **Filter Condition**: The key part of the filter is the condition specified in the `Where` section. It states that we want to **exclude** any records where the `OWN-Sub-ExtT` column has a value of `null`.
-
-3. **What This Means**:
-   - **Included Data**: Only records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value (i.e., it is not null) will be included in the analysis.
-   - **Excluded Data**: Any records where `OWN-Sub-ExtT` is null will be filtered out and not considered in any reports or visualizations.
-
-### Summary:
-In simple terms, this filter ensures that you are only looking at records that have meaningful data in the `OWN-Sub-ExtT` column, effectively cleaning your dataset by removing any entries that lack this information. This helps in providing more accurate insights and analyses based on complete data.)
+In summary, this filter ensures that only records with meaningful data in the `OWN-Sub-ExtT` field are considered, helping to focus the analysis on relevant information.)
 
 **Billable Dep**
 
@@ -1627,16 +1992,16 @@ In simple terms, this filter ensures that you are only looking at records that h
 - Name: `a44026d22203dd4b5140`
 - Fields Used: _(None detected)_
 
-**pageNavigator**
-
-- Type: `pageNavigator`
-- Name: `01e97403abec6221fac1`
-- Fields Used: _(None detected)_
-
 **shape**
 
 - Type: `shape`
 - Name: `b504171bb603a1f77bd5`
+- Fields Used: _(None detected)_
+
+**pageNavigator**
+
+- Type: `pageNavigator`
+- Name: `01e97403abec6221fac1`
 - Fields Used: _(None detected)_
 
 **shape**
@@ -1681,24 +2046,21 @@ In simple terms, this filter ensures that you are only looking at records that h
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to include specific values from the `TimesheetCode` column in the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What the Filter Does:
-- **Target Data**: The filter is applied to the `TimesheetCode` field within the `vw_Timesheet` dataset.
-- **Included Values**: The filter specifies that only certain `TimesheetCode` values should be included in the analysis. The values that are included are:
-  - `'int'`
-  - `'ROEG'`
-  - `'ROIG'`
-  - `'RSEG'`
-  - `'V'`
-  - `'Z'`
+In simple business terms, the filter is saying:
 
-### What This Means for Your Data:
-- **Inclusion**: When this filter is applied, only records from the `vw_Timesheet` that have a `TimesheetCode` matching one of the specified values will be considered. This means that any records with a `TimesheetCode` that is not one of these six values will be excluded from the analysis.
-- **Purpose**: This type of filtering is useful when you want to focus on specific types of timesheets that are relevant for a particular analysis or report, ensuring that the data you are looking at is relevant and targeted.
+- **Include only the records** where the `TimesheetCode` is one of the following: 
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
 
-### Summary:
-In summary, this filter is set up to include only those timesheets that have a `TimesheetCode` of `'int'`, `'ROEG'`, `'ROIG'`, `'RSEG'`, `'V'`, or `'Z'`, while excluding all other timesheet codes from the dataset.)
+This means that any records with a `TimesheetCode` that is **not** one of these specified values will be **excluded** from the analysis. 
+
+So, if you apply this filter, you will only see data related to those specific `TimesheetCode` values, helping you focus on a particular subset of timesheet entries that are relevant for your analysis or reporting.)
 
 ##### Visuals on this Page
 
@@ -1788,19 +2150,15 @@ In summary, this filter is set up to include only those timesheets that have a `
   - `ManagerName` (Query: `vw_Timesheet.ManagerName`) (Role: Values)
   - `ExtraDetails` (Query: `vw_Timesheet.ExtraDetails`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which employee names are included in the data being analyzed from the `vw_Timesheet` view. Let's break it down in simple business terms:
+  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the `EmployeeName` field is empty or not provided. 
 
-1. **Source of Data**: The filter is applied to a data source called `vw_Timesheet`, which likely contains timesheet records for employees.
+Here's a breakdown of what this means:
 
-2. **Target Field**: The specific field being filtered is `EmployeeName`, which represents the names of employees in the timesheet data.
+- **Target Field**: The filter is applied to the `EmployeeName` field in the `vw_Timesheet` data view.
+- **Condition**: The filter states "NOT (`EmployeeName` = null)", which means it is looking for records where `EmployeeName` is **not** null (or empty).
+- **Effect**: When this filter is applied, only those records where there is a valid employee name will be included in the analysis. Any records that do not have an employee name (i.e., where `EmployeeName` is null) will be excluded.
 
-3. **Filter Logic**: The filter is set up to **exclude** any records where the `EmployeeName` is `null`. In other words, it is looking for employee names that are present and not empty.
-
-4. **What This Means for Data**:
-   - **Included Data**: Only records where `EmployeeName` has a valid name (i.e., it is not `null`) will be included in the analysis.
-   - **Excluded Data**: Any records where `EmployeeName` is missing or not specified (i.e., `null`) will be excluded from the results.
-
-In summary, this filter ensures that only employees with valid names are considered in the analysis, helping to maintain the quality and relevance of the data being reported on.)
+In summary, this filter ensures that only timesheet entries with actual employee names are considered, helping to maintain the quality and relevance of the data being analyzed.)
 
 **Hours**
 
@@ -1816,20 +2174,15 @@ In summary, this filter ensures that only employees with valid names are conside
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition JSON is designed to control which records from the `lkp_Unit` table are included in your analysis based on the `OWN-Sub-ExtT` column.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition for the data that will be included in the analysis of the target field `lkp_Unit`.`OWN-Sub-ExtT`.
 
-### Breakdown of the Filter:
+Here's what it means:
 
-1. **Target Entity**: The filter is applied to the `lkp_Unit` table, specifically focusing on the `OWN-Sub-ExtT` column.
+- **`NOT (`OWN-Sub-ExtT` = null)`**: This part of the filter is saying that we want to **exclude any records** where the value of `OWN-Sub-ExtT` is **null** (which means it has no value or is empty).
 
-2. **Filter Logic**: The filter uses a "Not" condition, which means it will exclude certain records based on the criteria defined.
+So, when this filter is applied, it will only include records where `OWN-Sub-ExtT` has a valid value (i.e., it is not empty). In other words, you will only see data entries that have meaningful information in the `OWN-Sub-ExtT` field, and any entries that do not have a value in that field will be left out of the analysis. 
 
-3. **Condition Explained**:
-   - The filter checks if the value in the `OWN-Sub-ExtT` column is **not** equal to `null`.
-   - In simpler terms, this means that the filter will **include** only those records where the `OWN-Sub-ExtT` column has a value (i.e., it is not empty or missing).
-
-### Summary:
-When this filter is applied, it ensures that only records from the `lkp_Unit` table where the `OWN-Sub-ExtT` field contains a valid value (not `null`) are included in your Power BI report or analysis. Any records where `OWN-Sub-ExtT` is `null` will be excluded. This helps in focusing on relevant data that has meaningful entries in that specific column.)
+This is useful for ensuring that your analysis focuses on complete and relevant data, avoiding any gaps that could skew results or insights.)
 
 **Billable Employee**
 
@@ -1869,30 +2222,28 @@ When this filter is applied, it ensures that only records from the `lkp_Unit` ta
 
 ##### Page Level Filters
 
-- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_missing_timesheet` view, particularly the `ContractStatusToday` field. Here’s a breakdown of what this filter does in simple business terms:
-
-1. **Target Data**: The filter is applied to the `ContractStatusToday` column within the `vw_missing_timesheet` dataset. This column likely indicates the current status of contracts related to timesheets.
-
-2. **Inclusion Criteria**: The filter specifies that only records where `ContractStatusToday` is equal to `'Valid'` should be included in the analysis. This means that any timesheet records associated with contracts that are currently valid will be considered.
-
-3. **Exclusion Criteria**: Conversely, any records where `ContractStatusToday` is not `'Valid'` (for example, statuses like `'Expired'`, `'Pending'`, or any other status) will be excluded from the analysis. 
-
-In summary, when this filter is applied, the resulting data will only show timesheet records linked to contracts that are currently valid, allowing users to focus on active and relevant contracts while ignoring any that are not valid.)
-- Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition JSON is designed to control which records from the `lkp_Unit` table are included based on the values in the `OWN-Sub-ExtT` column. Let's break it down into simpler terms:
+- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is designed to focus on a specific subset of data related to the `ContractStatusToday` field in the `vw_missing_timesheet` view.
 
 ### What the Filter Does:
+- **Includes Only Valid Contracts**: The filter specifies that only records where the `ContractStatusToday` is marked as 'Valid' should be included in the analysis or report. 
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` column within the `lkp_Unit` table.
+### What the Filter Excludes:
+- **Excludes All Other Statuses**: Any records where the `ContractStatusToday` is not 'Valid' (such as 'Expired', 'Pending', or any other status) will be excluded from the data being analyzed.
 
-2. **Inclusion Criteria**:
-   - The filter **excludes** any records where the `OWN-Sub-ExtT` value is **null**. This means that if a record does not have a value in this column, it will not be included in the results.
-   - The filter also **excludes** any records where the `OWN-Sub-ExtT` value is equal to **'SUB'**. So, if a record has 'SUB' in this column, it will also be left out.
+### Summary:
+When this filter is applied, you will only see data related to contracts that are currently considered valid, allowing you to focus on the most relevant and actionable information regarding contract statuses.)
+- Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to refine the data being analyzed by applying specific conditions to the field `lkp_Unit`.`OWN-Sub-ExtT`. Let's break it down in simple business terms:
 
-### Summary of Included Data:
-- The filter will include records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value that is **not null** and is **not equal to 'SUB'**. 
+1. **Exclusion of Null Values**: The first part of the filter, `NOT (`OWN-Sub-ExtT` = null)`, means that any records where the `OWN-Sub-ExtT` field has no value (i.e., is null) will be excluded from the analysis. In other words, we only want to include records that have a valid entry in this field.
 
-### Practical Implication:
-In practical business terms, this means that when you apply this filter, you will only see records that have meaningful values in the `OWN-Sub-ExtT` column, specifically those that are neither empty (null) nor categorized as 'SUB'. This helps in focusing on relevant data while ignoring potentially unhelpful or irrelevant entries.)
+2. **Exclusion of 'SUB' Values**: The second part of the filter, `NOT (`OWN-Sub-ExtT` = 'SUB')`, indicates that any records where the `OWN-Sub-ExtT` field is equal to 'SUB' will also be excluded. This means we are filtering out any records that specifically have the value 'SUB' in this field.
+
+### Summary:
+When this filter is applied to `lkp_Unit`.`OWN-Sub-ExtT`, it will include only those records that:
+- Have a valid value in the `OWN-Sub-ExtT` field (not null).
+- Do not have the value 'SUB'.
+
+In practical terms, this filter helps focus the analysis on relevant data by removing any entries that are either missing important information or are categorized as 'SUB'.)
 
 ##### Visuals on this Page
 
@@ -1975,17 +2326,15 @@ In practical business terms, this means that when you apply this filter, you wil
   - `Unit` (Query: `vw_missing_timesheet.MAIN_UNIT`) (Role: Rows)
   - `Dax_MissingHours` (Query: `vw_missing_timesheet.Dax_MissingHours`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_missing_timesheet`.`EmployeeName` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which employee names are included in the data from the `vw_missing_timesheet` view. Let's break it down in simple business terms:
+  - Filter on `vw_missing_timesheet`.`EmployeeName` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the `EmployeeName` field is empty or not provided. 
 
-1. **Target Data**: The filter is applied to the `EmployeeName` field within the `vw_missing_timesheet` view. This view likely contains information about employees and their timesheet submissions.
+Here's a breakdown of what this means:
 
-2. **Filter Logic**: The filter specifies a condition that focuses on excluding certain data. Specifically, it states that we want to **exclude** any records where the `EmployeeName` is `null`. 
+- **Target Field**: The filter is applied to the `EmployeeName` field in the `vw_missing_timesheet` view.
+- **Condition**: The filter specifies `NOT (`EmployeeName` = null)`. This means that the filter is looking for records where `EmployeeName` is **not** null (or empty).
+- **Result**: When this filter is applied, only those records where there is a valid employee name will be included in the data. Any records that do not have an employee name (i.e., where `EmployeeName` is null) will be excluded from the results.
 
-3. **What This Means**:
-   - **Included Data**: The filter will include all employee names that have actual values (i.e., those that are not empty or missing).
-   - **Excluded Data**: Any records where the `EmployeeName` is `null` (meaning there is no name provided for that employee) will be filtered out and not shown in the results.
-
-In summary, when this filter is applied, you will only see records of employees who have a valid name listed in the `vw_missing_timesheet` view, effectively ignoring any entries that do not have an associated employee name.)
+In summary, this filter ensures that the analysis only considers employees who have a name listed, thereby filtering out any entries that lack this information.)
 
 **funnel**
 
@@ -2003,30 +2352,20 @@ In summary, when this filter is applied, you will only see records of employees 
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included based on the values in the `OWN-Sub-ExtT` column. Let's break it down in simple business terms:
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: The provided Power BI filter definition is a set of conditions that determine which data will be included or excluded when analyzing the `lkp_Unit`.`OWN-Sub-ExtT` field. Let's break it down in simple business terms:
 
-### What the Filter Does:
+1. **`OWN-Sub-ExtT` Field**: This is the specific data column we are focusing on. It likely contains values that categorize or describe units in some way.
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` column in the `lkp_Unit` table.
+2. **Conditions Explained**:
+   - **`NOT (`OWN-Sub-ExtT` = null)`**: This part of the filter means that we want to include only those records where the `OWN-Sub-ExtT` field has a value. In other words, we are excluding any records where this field is empty or has no value (null).
+   - **`AND`**: This indicates that both conditions must be true for a record to be included in the results.
+   - **`NOT (`OWN-Sub-ExtT` = 'SUB')`**: This condition specifies that we want to exclude any records where the `OWN-Sub-ExtT` field has the value 'SUB'. So, if a record has 'SUB' in this field, it will not be included in the results.
 
-2. **Inclusion Criteria**:
-   - The filter **excludes** any records where the `OWN-Sub-ExtT` value is **null**. This means that if there is no value (or the value is missing) in this column, those records will not be included in the results.
-   - The filter also **excludes** any records where the `OWN-Sub-ExtT` value is equal to **'SUB'**. This means that any record that specifically has 'SUB' in this column will also be left out.
+3. **Overall Effect**: When this filter is applied, it will include only those records from the `lkp_Unit`.`OWN-Sub-ExtT` field that:
+   - Have a value (not null).
+   - Do not have the value 'SUB'.
 
-### Summary of Included Data:
-- The filter will include records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value that is **not null** and is **not equal to 'SUB'**. 
-
-### Example:
-- If you have records with the following `OWN-Sub-ExtT` values:
-  - 'A'
-  - 'B'
-  - null
-  - 'SUB'
-  - 'C'
-
-After applying this filter, only the records with 'A', 'B', and 'C' will be included in the results, while the records with null and 'SUB' will be excluded.
-
-In essence, this filter helps to focus on relevant data by filtering out any incomplete or specific unwanted entries.)
+In summary, this filter is designed to focus on valid entries in the `OWN-Sub-ExtT` field while specifically excluding any entries that are either empty or labeled as 'SUB'. This helps in analyzing only the relevant data that meets these criteria.)
 
 **Completeness %**
 
@@ -2069,46 +2408,33 @@ In essence, this filter helps to focus on relevant data by filtering out any inc
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What Data is Included:
-The filter is designed to **include** only those records from the `vw_Timesheet` view where the `TimesheetCode` matches one of the following specific values:
+In simple business terms, this filter is saying:
 
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
+- **Include Only Specific Codes**: The filter will only allow data entries where the `TimesheetCode` matches one of the following values: 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z'.
+  
+- **Exclude Everything Else**: Any entries with a `TimesheetCode` that is not one of these specified values will be excluded from the analysis.
 
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that have a `TimesheetCode` **not** matching one of the above values will be **excluded** from the results. This means that if a timesheet has a code that is different from 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z', it will not be shown in the report or analysis.
+So, when this filter is applied, you will only see data related to those specific timesheet codes, helping you focus on particular categories of timesheets that are relevant for your analysis or reporting.)
+- Filter on `vw_Timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is designed to include only those records from the `vw_Timesheet` data view where the `ContractStatusToday` field has a value of 'Valid'. 
 
-### Summary:
-In summary, this filter is used to narrow down the data to only those timesheets that have specific codes, allowing users to focus on a defined subset of timesheet entries that are relevant for their analysis or reporting needs.)
-- Filter on `vw_Timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to filter data from a specific view called `vw_Timesheet`, focusing on a column named `ContractStatusToday`. Here’s a breakdown of what this filter does in simple business terms:
+Here's a breakdown of what this means:
 
-1. **Data Source**: The filter is applied to a data source identified as `vw_Timesheet`, which likely contains records related to timesheets, including various statuses of contracts.
+- **Target Data**: The filter is applied to the `ContractStatusToday` column in the `vw_Timesheet` view.
+- **Included Data**: Only the entries (or rows) where `ContractStatusToday` is exactly 'Valid' will be shown in your report or analysis.
+- **Excluded Data**: Any entries where `ContractStatusToday` has a different value (like 'Expired', 'Pending', or any other status) will be excluded from the results.
 
-2. **Target Column**: The filter specifically targets the column `ContractStatusToday`. This column presumably indicates the current status of contracts associated with the timesheet entries.
+In summary, this filter helps you focus on only the contracts that are currently considered valid, allowing for more targeted analysis or reporting on those specific records.)
+- Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is designed to focus on a specific subset of data from the `vw_Timesheet` table, particularly the `Approved_With_V_Z` column.
 
-3. **Filter Condition**: The filter includes a condition that specifies which records to include based on the values in the `ContractStatusToday` column.
+Here's what the filter does:
 
-4. **Included Value**: The filter is set to include only those records where the `ContractStatusToday` is equal to `'Valid'`. This means that any timesheet entry with a contract status that is not `'Valid'` will be excluded from the results.
+- **Target Column**: The filter is applied to the `Approved_With_V_Z` column in the `vw_Timesheet` view.
+- **Included Data**: The filter specifies that only records where the `Approved_With_V_Z` value is exactly '0L' should be included in the analysis or report.
+- **Excluded Data**: Any records where the `Approved_With_V_Z` value is anything other than '0L' will be excluded from the results.
 
-### Summary:
-In summary, when this filter is applied, it will only show timesheet records where the contract status is currently valid. Any records with statuses other than `'Valid'` will be filtered out and not displayed in the report or analysis. This helps users focus on active and valid contracts, ensuring that the data they are analyzing is relevant and up-to-date.)
-- Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_Timesheet` view, particularly the `Approved_With_V_Z` column. Let's break it down in simple business terms:
-
-1. **Target Data**: The filter is applied to the `vw_Timesheet` view, specifically looking at the `Approved_With_V_Z` field. This field likely indicates whether a timesheet has been approved or not, with different values representing different statuses.
-
-2. **Filter Condition**: The filter is set to include only those records where the `Approved_With_V_Z` value is equal to "0L". In this context, "0L" typically represents a specific status, which could mean "not approved" or "pending approval". 
-
-3. **Inclusion/Exclusion**: 
-   - **Included Data**: Only the records from the `vw_Timesheet` where `Approved_With_V_Z` is "0L" will be included in the analysis. This means you will see only those timesheets that are not approved.
-   - **Excluded Data**: Any records where `Approved_With_V_Z` has a value other than "0L" (such as approved timesheets or those with different statuses) will be excluded from the results.
-
-In summary, this filter is used to isolate and analyze only the timesheets that have not yet been approved, allowing users to focus on pending approvals within the dataset.)
+In summary, this filter narrows down the data to only those timesheets that have an `Approved_With_V_Z` status of '0L', allowing users to focus on this specific category of timesheets while ignoring all others.)
 
 ##### Visuals on this Page
 
@@ -2207,29 +2533,20 @@ In summary, this filter is used to isolate and analyze only the timesheets that 
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis based on the values in the `OWN-Sub-ExtT` column. Let's break it down into simpler terms:
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: The provided Power BI filter definition JSON is used to control which data is included or excluded when analyzing the `OWN-Sub-ExtT` field from the `lkp_Unit` table. Let's break it down in simple business terms:
 
-### What the Filter Does:
+1. **Field in Focus**: The filter is applied to the `OWN-Sub-ExtT` column, which likely contains different values representing various categories or types of units.
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` column in the `lkp_Unit` table.
+2. **Conditions Explained**:
+   - **`NOT (`OWN-Sub-ExtT` = null)`**: This part of the filter means that any records where the `OWN-Sub-ExtT` value is empty or missing (null) will be excluded from the analysis. In other words, we only want to include records that have a defined value in this field.
+   
+   - **`AND NOT (`OWN-Sub-ExtT` = 'SUB')`**: This condition specifies that any records where the `OWN-Sub-ExtT` value is equal to 'SUB' will also be excluded. So, if a record has 'SUB' as its value, it will not be included in the results.
 
-2. **Inclusion Criteria**:
-   - The filter **excludes** any records where the `OWN-Sub-ExtT` value is **null**. This means that if there is no value (or the value is missing) in this column, those records will not be included in the results.
-   - The filter also **excludes** any records where the `OWN-Sub-ExtT` value is equal to **'SUB'**. So, if the value in this column is specifically 'SUB', those records will also be left out.
+3. **Overall Effect**: When this filter is applied, the data included will be all records from the `lkp_Unit` table where:
+   - The `OWN-Sub-ExtT` field has a value (not null).
+   - The value is not 'SUB'.
 
-### Summary of Included Data:
-- The filter will include records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value that is **not null** and is **not equal to 'SUB'**. 
-
-### Example:
-- If you have records with the following `OWN-Sub-ExtT` values:
-  - `null` (excluded)
-  - `'SUB'` (excluded)
-  - `'ABC'` (included)
-  - `'XYZ'` (included)
-
-Only the records with values like `'ABC'` and `'XYZ'` will be included in your analysis, while those with `null` or `'SUB'` will be filtered out. 
-
-This filter helps ensure that your analysis focuses on relevant data by removing potentially unhelpful or irrelevant entries.)
+In summary, this filter ensures that only records with valid, non-'SUB' values in the `OWN-Sub-ExtT` field are considered in the analysis, effectively filtering out any records that are either missing this information or specifically categorized as 'SUB'.)
 
 **lineStackedColumnComboChart**
 
@@ -2266,53 +2583,44 @@ This filter helps ensure that your analysis focuses on relevant data by removing
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON is used to specify which records from the `vw_Timesheet` view should be included based on the `TimesheetCode` field. Here's a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is used to narrow down the data displayed in a report or visualization based on specific criteria related to timesheet codes.
 
-1. **Target Data**: The filter is applied to the `TimesheetCode` column in the `vw_Timesheet` view. This means we are focusing on the codes that represent different types of timesheets.
+Here's what the filter does:
 
-2. **Included Values**: The filter specifies a list of specific `TimesheetCode` values that should be included in the results. The codes that are included are:
-   - `'int'`
-   - `'ROEG'`
-   - `'ROIG'`
-   - `'RSEG'`
-   - `'V'`
-   - `'Z'`
+- **Target Field**: The filter is applied to the field called `TimesheetCode` in the `vw_Timesheet` data view.
+  
+- **Included Values**: The filter specifies that only timesheet codes that match certain values will be included in the report. The specific codes that are allowed are:
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
 
-3. **Exclusion of Other Values**: Any `TimesheetCode` that is **not** one of the above values will be excluded from the results. This means that if a timesheet has a code other than those listed, it will not appear in the filtered data.
+- **Excluded Values**: Any timesheet codes that do not match one of these specified values will be excluded from the report. This means that if a timesheet code is anything other than 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z', it will not be shown in the results.
 
-In summary, when this filter is applied, only timesheets with the specified codes will be shown, while all other timesheet codes will be ignored. This allows users to focus on specific types of timesheets that are relevant for their analysis or reporting.)
-- Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Categorical, Explanation: This Power BI filter definition is designed to control which records from the `vw_Timesheet` data view are included when analyzing the `RReady_With_V_Z` field. Here’s a breakdown of what this filter does in simple business terms:
+In summary, this filter ensures that only timesheet entries with the specified codes are displayed, allowing users to focus on a specific subset of data relevant to their analysis or reporting needs.)
+- Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is specifying that we only want to include data from the `vw_Timesheet` table where the column `RReady_With_V_Z` has a value of '0L'. 
 
-1. **Source of Data**: The filter is applied to a data source identified as `vw_Timesheet`, which likely contains timesheet-related information.
+Here's a breakdown of what this means:
 
-2. **Target Field**: The specific field being filtered is `RReady_With_V_Z`. This field could represent a status or readiness indicator related to timesheets.
+- **Target Table**: The filter is applied to the `vw_Timesheet` table, which likely contains timesheet data.
+- **Column of Interest**: The filter focuses on the `RReady_With_V_Z` column within that table.
+- **Included Value**: The filter specifies that only rows where `RReady_With_V_Z` equals '0L' should be included in the analysis or report.
 
-3. **Filter Condition**: The filter specifies a condition that focuses on the values of the `RReady_With_V_Z` field. It is looking for records where this field has a specific value.
+**What is excluded**: Any rows where `RReady_With_V_Z` has a value other than '0L' will be excluded from the results. 
 
-4. **Included Value**: The filter includes only those records where the `RReady_With_V_Z` field is equal to `0L`. This likely indicates a specific status, such as "not ready" or "pending," depending on the context of the data.
+In summary, this filter narrows down the data to only those entries that meet the specific condition of having '0L' in the `RReady_With_V_Z` column, allowing for a more focused analysis on that particular subset of data.)
+- Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column.
 
-5. **Exclusion of Other Values**: By applying this filter, any records where `RReady_With_V_Z` has values other than `0L` will be excluded from the analysis. This means that only the records that meet this specific condition will be considered.
+Here's what it means:
 
-In summary, this filter is set up to include only those timesheet records that are marked with a readiness status of `0L`, effectively filtering out all other statuses. This allows users to focus their analysis on a specific subset of the data that meets this criterion.)
-- Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to include only specific data from the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column.
-
-### Breakdown of the Filter:
-
-1. **Source of Data**: The filter is applied to a data source named `vw_Timesheet`, which likely contains timesheet records.
-
-2. **Target Column**: The filter specifically looks at the `Approved_With_V_Z` column within this data source.
-
-3. **Condition**: The filter checks for a condition where the value in the `Approved_With_V_Z` column must equal `1L`. 
-
-### What This Means in Business Terms:
-
-- **Inclusion of Data**: The filter will **include** only those records from the `vw_Timesheet` where the `Approved_With_V_Z` column has a value of `1L`. This typically indicates that these timesheet entries have been approved under a certain condition or status.
-
-- **Exclusion of Data**: Any records where the `Approved_With_V_Z` column does not equal `1L` will be **excluded** from the results. This means that only approved timesheet entries will be visible in the report or analysis.
+- **Target Data**: The filter is applied to the `vw_Timesheet` view, which likely contains records of timesheets submitted by employees.
+- **Column of Interest**: The filter is looking at the `Approved_With_V_Z` column. This column likely indicates whether a timesheet has been approved or not, with `1` representing an approved status.
+- **Filter Condition**: The condition "`Approved_With_V_Z` = 1" means that only the records where the `Approved_With_V_Z` column has a value of `1` will be included in the results. In other words, it filters out any timesheets that have not been approved (those with a value other than `1`).
 
 ### Summary:
-
-In summary, this filter is used to focus on and analyze only the approved timesheet entries from the `vw_Timesheet` data source, ensuring that any unapproved entries are not considered in the analysis.)
+When this filter is applied, you will only see timesheet records that have been approved. Any timesheets that are not approved will be excluded from your analysis or report.)
 
 ##### Visuals on this Page
 
@@ -2411,21 +2719,15 @@ In summary, this filter is used to focus on and analyze only the approved timesh
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis based on the `OWN-Sub-ExtT` column.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records from the data set where the field `OWN-Sub-ExtT` is empty or has no value (i.e., is null).
 
-### Breakdown of the Filter:
+Here's a breakdown of what this means:
 
-1. **Target Entity**: The filter is applied to the `lkp_Unit` table, specifically focusing on the `OWN-Sub-ExtT` column.
+- **Target Field**: The filter is applied to the field `OWN-Sub-ExtT` in the `lkp_Unit` table.
+- **Condition**: The filter specifies "NOT (`OWN-Sub-ExtT` = null)", which means it is looking for records where `OWN-Sub-ExtT` is **not** null.
+- **Inclusion/Exclusion**: As a result, any records that have a blank or missing value in the `OWN-Sub-ExtT` field will be excluded from the analysis or report. Only records that have a valid, non-empty value in this field will be included.
 
-2. **Filter Logic**: The filter uses a "Not" condition, which means it is excluding certain records based on the value in the `OWN-Sub-ExtT` column.
-
-3. **Condition Explained**: 
-   - The filter checks if the value in the `OWN-Sub-ExtT` column is **not** equal to `null`.
-   - In simpler terms, this means that the filter will **include** only those records where `OWN-Sub-ExtT` has a value (i.e., it is not empty or missing).
-
-### Summary:
-
-When this filter is applied, it will **exclude** any records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column is `null`. Therefore, you will only see records that have a valid, non-null value in that column. This is useful for ensuring that your analysis focuses on complete data entries, avoiding any gaps that could skew your insights.)
+In summary, this filter ensures that only relevant data with actual values in the `OWN-Sub-ExtT` field is considered, helping to provide clearer insights by removing any incomplete or irrelevant entries.)
 
 **lineStackedColumnComboChart**
 
@@ -2462,41 +2764,27 @@ When this filter is applied, it will **exclude** any records from the `lkp_Unit`
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to limit the data displayed in a report or visualization based on specific criteria related to the `TimesheetCode` field from the `vw_Timesheet` view.
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### Breakdown of the Filter:
+In simple business terms, this filter is saying:
 
-1. **Source of Data**: 
-   - The filter is applied to a data source identified as `vw_Timesheet`, which is likely a view that aggregates timesheet data.
+- **Include Only Specific Codes**: The filter will only allow data entries where the `TimesheetCode` matches one of the following values: 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z'.
+  
+- **Exclude Everything Else**: Any entries with a `TimesheetCode` that is not one of these specified values will be excluded from the analysis.
 
-2. **Target Field**: 
-   - The filter specifically targets the `TimesheetCode` column within this view.
+So, when this filter is applied, you will only see data related to timesheets that have the codes 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z', and all other timesheet codes will be ignored. This helps focus the analysis on specific types of timesheets that are relevant to your needs.)
+- Filter on `vw_Timesheet`.`Rejected` (Type: Categorical, Explanation: In simple business terms, the provided Power BI filter definition is specifying a condition for the data that will be included in a report or visualization. 
 
-3. **Inclusion Criteria**:
-   - The filter specifies that only certain values of `TimesheetCode` should be included in the results. The values that are allowed (or included) by this filter are:
-     - `'int'`
-     - `'ROEG'`
-     - `'ROIG'`
-     - `'RSEG'`
-     - `'V'`
-     - `'Z'`
+Here's what it means:
 
-4. **Exclusion of Other Values**:
-   - Any `TimesheetCode` that is **not** one of the specified values will be excluded from the results. This means that if a timesheet has a code that is different from the ones listed above, it will not appear in the report or visualization.
+- **Target Data**: The filter is applied to a specific field called `Rejected` in a data view named `vw_Timesheet`.
+- **Condition**: The filter states that we only want to include records where the `Rejected` field has a value of 'true'.
 
-### Summary:
-In simple terms, this filter is set up to show only the timesheets that have specific codes: `'int'`, `'ROEG'`, `'ROIG'`, `'RSEG'`, `'V'`, or `'Z'`. All other timesheet codes will be ignored, ensuring that the analysis focuses solely on these selected codes.)
-- Filter on `vw_Timesheet`.`Rejected` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to filter data from a view called `vw_Timesheet`, specifically focusing on a column named `Rejected`. Here’s a breakdown of what this filter does in simple business terms:
+### What This Means for Your Data:
+- **Included Data**: Only the timesheet entries that have been marked as rejected will be shown in the report. This means you will see all the records where the `Rejected` status is confirmed as 'true'.
+- **Excluded Data**: Any timesheet entries that are not rejected (i.e., those where `Rejected` is 'false' or possibly null) will not be included in the report.
 
-1. **Target Data Source**: The filter is applied to a data source referred to as `vw_Timesheet`, which likely contains records related to timesheets.
-
-2. **Focus on Rejected Timesheets**: The filter specifically looks at the `Rejected` column within this data source. This column likely indicates whether a timesheet has been rejected (e.g., due to errors, missing information, etc.).
-
-3. **Inclusion Criteria**: The filter is set to include only those records where the `Rejected` column has a value of `true`. This means that when this filter is applied, only the timesheets that have been marked as rejected will be included in the analysis or report.
-
-4. **Exclusion of Other Records**: Conversely, any timesheets that are not rejected (i.e., those where `Rejected` is `false` or possibly null) will be excluded from the results.
-
-In summary, this filter ensures that only rejected timesheets are considered in the analysis, allowing users to focus on understanding the reasons for rejections and potentially addressing any issues related to them.)
+In summary, this filter is used to focus on and analyze only the timesheet entries that have been rejected, allowing for a clearer understanding of issues or trends related to rejected timesheets.)
 
 ##### Visuals on this Page
 
@@ -2588,17 +2876,22 @@ In summary, this filter ensures that only rejected timesheets are considered in 
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition JSON is designed to control which data is included when analyzing the `OWN-Sub-ExtT` column from the `lkp_Unit` table. Here’s a breakdown of what this filter does in simple business terms:
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to include only those records where the field `OWN-Sub-ExtT` has a value. 
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` field within the `lkp_Unit` table. This means we are focusing on the values in this specific column.
+Here's a breakdown of what this means:
 
-2. **Filter Condition**: The filter specifies a condition that excludes certain data. Specifically, it is looking for entries in the `OWN-Sub-ExtT` column that are **not** equal to `null`.
+- **`OWN-Sub-ExtT`**: This is a specific field or column in your data that likely contains some kind of identifier or value related to units or entities.
 
-3. **Inclusion and Exclusion**:
-   - **Included Data**: Any records in the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value (i.e., it is not empty or null) will be included in the analysis.
-   - **Excluded Data**: Any records where the `OWN-Sub-ExtT` column is `null` (meaning there is no value present) will be excluded from the analysis.
+- **`= null`**: This part of the filter checks if the value in the `OWN-Sub-ExtT` field is null, which means it is empty or does not have any data.
 
-In summary, this filter ensures that only the records with valid, non-null values in the `OWN-Sub-ExtT` column are considered in your Power BI reports or visualizations. This helps in focusing on meaningful data and avoiding any entries that do not provide useful information.)
+- **`NOT`**: This indicates that we want to exclude the records where the condition is true. In this case, we want to exclude records where `OWN-Sub-ExtT` is null.
+
+So, when this filter is applied, it effectively means:
+
+- **Include**: Only the records where `OWN-Sub-ExtT` has a value (i.e., it is not empty).
+- **Exclude**: Any records where `OWN-Sub-ExtT` is null (i.e., it has no value).
+
+In summary, this filter ensures that your analysis only considers records that have meaningful data in the `OWN-Sub-ExtT` field, filtering out any records that do not provide useful information.)
 
 **lineStackedColumnComboChart**
 
@@ -2635,56 +2928,44 @@ In summary, this filter ensures that only the records with valid, non-null value
 
 ##### Page Level Filters
 
-- Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included based on the values in the `OWN-Sub-ExtT` column. Let's break it down in simple business terms:
+- Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: The provided Power BI filter definition JSON is designed to refine the data displayed in a report or visualization by applying specific criteria to the field `lkp_Unit`.`OWN-Sub-ExtT`. Here’s a breakdown of what this filter does in simple business terms:
 
-### What the Filter Does:
+1. **Excludes Null Values**: The filter starts with `NOT (`OWN-Sub-ExtT` = null)`. This means that any records where the `OWN-Sub-ExtT` field has no value (i.e., is null) will be excluded from the data being analyzed. In other words, we only want to see records that have a valid entry in this field.
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` column in the `lkp_Unit` table.
-
-2. **Inclusion Criteria**:
-   - The filter **excludes** any records where the `OWN-Sub-ExtT` value is **null**. This means that if a record does not have a value in this column, it will not be included in the results.
-   - The filter also **excludes** any records where the `OWN-Sub-ExtT` value is equal to **'SUB'**. Therefore, any record that has 'SUB' in this column will also be left out.
-
-### Summary of Included Data:
-- The filter will include records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value that is **not null** and is **not equal to 'SUB'**. 
-
-### Example:
-- If you have records with the following `OWN-Sub-ExtT` values:
-  - 'A'
-  - 'B'
-  - null
-  - 'SUB'
-  - 'C'
-
-After applying this filter, only the records with 'A', 'B', and 'C' will be included in the results, while the records with null and 'SUB' will be excluded.
-
-In essence, this filter helps to focus on relevant data by filtering out any records that are either missing important information (null) or are categorized as 'SUB', which may not be needed for the analysis at hand.)
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` column of the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
-
-### What Data is Included:
-The filter is designed to **include** only those records from the `vw_Timesheet` view where the `TimesheetCode` matches one of the following specific values:
-
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
-
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that have a `TimesheetCode` **not** matching one of the above values will be **excluded** from the results. This means that if a record has a `TimesheetCode` like 'ABC', 'XYZ', or any other value that is not listed, it will not be shown in the filtered results.
+2. **Excludes Specific Value**: The second part of the filter is `NOT (`OWN-Sub-ExtT` = 'SUB')`. This means that any records where the `OWN-Sub-ExtT` field has the value 'SUB' will also be excluded. So, if a record has 'SUB' in this field, it will not be included in the results.
 
 ### Summary:
-In summary, this filter is used to narrow down the data to only those timesheets that have specific codes, allowing users to focus on particular types of timesheets that are relevant for their analysis or reporting needs.)
-- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to focus on a specific aspect of the data from the `vw_missing_timesheet` view, particularly the `ContractStatusToday` column. Here’s a breakdown of what this filter does in simple business terms:
+When this filter is applied to `lkp_Unit`.`OWN-Sub-ExtT`, it will include only those records that have a valid value in the `OWN-Sub-ExtT` field, specifically excluding any records that are either null or have the value 'SUB'. Essentially, you are focusing on records that contain meaningful data in this field, while filtering out any irrelevant or unwanted entries.)
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is used to narrow down the data that is being analyzed in the report or dashboard. Specifically, it focuses on the `TimesheetCode` field from the `vw_Timesheet` view.
 
-1. **Target Data**: The filter is applied to the `ContractStatusToday` field within the `vw_missing_timesheet` dataset. This field likely indicates the current status of contracts related to timesheets.
+Here's what the filter does:
 
-2. **Inclusion Criteria**: The filter specifies that only records where the `ContractStatusToday` is equal to `'Valid'` should be included in the analysis. This means that any records with a different status (such as 'Expired', 'Pending', or 'Invalid') will be excluded from the results.
+- **Includes Specific Codes**: The filter specifies that only certain `TimesheetCode` values should be included in the analysis. These values are:
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
 
-3. **Purpose**: By applying this filter, the analysis will focus solely on valid contracts. This is useful for reporting or decision-making processes where only active and valid contracts are relevant, ensuring that any insights drawn from the data reflect the current and applicable contracts.
+- **Excludes Other Codes**: Any `TimesheetCode` that is **not** one of these specified values will be excluded from the analysis. This means that if a timesheet has a code like 'ABC' or 'XYZ', it will not be considered in the report.
 
-In summary, this filter ensures that only the records with a `ContractStatusToday` of `'Valid'` are considered, filtering out any irrelevant or inactive contract statuses from the analysis.)
+In summary, this filter ensures that only timesheets with the specified codes are included in the data being analyzed, allowing for a focused view on those particular entries.)
+- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: The provided filter definition JSON is specifying a condition for the data that will be included when analyzing the `ContractStatusToday` field from the `vw_missing_timesheet` view in Power BI.
+
+### Explanation in Business Terms:
+
+- **Field Being Filtered**: The filter is applied to the `ContractStatusToday` field, which likely indicates the current status of contracts in the context of missing timesheets.
+
+- **Filter Condition**: The condition states that we only want to include records where the `ContractStatusToday` is 'Valid'.
+
+### What This Means:
+
+- **Included Data**: Only contracts that have a status of 'Valid' will be included in the analysis. This means that any contracts that are not valid (for example, those that might be expired, canceled, or in any other non-valid state) will be excluded from the results.
+
+### Summary:
+
+In summary, this filter ensures that the analysis focuses solely on contracts that are currently valid, allowing for a clearer understanding of the situation regarding missing timesheets for those contracts. Any data related to contracts that are not valid will not be considered in the analysis.)
 
 ##### Visuals on this Page
 
@@ -2721,21 +3002,21 @@ In summary, this filter ensures that only the records with a `ContractStatusToda
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis based on the values in the `OWN-Sub-ExtT` column. Let's break it down in simple business terms:
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: The provided Power BI filter definition JSON is a logical expression that determines which data will be included or excluded when applied to the target field `lkp_Unit`.`OWN-Sub-ExtT`. Let's break it down in simple business terms:
 
-### What the Filter Does:
+1. **`OWN-Sub-ExtT` Field**: This is the specific data column we are focusing on. It likely contains values that categorize or describe units in some way.
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` column in the `lkp_Unit` table.
+2. **Filter Logic**:
+   - **`NOT (`OWN-Sub-ExtT` = null)`**: This part of the filter means that we want to include only those records where the `OWN-Sub-ExtT` field has a value. In other words, we are excluding any records where this field is empty or has no data.
+   - **`AND`**: This logical operator means that both conditions must be true for a record to be included.
+   - **`NOT (`OWN-Sub-ExtT` = 'SUB')`**: This part specifies that we want to exclude any records where the `OWN-Sub-ExtT` field has the value 'SUB'. 
 
-2. **Inclusion Criteria**:
-   - The filter **excludes** any records where the `OWN-Sub-ExtT` value is **null**. This means that if there is no value in this column for a record, that record will not be included in the results.
-   - The filter also **excludes** any records where the `OWN-Sub-ExtT` value is equal to **'SUB'**. So, if a record has 'SUB' in this column, it will also be left out of the results.
+3. **Overall Effect**: When this filter is applied, it will include only those records where:
+   - The `OWN-Sub-ExtT` field has a value (i.e., it is not empty).
+   - The value of `OWN-Sub-ExtT` is not 'SUB'.
 
-### Summary of Included Data:
-- The filter will only include records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value that is **not null** and is **not equal to 'SUB'**. 
-
-### Practical Implication:
-- If you are analyzing data related to units, this filter ensures that you are only looking at units that have a specific, meaningful value in the `OWN-Sub-ExtT` column, effectively filtering out any units that are either undefined (null) or categorized as 'SUB'. This helps in focusing on relevant data for your analysis.)
+### Summary:
+In summary, this filter is designed to include all records that have a valid value in the `OWN-Sub-ExtT` field, while specifically excluding any records that have the value 'SUB'. This helps in focusing the analysis on relevant data while filtering out unwanted entries.)
 
 **shape**
 
@@ -2750,34 +3031,45 @@ In summary, this filter ensures that only the records with a `ContractStatusToda
 - Fields Used:
   - `Dax_EmpCount_Approved` (Query: `PBI_TIMESHEET.Dax_EmpCount_Approved`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `vw_Timesheet` view are included in your analysis based on the `Approved_With_V_Z` field.
+  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` field.
 
-### Breakdown of the Filter:
+Here's what the filter means:
 
-1. **Target Data Source**: The filter is applied to the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column.
+- **Field Being Filtered**: The filter is looking at the `Approved_With_V_Z` column in the `vw_Timesheet` data.
+- **Condition**: The condition states that the value of `Approved_With_V_Z` must be equal to `0`.
 
-2. **Filter Condition**: The filter checks the value of the `Approved_With_V_Z` column. 
+### What This Means for the Data:
 
-3. **Comparison**: 
-   - The filter is looking for records where the `Approved_With_V_Z` value is **not equal to** `0L` (which typically represents a zero value in a long integer format).
-   - In simpler terms, this means the filter is including only those records where `Approved_With_V_Z` has a value other than zero.
+- **Included Data**: Only the records (or rows) from the `vw_Timesheet` view where the `Approved_With_V_Z` value is exactly `0` will be included in the analysis or report.
+- **Excluded Data**: Any records where `Approved_With_V_Z` has a value other than `0` (for example, `1`, `2`, or any other number) will be excluded from the analysis.
 
-### Business Implication:
+### Summary:
 
-When this filter is applied, you will only see timesheet records that have been approved (i.e., those with a value greater than zero in the `Approved_With_V_Z` column). Any records where `Approved_With_V_Z` equals zero will be excluded from your analysis. This is useful for focusing on timesheets that have been processed and approved, allowing for more accurate reporting and insights into approved work hours or projects.)
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
+In summary, this filter is used to focus on timesheet entries that have not been approved (assuming that `0` indicates "not approved"). Therefore, when this filter is applied, you will only see the timesheets that are in this specific state, helping you analyze or report on unapproved timesheet entries.)
+  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-1. **Target Data**: The filter is focused on the `TimesheetCode` column from the `vw_Timesheet` data view. This means it is looking at the codes that represent different timesheets.
+Here's what the filter is doing:
 
-2. **Included Values**: The filter specifies that only certain values of `TimesheetCode` should be included in the analysis. Specifically, it includes:
-   - `'int'`
-   - `'ROEG'`
-   - `'RSEG'`
+- It is looking at the `TimesheetCode` column in the `vw_Timesheet` data.
+- The filter includes only those records where the `TimesheetCode` is one of the following three values: 'int', 'ROEG', or 'RSEG'.
 
-3. **Exclusion of Other Values**: Any `TimesheetCode` that is **not** one of these three values will be excluded from the data being analyzed. This means that if a timesheet has a code like `'ABC'` or `'XYZ'`, it will not be part of the results.
+This means that any records with a `TimesheetCode` that is **not** 'int', 'ROEG', or 'RSEG' will be excluded from the analysis. Essentially, the filter narrows down the data to focus only on these specific codes, allowing for a more targeted analysis of timesheets associated with these codes.)
+  - Filter on `vw_Timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
 
-In summary, when this filter is applied, the analysis will only consider timesheets that have the codes `'int'`, `'ROEG'`, or `'RSEG'`, and all other timesheet codes will be ignored. This helps in focusing the analysis on specific types of timesheets that are relevant for the business context.)
-  - Filter on `vw_Timesheet`.`ContractStatusToday` (Type: Categorical, Definition: N/A)
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `ContractStatusToday` from the `vw_Timesheet` data source. This means that no specific criteria are being applied to limit the data.
+
+2. **Data Included**: When this filter is applied, every possible status that exists in the `ContractStatusToday` field will be shown. For example, if the statuses include "Active," "Inactive," "Pending," etc., all of these statuses will be included in the report.
+
+3. **Data Excluded**: Since the filter is set to include all values, there are no exclusions. No data is being filtered out; everything related to `ContractStatusToday` will be visible.
+
+### Summary:
+In simple terms, this filter allows you to see every single entry in the `ContractStatusToday` field without any restrictions. It ensures that all contract statuses are represented in your analysis, providing a complete view of the data.)
 
 **Billable Dep**
 
@@ -2793,50 +3085,65 @@ In summary, when this filter is applied, the analysis will only consider timeshe
 - Fields Used:
   - `Dax_EmpCount_RReady` (Query: `PBI_TIMESHEET.Dax_EmpCount_RReady`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_Timesheet` view, particularly the `Approved_With_V_Z` column. Here’s a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column.
 
-1. **Source of Data**: The filter is applied to a data source called `vw_Timesheet`, which likely contains records related to timesheets, such as hours worked, approvals, and other relevant details.
+Here's what it means:
 
-2. **Target Column**: The filter specifically looks at the `Approved_With_V_Z` column within this data source. This column probably indicates whether a timesheet has been approved, with different values representing different approval statuses.
-
-3. **Filter Condition**: The filter condition checks for a specific value in the `Approved_With_V_Z` column. It is looking for records where this column equals `1L`. 
-
-4. **Meaning of the Value**: The value `1L` typically represents a specific status, such as "approved" or "yes" in a binary approval system. Therefore, this filter is including only those records where the timesheet has been approved.
-
-5. **Exclusion of Data**: As a result of this filter, any records in the `vw_Timesheet` view where `Approved_With_V_Z` does not equal `1L` will be excluded from the analysis. This means only approved timesheets will be considered in any reports or visualizations that use this filter.
-
-In summary, this filter ensures that only approved timesheet records are included in the analysis, allowing users to focus on data that reflects approved work hours or activities.)
-  - Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition JSON is designed to filter data from a specific view called `vw_Timesheet`, focusing on a column named `RReady_With_V_Z`. Here’s a breakdown of what this filter does in simple business terms:
-
-1. **Source of Data**: The filter is applied to a data source identified as `vw_Timesheet`, which is likely a view that aggregates or summarizes timesheet data.
-
-2. **Target Column**: The filter specifically targets the column `RReady_With_V_Z`. This column likely contains values that indicate whether a certain condition related to readiness or status is met.
-
-3. **Filter Condition**: The filter condition checks the values in the `RReady_With_V_Z` column. It compares these values to a specific literal value, which in this case is `0L`. The `0L` typically represents a numeric value of zero, possibly indicating that a certain readiness condition is not met.
-
-4. **Inclusion/Exclusion Logic**: 
-   - **Included Data**: The filter will include only those records from `vw_Timesheet` where the value in the `RReady_With_V_Z` column is equal to `0L`. This means that only timesheet entries that do not meet the readiness criteria (as indicated by a value of zero) will be included in the results.
-   - **Excluded Data**: Any records where `RReady_With_V_Z` has a value other than `0L` (for example, values like `1`, `2`, or any other non-zero value) will be excluded from the results.
-
-In summary, when this filter is applied, it narrows down the data to show only those timesheet entries that are not ready (indicated by a value of zero in the `RReady_With_V_Z` column).)
-  - Filter on `vw_Timesheet`.`[Dax_EmpCount_RReady]` (Type: Advanced, Definition: N/A)
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
-
-### What Data is Included:
-The filter is designed to **include** only those records from the `vw_Timesheet` view where the `TimesheetCode` matches any of the following values:
-
-1. **'ROEG'**
-2. **'ROIG'**
-3. **'RSEG'**
-4. **'V'**
-5. **'Z'**
-6. **'int'**
-
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that have a `TimesheetCode` **not** matching one of the above values will be **excluded** from the results. This means that if a `TimesheetCode` is anything other than 'ROEG', 'ROIG', 'RSEG', 'V', 'Z', or 'int', it will not appear in the filtered data.
+- **Target Data**: The filter is applied to the `vw_Timesheet` view, which likely contains records of timesheets submitted by employees.
+- **Column of Interest**: The filter is looking at the `Approved_With_V_Z` column. This column likely indicates whether a timesheet has been approved based on certain criteria (the "V_Z" part might refer to specific approval conditions or categories).
+- **Filter Condition**: The condition "`Approved_With_V_Z` = 1" means that only those records where the `Approved_With_V_Z` column has a value of 1 will be included in the analysis or report. 
 
 ### Summary:
-In summary, this filter narrows down the dataset to only include timesheets that have specific codes, allowing users to focus on those particular entries while ignoring all others.)
+When this filter is applied, it will **include only the timesheet records that have been approved** (where `Approved_With_V_Z` equals 1) and **exclude all other records** that have not been approved (where `Approved_With_V_Z` is not equal to 1). This allows users to focus solely on the approved timesheets for their analysis or reporting needs.)
+  - Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the target table `vw_Timesheet`. 
+
+Here's what it means:
+
+- **Target Table**: The filter is applied to a specific dataset called `vw_Timesheet`.
+- **Field Being Filtered**: The filter is focusing on a field (or column) named `RReady_With_V_Z`.
+- **Condition**: The condition specified is that the value of `RReady_With_V_Z` must be equal to `0`.
+
+### What This Filter Does:
+- **Includes Data**: The filter will include only those records (or rows) from the `vw_Timesheet` where the `RReady_With_V_Z` field has a value of `0`.
+- **Excludes Data**: Any records where `RReady_With_V_Z` has a value other than `0` (such as `1`, `2`, or any other number) will be excluded from the results.
+
+### Summary:
+In summary, this filter is used to narrow down the dataset to only those entries where the `RReady_With_V_Z` value is `0`, effectively filtering out all other entries. This can be useful for analyzing a specific subset of data that meets this condition.)
+  - Filter on `vw_Timesheet`.`[Dax_EmpCount_RReady]` (Type: Advanced, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the specified field. In this case, it applies to the target `vw_Timesheet`.`[Dax_EmpCount_RReady]`.
+
+2. **Data Included**: When this filter is applied, it means that every single record or entry in the `Dax_EmpCount_RReady` field will be considered. There are no restrictions or exclusions based on any criteria.
+
+3. **Data Excluded**: Since the filter includes all values, there are no data points being excluded. Every employee count that is available in the dataset will be shown in the report.
+
+### Summary:
+In simple terms, this filter allows you to see the complete picture of employee counts without leaving anything out. It ensures that all relevant data is available for analysis, making it useful when you want to analyze the entire dataset without any limitations.)
+  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided Power BI filter definition JSON specifies a condition for the `TimesheetCode` field in the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
+
+### What the Filter Does:
+- **Inclusion of Specific Codes**: The filter is set to include only those records where the `TimesheetCode` matches one of the specified values. In this case, the valid `TimesheetCode` values are:
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
+  - 'int'
+
+### What Data is Included:
+- When this filter is applied, only the timesheet entries that have a `TimesheetCode` of 'ROEG', 'ROIG', 'RSEG', 'V', 'Z', or 'int' will be included in the analysis or report. 
+
+### What Data is Excluded:
+- Any timesheet entries with a `TimesheetCode` that is **not** one of the specified values will be excluded from the analysis. This means that if a timesheet has a code like 'ABC', 'XYZ', or any other code not listed, it will not appear in the results.
+
+### Summary:
+In summary, this filter is used to focus on a specific set of timesheet codes that are likely relevant for a particular analysis or report, ensuring that only those entries are considered while filtering out all others.)
 
 **Active Employee**
 
@@ -2845,23 +3152,24 @@ In summary, this filter narrows down the dataset to only include timesheets that
 - Fields Used:
   - `Msr_ActiveContacts` (Query: `PBI_TIMESHEET.Msr_ActiveContacts`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_missing_timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` column of the `vw_missing_timesheet` view. Here's a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_missing_timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What the Filter Does:
-- **Target Data**: The filter is focused on the `TimesheetCode` field within the `vw_missing_timesheet` dataset.
-- **Included Values**: The filter includes only those records where the `TimesheetCode` matches one of the specified values. The values that are included are:
-  - `'int'`
-  - `'ROEG'`
-  - `'ROIG'`
-  - `'RSEG'`
-  - `'Z'`
-  - `'V'`
+In simple terms, the filter is saying:
 
-### What the Filter Excludes:
-- **Excluded Values**: Any records that have a `TimesheetCode` not listed above will be excluded from the results. This means that if a record has a `TimesheetCode` of, for example, `'ABC'` or `'XYZ'`, it will not be shown in the filtered results.
+- **Include only the following Timesheet Codes**: 
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'Z'
+  - 'V'
 
-### Summary:
-In summary, this filter is designed to narrow down the data to only show timesheets that have specific codes (like `'int'`, `'ROEG'`, etc.). Any timesheet with a code outside of this list will not be included in the analysis or report. This helps focus on particular types of timesheets that are of interest for further analysis or reporting.)
+This means that when this filter is applied, only records (or entries) that have a `TimesheetCode` matching one of these specified values will be shown in your report or analysis. 
+
+**What is excluded?**
+- Any `TimesheetCode` that is **not** one of these values will be excluded from the data. For example, codes like 'ABC', 'XYZ', or any other code that is not listed will not appear in the results.
+
+In summary, this filter narrows down the dataset to only include specific timesheet codes, allowing you to focus on those particular entries in your analysis.)
 
 **Current Week**
 
@@ -2889,18 +3197,23 @@ In summary, this filter is designed to narrow down the data to only show timeshe
 - Fields Used:
   - `Dax_EmpCount_MissingTS` (Query: `vw_missing_timesheet.Dax_EmpCount_MissingTS`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to filter data from a specific view called `vw_Timesheet`, focusing on a column named `ContractStatusToday`. Here's a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_Timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: The provided filter definition JSON is specifying a condition that will be applied to the data in the `ContractStatusToday` column of the `vw_Timesheet` view in Power BI.
 
-1. **Source of Data**: The filter is applied to a dataset referred to as `vw_Timesheet`, which likely contains information about timesheets, including various statuses related to contracts.
+### Explanation in Business Terms:
 
-2. **Target Column**: The filter specifically targets the column `ContractStatusToday`. This column likely indicates the current status of contracts associated with the timesheets.
+- **Target Data**: The filter is applied to the `ContractStatusToday` field, which likely indicates the current status of contracts in the timesheet data.
 
-3. **Filter Condition**: The filter includes a condition that specifies which records to include based on the value of `ContractStatusToday`. 
+- **Filter Condition**: The filter condition is "`ContractStatusToday` IN ('Valid')". This means that only the records where the `ContractStatusToday` is marked as "Valid" will be included in the analysis or report.
 
-4. **Included Value**: The filter is set to include only those records where the `ContractStatusToday` is equal to `'Valid'`. This means that any timesheet entry with a contract status that is not `'Valid'` will be excluded from the results.
+### What This Means for Your Data:
+
+- **Included Data**: Any record (or row) in the `vw_Timesheet` view that has a `ContractStatusToday` value of "Valid" will be included in the results. This could represent contracts that are currently active, approved, or otherwise in good standing.
+
+- **Excluded Data**: Any record where the `ContractStatusToday` is not "Valid" (for example, statuses like "Expired", "Pending", or "Invalid") will be excluded from the results. This means you will not see any information related to contracts that are not currently valid.
 
 ### Summary:
-In summary, when this filter is applied, it will only show timesheet records where the contract status is currently valid. Any records with a different status (like expired, pending, or invalid) will not be included in the data being analyzed or reported. This helps users focus on only the relevant and active contracts in their analysis.)
+
+In summary, this filter ensures that your analysis focuses solely on contracts that are currently valid, allowing for more accurate insights and reporting on active contracts within the timesheet data.)
 
 **Billable Dep**
 
@@ -2916,44 +3229,6 @@ In summary, when this filter is applied, it will only show timesheet records whe
 - Fields Used:
   - `MISSING%` (Query: `vw_missing_timesheet.MISSING%`) (Role: Values)
 
-**Manager / Employee **
-
-- Type: `pivotTable`
-- Name: `763741ea54bdb0030a51`
-- Fields Used:
-  - `  ` (Query: `vw_missing_timesheet.EmployeeName`) (Role: Rows)
-  - `  ` (Query: `vw_missing_timesheet.ManagerName`) (Role: Rows)
-  - `  ` (Query: `vw_missing_timesheet.Dax_EmpCount_MissingTS`) (Role: Values)
-- Visual Level Filters:
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to specify which records from the `vw_Timesheet` view should be included based on the `TimesheetCode` field. Here’s a breakdown of what this filter does in simple business terms:
-
-### What Data is Included:
-The filter is set to include only those records from the `vw_Timesheet` view where the `TimesheetCode` matches one of the following specific values:
-
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
-
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that do not have a `TimesheetCode` equal to one of the values listed above will be excluded from the results. 
-
-### Summary:
-In summary, when this filter is applied, you will only see timesheet records that have a `TimesheetCode` of 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z'. All other timesheet records will be filtered out and not displayed in your report or analysis.)
-  - Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_missing_timesheet` view, particularly the `ContractStatusToday` column. Here’s a breakdown of what this filter does in simple business terms:
-
-1. **Target Data Source**: The filter is applied to a data source called `vw_missing_timesheet`, which likely contains information about timesheets and their statuses.
-
-2. **Column of Interest**: The filter specifically looks at the `ContractStatusToday` column within this data source. This column probably indicates the current status of contracts related to timesheets.
-
-3. **Inclusion Criteria**: The filter includes only those records where the `ContractStatusToday` is equal to `'Valid'`. This means that any timesheet entries that do not have a status of `'Valid'` will be excluded from the analysis.
-
-4. **Resulting Data**: After applying this filter, the resulting dataset will consist solely of entries from the `vw_missing_timesheet` where the contract status is valid. This helps in focusing on only those timesheets that are currently in good standing, allowing for more accurate reporting and analysis.
-
-In summary, this filter ensures that only valid contract statuses are considered in any reports or visualizations, effectively excluding any entries that may be invalid or not applicable.)
-
 **shape**
 
 - Type: `shape`
@@ -2968,26 +3243,22 @@ In summary, this filter ensures that only valid contract statuses are considered
   - ` ` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Rows)
   - `  ` (Query: `PBI_TIMESHEET.IPM_ManagerName`) (Role: Rows)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `vw_Timesheet` data view are included in your analysis based on a specific condition related to the `Approved_With_V_Z` field.
+  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` field.
 
-### Breakdown of the Filter:
+Here's what the filter means:
 
-1. **Target Data Source**: The filter is applied to the `vw_Timesheet` view, which likely contains timesheet records.
+- **Field**: `Approved_With_V_Z` - This is a column in the `vw_Timesheet` data that likely indicates whether a timesheet has been approved or not, with a specific value representing a certain status.
 
-2. **Field of Interest**: The specific field being filtered is `Approved_With_V_Z`. This field probably indicates whether a timesheet has been approved or not, with different values representing different statuses.
+- **Condition**: `= 0` - This condition means that we are interested in only those records where the value of `Approved_With_V_Z` is equal to 0.
 
-3. **Filter Condition**: The filter checks if the value of `Approved_With_V_Z` is equal to `0L`. 
-   - The `0L` likely represents a specific status, such as "not approved" or "pending approval".
+### What Data is Included or Excluded:
 
-### What This Means for Your Data:
+- **Included Data**: The filter will include only those timesheet records where `Approved_With_V_Z` is 0. This typically means that these records are not approved or are in a state that is considered "not approved."
 
-- **Included Data**: When this filter is applied, only the records from `vw_Timesheet` where `Approved_With_V_Z` is equal to `0L` will be included in your analysis. This means you will only see timesheets that have not been approved.
-
-- **Excluded Data**: Any records where `Approved_With_V_Z` has a value other than `0L` (such as approved timesheets) will be excluded from your analysis.
+- **Excluded Data**: Any records where `Approved_With_V_Z` is not equal to 0 (for example, records where it is 1 or any other value) will be excluded from the results. This means that any approved timesheets or those in a different status will not be shown.
 
 ### Summary:
-
-In simple terms, this filter is set up to focus exclusively on timesheets that have not yet been approved, allowing you to analyze or report on only those records.)
+In summary, this filter is used to focus on timesheet records that have not been approved, allowing users to analyze or report on only those specific entries.)
 
 **funnel**
 
@@ -2997,51 +3268,34 @@ In simple terms, this filter is set up to focus exclusively on timesheets that h
   - `Dax_EmpCount_Approved` (Query: `PBI_TIMESHEET.Dax_EmpCount_Approved`) (Role: Y)
   - `MAIN_UNIT` (Query: `PBI_TIMESHEET.MAIN_UNIT`) (Role: Category)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to limit the data that is displayed based on specific criteria related to the `TimesheetCode` field from the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided filter definition JSON specifies a condition for the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
 
 ### What the Filter Does:
-- **Target Data**: The filter is applied to the `TimesheetCode` column in the `vw_Timesheet` dataset.
-- **Included Values**: The filter specifies a list of `TimesheetCode` values that should be included in the results. Only records with these specific codes will be shown.
+- **Includes Specific Codes**: The filter is set to include only those records where the `TimesheetCode` matches one of the specified values. In this case, the valid codes are:
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
+  - 'int'
 
-### Included Timesheet Codes:
-The filter includes the following `TimesheetCode` values:
-1. **'ROEG'**
-2. **'ROIG'**
-3. **'RSEG'**
-4. **'V'**
-5. **'Z'**
-6. **'int'**
+### What Data is Included:
+- **Records with Matching Codes**: When this filter is applied, only the timesheet entries that have a `TimesheetCode` of 'ROEG', 'ROIG', 'RSEG', 'V', 'Z', or 'int' will be included in the analysis or report. 
 
-### Excluded Data:
-- Any records in the `vw_Timesheet` that do not have one of the above `TimesheetCode` values will be excluded from the results. This means that if a timesheet has a code that is not listed, it will not appear in the report or visualization.
-
-### Summary:
-In summary, this filter is used to focus on specific timesheet entries by including only those that match the defined codes. It helps in narrowing down the data to relevant entries, making it easier for users to analyze or report on specific types of timesheets.)
-  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `vw_Timesheet` view are included in your analysis based on the `Approved_With_V_Z` field.
-
-### Breakdown of the Filter:
-
-1. **Source of Data**: 
-   - The filter is applied to the `vw_Timesheet` view, which likely contains timesheet data for employees.
-
-2. **Field Being Filtered**: 
-   - The specific field being evaluated is `Approved_With_V_Z`. This field probably indicates whether a timesheet has been approved or not, with different values representing different statuses.
-
-3. **Filter Condition**:
-   - The filter checks if the value of `Approved_With_V_Z` is equal to `0L`. 
-   - The `0L` value typically represents a specific state, which in many systems could mean "not approved" or "pending approval".
-
-### What This Means for Your Data:
-
-- **Included Data**: 
-  - When this filter is applied, only the records from `vw_Timesheet` where `Approved_With_V_Z` is equal to `0L` will be included in your analysis. This means you will only see timesheets that are not approved.
-
-- **Excluded Data**: 
-  - Any records where `Approved_With_V_Z` has a value other than `0L` (such as approved timesheets) will be excluded from your analysis.
+### What Data is Excluded:
+- **All Other Codes**: Any timesheet entries that have a `TimesheetCode` not listed above will be excluded from the results. This means that if a timesheet has a code like 'ABC', 'XYZ', or any other code not specified in the filter, it will not appear in the filtered data.
 
 ### Summary:
+In summary, this filter narrows down the data to only those timesheet entries that have specific codes, allowing for focused analysis on those particular entries while ignoring all others.)
+  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` field.
 
-In simple terms, this filter is set up to focus exclusively on timesheets that have not yet been approved. This can be useful for identifying pending approvals or for tracking timesheets that require attention.)
+Here's what it means:
+
+- The filter is looking for records where the value of `Approved_With_V_Z` is equal to **0**.
+- When this filter is applied, it will **include** only those records from the `vw_Timesheet` where `Approved_With_V_Z` is **0**.
+- Conversely, it will **exclude** any records where `Approved_With_V_Z` is **not 0** (i.e., any records where the value is 1 or any other number).
+
+In summary, this filter is used to focus on timesheet entries that have not been approved (assuming that `0` indicates "not approved").)
 
 **funnel**
 
@@ -3051,33 +3305,48 @@ In simple terms, this filter is set up to focus exclusively on timesheets that h
   - `Dax_EmpCount_MissingTS` (Query: `vw_missing_timesheet.Dax_EmpCount_MissingTS`) (Role: Y)
   - `MAIN_UNIT` (Query: `vw_missing_timesheet.MAIN_UNIT`) (Role: Category)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What Data is Included:
-The filter is designed to **include** only those records from the `vw_Timesheet` view where the `TimesheetCode` matches one of the following specific values:
+In simple business terms, this filter is saying:
 
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
+- **Include Only Specific Codes**: The filter will only allow data entries where the `TimesheetCode` matches one of the following values: 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z'.
+  
+- **Exclude Everything Else**: Any entries with a `TimesheetCode` that is not one of these specified values will be excluded from the analysis.
 
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that have a `TimesheetCode` **not** matching one of the above values will be **excluded** from the results. 
+So, when this filter is applied, you will only see timesheet records that have one of the listed codes, helping you focus on specific types of timesheets relevant to your analysis or reporting needs.)
+  - Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and dashboards. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `ContractStatusToday` from the `vw_missing_timesheet` view. This means that no specific criteria are being applied to limit the data.
+
+2. **Data Included**: When this filter is applied, every possible value for `ContractStatusToday` will be shown. For example, if `ContractStatusToday` includes statuses like "Active," "Inactive," "Pending," etc., all of these statuses will be included in the report.
+
+3. **Data Excluded**: Since the filter is set to include all values, there are no exclusions. No data related to `ContractStatusToday` will be left out; everything is considered.
 
 ### Summary:
-In summary, when this filter is applied, you will only see timesheet entries that have a `TimesheetCode` of 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z'. All other timesheet entries will be filtered out, ensuring that your analysis focuses solely on these specific codes.)
-  - Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Definition: N/A)
-  - Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_missing_timesheet` view, particularly the `ContractStatusToday` field. Here’s a breakdown of what this filter does in simple business terms:
+In summary, this filter allows you to see all records related to `ContractStatusToday` without any restrictions. It ensures that every status is represented in your analysis, providing a complete view of the data without filtering anything out.)
+  - Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: The provided filter definition JSON is specifying a condition for the data that will be included when analyzing the `ContractStatusToday` field from the `vw_missing_timesheet` view in Power BI.
 
-1. **Target Data**: The filter is applied to the `ContractStatusToday` column in the `vw_missing_timesheet` view. This column likely indicates the current status of contracts related to timesheets.
+### Explanation in Business Terms:
 
-2. **Inclusion Criteria**: The filter specifies that only records where the `ContractStatusToday` is equal to `'Valid'` should be included in the analysis. This means that any records with a status other than `'Valid'` (such as `'Expired'`, `'Pending'`, or any other status) will be excluded from the results.
+- **Target Field**: The filter is applied to the field called `ContractStatusToday`. This field likely indicates the current status of contracts in the context of missing timesheets.
 
-3. **Purpose**: By applying this filter, the analysis will focus solely on contracts that are currently valid. This can help in understanding which timesheets are associated with active contracts, allowing for better decision-making regarding resource allocation, compliance, or financial planning.
+- **Filter Condition**: The filter condition is `IN ('Valid')`. This means that only records where the `ContractStatusToday` is marked as "Valid" will be included in the analysis.
 
-In summary, this filter ensures that only the data related to valid contracts is considered, filtering out any irrelevant or inactive contract statuses from the analysis.)
+### What This Means for Your Data:
+
+- **Included Data**: Only contracts that are currently in a "Valid" status will be considered. This means you will see data related to contracts that are active and presumably in good standing.
+
+- **Excluded Data**: Any contracts that are not marked as "Valid" (for example, those that might be "Expired," "Pending," or "Invalid") will be excluded from the analysis. This helps focus on contracts that are currently relevant and actionable.
+
+### Summary:
+
+In summary, this filter ensures that your analysis only looks at contracts that are currently valid, allowing you to concentrate on the most pertinent data regarding missing timesheets without the noise of other contract statuses.)
 
 **Manager / Employee**
 
@@ -3087,46 +3356,40 @@ In summary, this filter ensures that only the data related to valid contracts is
   - `  ` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Rows)
   - `  ` (Query: `PBI_TIMESHEET.IPM_ManagerName`) (Role: Rows)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to refine the data displayed in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column. Here’s a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column.
 
-1. **Target Data Source**: The filter is applied to a data source called `vw_Timesheet`, which likely contains records related to timesheets, such as hours worked, approvals, and possibly other related information.
+Here's what it means:
 
-2. **Column of Interest**: The filter specifically looks at the `Approved_With_V_Z` column within this data source. This column likely indicates whether a timesheet has been approved, with different values representing different approval statuses.
+- The filter is looking for records (or rows) in the `vw_Timesheet` data where the value in the `Approved_With_V_Z` column is equal to **1**.
+- This means that only those records that have been marked as "approved" (indicated by the value of 1) will be included in the analysis or report.
+- Any records where `Approved_With_V_Z` is **not equal to 1** (for example, records with a value of 0 or any other value) will be excluded from the results.
 
-3. **Filter Condition**: The filter condition checks for a specific value in the `Approved_With_V_Z` column. It is looking for records where the value is equal to `1L`. 
+In summary, this filter ensures that only approved timesheet entries are considered, allowing users to focus on the relevant data that meets the approval criteria.)
+  - Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the target table `vw_Timesheet`. 
 
-4. **Meaning of the Value**: The value `1L` typically represents a specific status, such as "approved." Therefore, this filter is including only those records where the timesheet has been marked as approved.
+Here's what it means:
 
-5. **Exclusion of Other Data**: By applying this filter, any records in the `vw_Timesheet` view that do not have `Approved_With_V_Z` equal to `1L` will be excluded from the results. This means that only approved timesheets will be visible in the report or dashboard.
+- The filter is looking at a specific column named `RReady_With_V_Z`.
+- The condition "`RReady_With_V_Z` = 0" means that only the records (or rows) where the value in the `RReady_With_V_Z` column is equal to 0 will be included in the analysis or report.
+- Any records where `RReady_With_V_Z` has a value other than 0 (such as 1, 2, or any other number) will be excluded from the results.
 
-In summary, this filter ensures that only approved timesheet records are included in the analysis, allowing users to focus solely on the data that meets this approval criterion.)
-  - Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to refine the data that is displayed from the `vw_Timesheet` view, specifically focusing on the `RReady_With_V_Z` column. Here’s a breakdown of what this filter does in simple business terms:
+In summary, this filter is used to focus on a specific subset of data where the `RReady_With_V_Z` value is 0, allowing analysts to analyze or visualize only those records that meet this criterion.)
+  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided filter definition in JSON format specifies a condition that will be applied to the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this means in simple business terms:
 
-1. **Source of Data**: The filter is applied to a data source identified as `vw_Timesheet`, which is likely a view that contains timesheet-related data.
+### What the Filter Does:
+- **Inclusion of Specific Codes**: The filter is designed to include only those records from the `vw_Timesheet` view where the `TimesheetCode` matches one of the specified values.
+- **Specified Values**: The values included by this filter are:
+  - `int`
+  - `ROEG`
+  - `ROIG`
+  - `RSEG`
 
-2. **Target Column**: The filter specifically targets the column named `RReady_With_V_Z`. This column presumably indicates whether a certain condition related to readiness is met for the timesheet entries.
-
-3. **Filter Condition**: The filter condition checks the value of the `RReady_With_V_Z` column. It is looking for entries where this column has a value of `0L`. The "0L" typically represents a long integer value of zero.
-
-4. **Inclusion Criteria**: By applying this filter, only those records from the `vw_Timesheet` view where `RReady_With_V_Z` equals `0L` will be included in the results. 
-
-5. **Exclusion Criteria**: Conversely, any records where `RReady_With_V_Z` has a value other than `0L` will be excluded from the results.
+### What Data is Included:
+- When this filter is applied, only the timesheets that have a `TimesheetCode` of `int`, `ROEG`, `ROIG`, or `RSEG` will be shown in the report or analysis.
+- Any timesheet with a `TimesheetCode` that is **not** one of these four values will be excluded from the results.
 
 ### Summary:
-In summary, this filter is set up to show only the timesheet entries that are marked with a readiness status of zero (indicating perhaps that they are not ready or completed). All other entries that have a different status will not be displayed in the report or visualization.)
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to include specific data from the `vw_Timesheet` view based on the `TimesheetCode` field. Here's a breakdown of what this filter does in simple business terms:
-
-1. **Target Data**: The filter is applied to the `TimesheetCode` column within the `vw_Timesheet` view. This means we are focusing on the codes that identify different types of timesheets.
-
-2. **Included Values**: The filter specifies that only certain `TimesheetCode` values should be included in the analysis. The codes that are included are:
-   - `'int'`
-   - `'ROEG'`
-   - `'ROIG'`
-   - `'RSEG'`
-
-3. **Exclusion of Other Values**: Any `TimesheetCode` that is **not** one of these four specified values will be excluded from the data set. This means that if a timesheet has a code like `'XYZ'` or any other code not listed, it will not be part of the results.
-
-In summary, when this filter is applied, the analysis will only consider timesheets that have the codes `'int'`, `'ROEG'`, `'ROIG'`, or `'RSEG'`, effectively filtering out all other timesheet codes. This helps in focusing on specific types of timesheets for reporting or analysis purposes.)
+In summary, this filter is used to focus on a specific subset of timesheet data, allowing users to analyze or report on only those timesheets that are relevant to the specified codes. This can help in scenarios where only certain types of timesheets are of interest, such as specific projects or categories of work.)
 
 **funnel**
 
@@ -3137,53 +3400,41 @@ In summary, when this filter is applied, the analysis will only consider timeshe
   - `Dax_EmpCount_RReady` (Query: `PBI_TIMESHEET.Dax_EmpCount_RReady`) (Role: Y)
   - `Count of MAIN_UNIT` (Query: `CountNonNull(vw_Timesheet.MAIN_UNIT)`) (Role: Unknown)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to specify which records from the `vw_Timesheet` view should be included based on the `TimesheetCode` field. Here's a breakdown of what this filter does in simple business terms:
+  - Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided filter definition JSON specifies a condition for the `TimesheetCode` field in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
 
 ### What the Filter Does:
-- **Target Field**: The filter is applied to the `TimesheetCode` column in the `vw_Timesheet` view.
-- **Inclusion Criteria**: The filter specifies that only records with certain `TimesheetCode` values should be included in the analysis or report.
+- **Includes Specific Codes**: The filter is set to include only those records where the `TimesheetCode` matches one of the specified values. In this case, the valid codes are:
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
+  - 'int'
 
-### Included Values:
-The filter includes the following specific `TimesheetCode` values:
-1. **'ROEG'**
-2. **'ROIG'**
-3. **'RSEG'**
-4. **'V'**
-5. **'Z'**
-6. **'int'**
+### What Data is Included:
+- **Only the Listed Codes**: When this filter is applied, only timesheet entries that have a `TimesheetCode` of 'ROEG', 'ROIG', 'RSEG', 'V', 'Z', or 'int' will be included in the results. Any timesheet entries with codes outside of this list will be excluded.
 
 ### Summary:
-When this filter is applied, only the records from the `vw_Timesheet` view that have a `TimesheetCode` matching one of the values listed above will be included in the results. Any records with a `TimesheetCode` that is not one of these specified values will be excluded from the analysis. 
+In summary, this filter is used to focus on specific timesheet entries that are relevant for analysis or reporting, ensuring that only the selected codes are considered, while all other codes are ignored. This helps in narrowing down the data to only what is necessary for the business context.)
+  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the `vw_Timesheet` view, specifically focusing on the `Approved_With_V_Z` column.
 
-In essence, this filter helps to focus on specific types of timesheets that are relevant for the analysis, ensuring that only the desired data is considered.)
-  - Filter on `vw_Timesheet`.`Approved_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to include only specific data from the `vw_Timesheet` view, focusing on the `Approved_With_V_Z` column. Here’s a breakdown of what this filter does in simple business terms:
+Here's what it means:
 
-1. **Source of Data**: The filter is applied to a data source called `vw_Timesheet`, which likely contains records related to timesheets.
+- **Target Data**: The filter is applied to the `vw_Timesheet` view, which likely contains records of timesheets submitted by employees.
+- **Column of Interest**: The filter is looking at the `Approved_With_V_Z` column. This column likely indicates whether a timesheet has been approved or not, with `1` representing "approved."
+- **Filter Condition**: The condition "`Approved_With_V_Z` = 1" means that only those records where the `Approved_With_V_Z` column has a value of `1` will be included in the results. In other words, the filter is including only the timesheets that have been approved.
 
-2. **Target Column**: The filter specifically looks at the column named `Approved_With_V_Z`. This column probably indicates whether a timesheet has been approved in a certain way, with the value "1L" representing a specific approval status.
+### Summary:
+When this filter is applied, you will see only the approved timesheets in your report or analysis. Any timesheets that are not approved (where `Approved_With_V_Z` is not equal to `1`) will be excluded from the results.)
+  - Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Advanced, Explanation: In simple business terms, the provided filter definition JSON is specifying a condition that will be applied to the data in the target table called `vw_Timesheet`. 
 
-3. **Filter Condition**: The filter condition checks if the value in the `Approved_With_V_Z` column is equal to "1L". 
+Here's what it means:
 
-4. **Inclusion Criteria**: When this filter is applied, it will **include only those records** from the `vw_Timesheet` where the `Approved_With_V_Z` column has the value "1L". 
+- The filter is looking at a specific column named `RReady_With_V_Z`.
+- The condition "`RReady_With_V_Z` = 0" means that the filter will **only include** rows (or records) from the `vw_Timesheet` table where the value in the `RReady_With_V_Z` column is exactly **0**.
+- Any rows where `RReady_With_V_Z` has a value other than 0 (such as 1, 2, or any negative number) will be **excluded** from the results.
 
-5. **Exclusion Criteria**: Conversely, any records where the `Approved_With_V_Z` column does not equal "1L" will be **excluded** from the results.
-
-In summary, this filter is used to narrow down the data to only those timesheet entries that have a specific approval status, allowing users to focus on a particular subset of approved timesheets.)
-  - Filter on `vw_Timesheet`.`RReady_With_V_Z` (Type: Advanced, Explanation: This Power BI filter definition is designed to filter data from a specific view called `vw_Timesheet`, focusing on a column named `RReady_With_V_Z`. Here’s a breakdown of what this filter does in simple business terms:
-
-1. **Source of Data**: The filter is applied to a dataset referred to as `vw_Timesheet`, which likely contains timesheet-related information.
-
-2. **Target Column**: The filter specifically targets the column `RReady_With_V_Z`. This column probably indicates whether a timesheet is ready for some process or approval.
-
-3. **Filter Condition**: The filter condition checks the value in the `RReady_With_V_Z` column. It looks for entries where this value is equal to `0L`. 
-
-4. **Meaning of the Value**: The value `0L` typically represents a specific state or condition. In many contexts, this could mean "not ready" or "not approved." 
-
-5. **Data Included/Excluded**: 
-   - **Included**: Only the records from `vw_Timesheet` where `RReady_With_V_Z` equals `0L` will be included in the results. This means you will see only those timesheets that are marked as not ready.
-   - **Excluded**: Any records where `RReady_With_V_Z` has a value other than `0L` (such as `1`, `2`, or any other value) will be excluded from the results.
-
-In summary, this filter is used to focus on timesheets that are not ready for processing or approval, allowing users to identify and possibly address those specific entries.)
+In summary, this filter is used to focus on a specific subset of data where the `RReady_With_V_Z` column indicates a value of 0, effectively filtering out all other values.)
 
 **shape**
 
@@ -3203,29 +3454,32 @@ In summary, this filter is used to focus on timesheets that are not ready for pr
 - Name: `3b871b9179460305b949`
 - Fields Used: _(None detected)_
 
-#### <a name="page-timesheet-overviewcategory-per-month"></a>Page: Timesheet Overview/Category per Month
+#### <a name="page-timesheet-overviewcategory-monthly"></a>Page: Timesheet Overview/Category (Monthly)
 
 *Internal Name: `4d6dc730d5c5f33b2ea4`, Ordinal: 10*
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON is designed to specify which records from the `vw_Timesheet` view should be included based on the `TimesheetCode` field. Here’s a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is used to narrow down the data displayed in a report or dashboard based on specific criteria related to timesheet codes.
 
-### What Data is Included:
-The filter is set to include only those records from the `vw_Timesheet` where the `TimesheetCode` matches any of the following specific values:
+### What the Filter Does:
+- The filter is applied to a field called `TimesheetCode` from a data source named `vw_Timesheet`.
+- It specifies that only certain timesheet codes should be included in the analysis.
 
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
+### Included Data:
+The filter includes the following timesheet codes:
+- **int**
+- **ROEG**
+- **ROIG**
+- **RSEG**
+- **V**
+- **Z**
 
-### What Data is Excluded:
-Any records in the `vw_Timesheet` that do not have a `TimesheetCode` of 'int', 'ROEG', 'ROIG', 'RSEG', 'V', or 'Z' will be excluded from the results. This means that if a record has a different `TimesheetCode`, it will not be shown in the analysis or report.
+### Excluded Data:
+Any timesheet codes that are **not** in the list above will be excluded from the report. This means that if a timesheet code is anything other than `int`, `ROEG`, `ROIG`, `RSEG`, `V`, or `Z`, it will not appear in the results.
 
 ### Summary:
-In summary, this filter is used to narrow down the data to only those timesheets that have specific codes, allowing users to focus on a defined subset of timesheet entries that are relevant for their analysis or reporting needs.)
+In summary, this filter ensures that only the specified timesheet codes are considered in the analysis, allowing users to focus on specific types of timesheets while ignoring all others.)
 
 ##### Visuals on this Page
 
@@ -3303,10 +3557,61 @@ In summary, this filter is used to narrow down the data to only those timesheets
   - `MonthNumberOfYear` (Query: `DimDate.MonthNumberOfYear`) (Role: Columns)
   - `Hours` (Query: `vw_Timesheet.TotalActualHours`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Project` (Type: Categorical, Definition: N/A)
-  - Filter on `vw_Timesheet`.`GroupCat` (Type: Categorical, Definition: N/A)
-  - Filter on `vw_Timesheet`.`Sum(Hours)` (Type: Advanced, Definition: N/A)
-  - Filter on `vw_Timesheet`.`FinancialYear` (Type: Advanced, Definition: N/A)
+  - Filter on `vw_Timesheet`.`Project` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `vw_Timesheet`.`Project`. This means that no specific projects are being excluded or included; rather, every project in the dataset will be considered.
+
+2. **Data Inclusion**: When this filter is applied, it allows all projects from the `vw_Timesheet` view to be shown in your report. There are no restrictions on which projects can be displayed.
+
+3. **Practical Impact**: If you are looking at a report that summarizes timesheet data by project, using this filter means you will see data for every project that exists in the `vw_Timesheet` view. This is useful when you want a comprehensive overview without limiting the analysis to specific projects.
+
+### Summary:
+In summary, the filter `(All values)` means that all projects will be included in your analysis, providing a complete view of the data related to projects in the timesheet. There are no exclusions, so every project will be represented in the report.)
+  - Filter on `vw_Timesheet`.`GroupCat` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and dashboards. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Field**: The filter is applied to the field `vw_Timesheet`.`GroupCat`. This field likely represents categories or groups related to timesheet entries, such as different departments, projects, or types of work.
+
+2. **Filter Meaning**: The phrase "(All values)" indicates that **no specific filtering is being applied** to the `GroupCat` field. This means that all categories or groups present in the data will be included in the report or visualization.
+
+3. **Data Inclusion**: Since the filter is set to include all values, every entry in the `GroupCat` field will be shown. For example, if there are categories like "Development," "Marketing," and "Sales," all of these will be visible in the report.
+
+4. **No Exclusions**: There are no exclusions or restrictions. This means that if there are any new categories added in the future, they will also automatically be included in the report without needing to adjust the filter.
+
+### Summary:
+In summary, this filter allows you to see all data related to the `GroupCat` field in your timesheet report, ensuring that no categories are left out. It provides a comprehensive view of all the groups involved in the timesheet data.)
+  - Filter on (Name: `c7b94678aab7e1d8abc3`) (Type: Advanced, Explanation: The JSON you provided indicates that there is no specific filter definition available. In simple terms, this means that there are no criteria set to include or exclude any data when this filter is applied. 
+
+In a business context, think of it like having a report or dashboard that shows all available data without any restrictions. Since there are no filters defined, every piece of data remains visible, and nothing is being filtered out. 
+
+In summary, this filter does not limit or change the data in any way; it simply allows all data to be displayed as is.)
+  - Filter on `vw_Timesheet`.`FinancialYear` (Type: Advanced, Explanation: In Power BI, filters are used to control which data is displayed in your reports and dashboards. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the field `vw_Timesheet.FinancialYear`. This means that when you apply this filter, you are not excluding any specific financial years from your data view.
+
+2. **Data Inclusion**: Since the filter is set to "(All values)", every financial year available in the `vw_Timesheet` dataset will be included in the analysis. For example, if your dataset contains financial years from 2020 to 2023, all these years will be shown in your reports.
+
+3. **No Exclusions**: There are no restrictions or exclusions applied. This is useful when you want to see a complete picture of the data across all financial years without limiting the view to a specific year or range.
+
+### Summary:
+In summary, this filter allows you to see all financial years in your timesheet data, ensuring that no data is left out. This is particularly helpful for comprehensive analysis or reporting where you want to understand trends or performance over multiple years.)
 
 **Hours Distribution per Category**
 
@@ -3324,20 +3629,17 @@ In summary, this filter is used to narrow down the data to only those timesheets
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis, specifically focusing on the `OWN-Sub-ExtT` column.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to include only those records from the data source where the field `OWN-Sub-ExtT` is not empty or missing.
 
-### Breakdown of the Filter:
+Here's a breakdown of what this means:
 
-1. **Source Table**: The filter is applied to the `lkp_Unit` table, which is referred to as `o` in the JSON.
+- **`OWN-Sub-ExtT`**: This is a specific field or column in your data that likely contains some important information related to units or entities you are analyzing.
 
-2. **Filter Condition**: The key part of this filter is the condition specified in the `Where` section. It states that we want to **exclude** records where the `OWN-Sub-ExtT` column has a value of `null`.
+- **`= null`**: This part of the filter checks if the value in the `OWN-Sub-ExtT` field is null, which means it is either empty or does not have any data.
 
-3. **What This Means**:
-   - **Included Data**: Only records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value (i.e., it is not null) will be included in the analysis.
-   - **Excluded Data**: Any records where the `OWN-Sub-ExtT` column is null will be excluded from the results.
+- **`NOT`**: This negates the condition, meaning that instead of including records where `OWN-Sub-ExtT` is null, it will exclude them.
 
-### Summary:
-In simple terms, this filter ensures that you are only looking at records that have valid data in the `OWN-Sub-ExtT` column, effectively filtering out any incomplete or missing information. This helps in maintaining the quality and relevance of the data you are analyzing in Power BI.)
+So, when this filter is applied, it effectively ensures that only records with a valid (non-empty) value in the `OWN-Sub-ExtT` field are included in your analysis. Any records where `OWN-Sub-ExtT` is null will be left out, allowing you to focus on data that has meaningful information.)
 
 **Value/Percentage**
 
@@ -3385,33 +3687,27 @@ In simple terms, this filter ensures that you are only looking at records that h
 - Name: `0c1ff44a49313745b76a`
 - Fields Used: _(None detected)_
 
-#### <a name="page-timesheet-overviewcategory-per-week"></a>Page: Timesheet Overview/Category per Week
+#### <a name="page-timesheet-overviewcategory-weekly"></a>Page: Timesheet Overview/Category (Weekly)
 
 *Internal Name: `865887498f4acf763b3d`, Ordinal: 9*
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to limit the data displayed in a report or visualization based on specific values of the `TimesheetCode` field from the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What the Filter Does:
+In simple terms, the filter is saying:
 
-1. **Target Data Source**: The filter is applied to a data source called `vw_Timesheet`, which likely contains timesheet records.
+- **Include only the following Timesheet Codes**: 
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
 
-2. **Field of Interest**: The specific field being filtered is `TimesheetCode`. This field likely categorizes or identifies different types of timesheets.
+This means that when you apply this filter to the data, only records (or entries) that have a `TimesheetCode` matching one of these specified values will be shown. Any records with a `TimesheetCode` that is not in this list will be excluded from the analysis.
 
-3. **Included Values**: The filter specifies a list of `TimesheetCode` values that should be included in the results. Only records with these codes will be shown. The included values are:
-   - `'int'`
-   - `'ROEG'`
-   - `'ROIG'`
-   - `'RSEG'`
-   - `'V'`
-   - `'Z'`
-
-4. **Exclusion of Other Values**: Any records that do not have one of the specified `TimesheetCode` values will be excluded from the results. This means that if a timesheet has a code other than those listed, it will not appear in the report or visualization.
-
-### Summary:
-
-In summary, this filter is set up to only show timesheet records that have one of the following codes: `'int'`, `'ROEG'`, `'ROIG'`, `'RSEG'`, `'V'`, or `'Z'`. All other timesheet records will be filtered out, ensuring that the analysis focuses solely on these specific categories of timesheets.)
+So, if you were looking at a report or dashboard, you would only see data related to those specific Timesheet Codes, helping you focus on particular types of timesheets relevant to your analysis or reporting needs.)
 
 ##### Visuals on this Page
 
@@ -3489,10 +3785,64 @@ In summary, this filter is set up to only show timesheet records that have one o
   - `Employee Name` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Rows)
   - `Hours` (Query: `vw_Timesheet.TotalActualHours`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Project` (Type: Categorical, Definition: N/A)
-  - Filter on `vw_Timesheet`.`GroupCat` (Type: Categorical, Definition: N/A)
-  - Filter on `vw_Timesheet`.`Sum(Hours)` (Type: Advanced, Definition: N/A)
-  - Filter on `vw_Timesheet`.`FinancialYear` (Type: Advanced, Definition: N/A)
+  - Filter on `vw_Timesheet`.`Project` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** from the `vw_Timesheet`.`Project` data. This means that no specific projects are being excluded or included; instead, every project in the dataset will be considered.
+
+2. **Data Inclusion**: When this filter is applied, it allows you to see data related to every project available in the `vw_Timesheet` view. You will not miss any project data, regardless of its status, type, or any other characteristics.
+
+3. **No Restrictions**: Since the filter is set to "(All values)", there are no restrictions or conditions applied. This is useful when you want a comprehensive view of all projects without narrowing down to specific ones.
+
+### Summary:
+In summary, this filter ensures that all projects from the `vw_Timesheet` view are included in your analysis, providing a complete picture of project-related data without any exclusions.)
+  - Filter on `vw_Timesheet`.`GroupCat` (Type: Categorical, Explanation: In Power BI, filters are used to control which data is displayed in your reports and visualizations. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **Target Field**: The filter is applied to the field `vw_Timesheet`.`GroupCat`. This field likely represents different categories or groups related to timesheets, such as project categories, employee groups, or task types.
+
+2. **Filter Meaning**: The phrase "(All values)" indicates that **no specific filtering is being applied** to the `GroupCat` field. This means that all categories or groups within the `GroupCat` field will be included in the data being analyzed or displayed.
+
+3. **Data Inclusion**: Since the filter is set to include "All values," every possible category in the `GroupCat` field will be shown in the report. For example, if there are categories like "Development," "Design," and "Testing," all of these will be included in the analysis.
+
+4. **Data Exclusion**: There are no exclusions with this filter. No categories are being left out; everything is considered.
+
+### Summary:
+In summary, this filter allows you to see all the data related to the `GroupCat` field without any restrictions. It ensures that every category is represented in your reports, providing a complete view of the timesheet data across all groups.)
+  - Filter on (Name: `c7b94678aab7e1d8abc3`) (Type: Advanced, Explanation: The JSON you provided, `"(No definition found)"`, indicates that there is no specific filter definition applied. In simple business terms, this means that there are no criteria set to include or exclude any data when this filter is used.
+
+### What This Means:
+- **No Data Restrictions**: Since there is no filter defined, all data will be included in any analysis or report. There are no limitations on what data can be viewed or analyzed.
+- **Full Visibility**: Users will see the complete dataset without any segments or subsets being filtered out.
+
+### Summary:
+In essence, this filter does not change or limit the data in any way; it allows for a comprehensive view of all available information.)
+  - Filter on `vw_Timesheet`.`FinancialYear` (Type: Advanced, Explanation: In Power BI, filters are used to control which data is displayed in your reports and dashboards. The filter definition JSON you provided is:
+
+```json
+"(All values)"
+```
+
+### Explanation in Business Terms:
+
+1. **What It Means**: The filter is set to include **all values** for the `FinancialYear` field from the `vw_Timesheet` data. This means that when you apply this filter, you are not excluding any specific years from your analysis.
+
+2. **Data Included**: Every financial year available in the `vw_Timesheet` dataset will be included in your report. For example, if your dataset contains financial years from 2018 to 2023, all these years will be shown in your visuals.
+
+3. **Data Excluded**: Since the filter is set to "(All values)", there are no exclusions. No financial years are left out of the analysis.
+
+### Summary:
+This filter allows you to see a complete view of all financial years in your timesheet data, ensuring that you have a comprehensive understanding of trends and performance across all years without any limitations.)
 
 **Hours Distribution per Category**
 
@@ -3510,20 +3860,16 @@ In summary, this filter is set up to only show timesheet records that have one o
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis, specifically focusing on the column `OWN-Sub-ExtT`.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the field `OWN-Sub-ExtT` is empty or has no value (i.e., is null).
 
-### Breakdown of the Filter:
+Here's a breakdown of what this means:
 
-1. **Source Table**: The filter is applied to the `lkp_Unit` table, which is referenced as `o` in the JSON.
-
-2. **Filter Condition**: The key part of the filter is the condition specified in the `Where` section. It states that we want to **exclude** records where the `OWN-Sub-ExtT` column has a value of `null`.
-
-3. **What This Means**:
-   - **Included Data**: Only records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column contains a value (i.e., it is not `null`) will be included in the analysis.
-   - **Excluded Data**: Any records where `OWN-Sub-ExtT` is `null` will be filtered out and not considered in your reports or visualizations.
+- **Target Field**: The filter is applied to the field `lkp_Unit`.`OWN-Sub-ExtT`, which likely represents a specific attribute or category related to units in your data model.
+  
+- **Filter Logic**: The filter uses the condition `NOT (`OWN-Sub-ExtT` = null)`. This means that it will only include records where `OWN-Sub-ExtT` has a value. In other words, any record where `OWN-Sub-ExtT` is empty or not filled in will be excluded from the analysis.
 
 ### Summary:
-In simple terms, this filter ensures that you are only looking at records that have meaningful data in the `OWN-Sub-ExtT` column, effectively ignoring any records that do not have a specified value in that field. This helps in maintaining data quality and relevance in your analysis.)
+When this filter is applied, you will only see data entries that have a defined value in the `OWN-Sub-ExtT` field. Any entries without a value in this field will be ignored, ensuring that your analysis focuses only on complete and relevant data.)
 
 **Value/Percentage**
 
@@ -3577,27 +3923,24 @@ In simple terms, this filter ensures that you are only looking at records that h
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to include specific values from the `TimesheetCode` column in the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: The provided Power BI filter definition is specifying a condition for the `TimesheetCode` field in the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
 
 ### What the Filter Does:
-- **Target Data**: The filter is applied to the `TimesheetCode` field within the `vw_Timesheet` dataset.
-- **Included Values**: The filter specifies a list of `TimesheetCode` values that should be included in the analysis. Only records with these codes will be considered.
+- **Includes Specific Codes**: The filter is set to include only certain values for the `TimesheetCode`. Specifically, it allows the following codes:
+  - `int`
+  - `ROEG`
+  - `ROIG`
+  - `RSEG`
+  - `V`
+  - `Z`
+  - `RSIG`
 
-### Included Timesheet Codes:
-The following `TimesheetCode` values are included by this filter:
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
-7. **'RSIG'**
-
-### Excluded Data:
-- Any records in the `vw_Timesheet` that do not have one of the above `TimesheetCode` values will be excluded from the analysis. This means that if a timesheet has a code that is not listed, it will not appear in the results.
+### What This Means:
+- **Data Inclusion**: When this filter is applied, only records from the `vw_Timesheet` view that have a `TimesheetCode` matching one of the specified values will be included in the analysis or report. 
+- **Data Exclusion**: Any records with a `TimesheetCode` that is **not** one of these specified values will be excluded from the results. This means that if a timesheet has a code like `ABC` or `XYZ`, it will not show up in the filtered data.
 
 ### Summary:
-In summary, this filter is used to focus on specific timesheet entries by including only those with the designated codes. This helps in analyzing or reporting on a targeted subset of timesheet data, ensuring that only relevant entries are considered.)
+In summary, this filter is used to focus on a specific set of timesheet codes that are likely relevant for a particular analysis or report, ensuring that only those entries are considered while filtering out all others.)
 
 ##### Visuals on this Page
 
@@ -3618,54 +3961,52 @@ In summary, this filter is used to focus on specific timesheet entries by includ
 - Type: `slicer`
 - Name: `d52f867b0050a9900aab`
 - Fields Used:
-  - `DimDate.CalendarYear` (Role: Values)
+  - `CalendarYear` (Query: `DimDate.CalendarYear`) (Role: Values)
 
 **TimeSpan**
 
 - Type: `slicer`
 - Name: `66934532619b0b009073`
 - Fields Used:
-  - `DimDate.ShortDate` (Role: Values)
+  - `ShortDate` (Query: `DimDate.ShortDate`) (Role: Values)
 
 **Unit**
 
 - Type: `slicer`
 - Name: `9029f0dd89303697364d`
 - Fields Used:
-  - `PBI_TIMESHEET.MAIN_UNIT` (Role: Values)
+  - `MAIN_UNIT` (Query: `PBI_TIMESHEET.MAIN_UNIT`) (Role: Values)
 
 **SubUnit**
 
 - Type: `slicer`
 - Name: `646e8ef1016d8cbb5042`
 - Fields Used:
-  - `PBI_TIMESHEET.Unit` (Role: Values)
+  - `Unit` (Query: `PBI_TIMESHEET.Unit`) (Role: Values)
 
 **Employee**
 
 - Type: `slicer`
 - Name: `e410cc9b9e813ccb6a09`
 - Fields Used:
-  - `PBI_TIMESHEET.EmployeeName` (Role: Values)
+  - `EmployeeName` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Values)
 
 **Own-Sub-Ext**
 
 - Type: `slicer`
 - Name: `4982e2f59b589712a24d`
 - Fields Used:
-  - `ONEDRIVE_UNIT.OWN-Sub-ExtT` (Role: Values)
+  - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis based on the `OWN-Sub-ExtT` column. Here’s a breakdown of what this filter does in simple business terms:
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the field `OWN-Sub-ExtT` is empty or has no value (i.e., is null).
 
-1. **Target Data**: The filter is applied to the `OWN-Sub-ExtT` column in the `lkp_Unit` table. This column likely contains some kind of identifier or classification related to units.
+Here's a breakdown of what this means:
 
-2. **Filter Logic**: The filter specifies a condition that excludes certain records. Specifically, it is looking for records where the `OWN-Sub-ExtT` value is **not** equal to `null`.
+- **Target Field**: The filter is applied to the field `lkp_Unit`.`OWN-Sub-ExtT`.
+- **Condition**: The filter states "NOT (`OWN-Sub-ExtT` = null)", which means it is looking for records where `OWN-Sub-ExtT` does **not** equal null.
+- **Inclusion/Exclusion**: As a result, this filter will include only those records where `OWN-Sub-ExtT` has a valid value (i.e., it is not empty). Any record where `OWN-Sub-ExtT` is null will be excluded from the results.
 
-3. **Inclusion Criteria**: By applying this filter, you are including only those records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value (i.e., it is not empty or undefined). 
-
-4. **Exclusion Criteria**: Any records where the `OWN-Sub-ExtT` column is `null` (meaning there is no value present) will be excluded from your analysis.
-
-In summary, this filter ensures that you only work with records that have a valid entry in the `OWN-Sub-ExtT` column, effectively filtering out any incomplete or missing data in that specific field.)
+In summary, this filter ensures that only records with meaningful data in the `OWN-Sub-ExtT` field are considered, filtering out any records that lack this information.)
 
 **image**
 
@@ -3678,26 +4019,24 @@ In summary, this filter ensures that you only work with records that have a vali
 - Type: `pivotTable`
 - Name: `37aeaba9e2b02eac1abb`
 - Fields Used:
-  - `PBI_TIMESHEET.Unit` (Role: Rows)
   - `Employee Name` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Rows)
-  - `PBI_TIMESHEET.Project` (Role: Rows)
-  - `Sum(PBI_TIMESHEET.Hours)` (Role: Values)
+  - `Project` (Query: `PBI_TIMESHEET.Project`) (Role: Rows)
+  - `Sum of Hours` (Query: `Sum(PBI_TIMESHEET.Hours)`) (Role: Values)
+  - `Unit` (Query: `PBI_TIMESHEET.Unit`) (Role: Rows)
   - `Year` (Query: `DimDate.CalendarYear`) (Role: Columns)
   - `Month` (Query: `DimDate.MonthNumberOfYear`) (Role: Columns)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which employee names are included in the data being analyzed from the `vw_Timesheet` view. Let's break it down in simple business terms:
+  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the `EmployeeName` field is empty or not specified. 
 
-1. **Data Source**: The filter is applied to a data source called `vw_Timesheet`, which likely contains timesheet records for employees.
+Here's a breakdown of what this means:
 
-2. **Target Field**: The specific field being filtered is `EmployeeName`. This means the filter is focusing on the names of employees recorded in the timesheet.
+- **Target Field**: The filter is applied to the `EmployeeName` field in the `vw_Timesheet` data view.
+- **Condition**: The filter uses the condition `NOT (`EmployeeName` = null)`. 
+- **Interpretation**: 
+  - The term `null` refers to cases where there is no value provided for `EmployeeName`. This could mean that the employee's name is missing or not recorded in the data.
+  - By using `NOT`, the filter is saying, "I want to include all records where the `EmployeeName` is NOT null." 
 
-3. **Filter Logic**: The filter uses a condition that specifies which employee names should be included or excluded. In this case, the filter is set to **exclude** any records where the `EmployeeName` is `null`. 
-
-   - **What does "null" mean?**: In this context, "null" indicates that there is no employee name recorded for that particular entry in the timesheet. 
-
-4. **Outcome**: When this filter is applied, it will only include records where the `EmployeeName` has a valid, non-empty value. This means that any timesheet entries without an associated employee name will be ignored in the analysis.
-
-In summary, this filter ensures that only timesheet records with actual employee names are considered, effectively excluding any entries that do not have a name associated with them. This helps in generating accurate reports and insights based on valid employee data.)
+**In summary**: When this filter is applied, it will only show records where there is a valid employee name present. Any records that do not have an employee name (i.e., those that are blank or missing) will be excluded from the results.)
 
 **actionButton**
 
@@ -3723,24 +4062,30 @@ In summary, this filter ensures that only timesheet records with actual employee
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` column of the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field from the `vw_Timesheet` data view should be included in the analysis or report.
 
-### What Data is Included:
-The filter is designed to **include** only those records from the `vw_Timesheet` view where the `TimesheetCode` matches any of the following specific values:
+### Breakdown of the Filter:
 
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
-7. **'RSIG'**
+- **Target Field**: The filter is applied to the `TimesheetCode` field.
+- **Included Values**: The filter includes only the following specific values:
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
+  - 'RSIG'
 
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that have a `TimesheetCode` **not** listed above will be **excluded** from the results. This means that if a timesheet has a code that is different from the ones specified, it will not appear in the filtered data.
+### Business Explanation:
+
+When this filter is applied, the report or analysis will only show data related to timesheets that have one of the specified codes. In practical terms, this means:
+
+- **Included**: If a timesheet has a code of 'int', 'ROEG', 'ROIG', 'RSEG', 'V', 'Z', or 'RSIG', it will be included in the results.
+- **Excluded**: Any timesheet with a code that is not one of these (for example, codes like 'ABC', 'XYZ', or any other code not listed) will be excluded from the results.
 
 ### Summary:
-In summary, this filter is used to narrow down the dataset to only those timesheets that have specific codes, allowing users to focus on a defined subset of timesheet entries that are relevant for their analysis or reporting needs.)
+
+In summary, this filter is used to focus on specific types of timesheets that are relevant for the analysis, ensuring that only the data associated with these particular codes is considered, while all other timesheet codes are ignored.)
 
 ##### Visuals on this Page
 
@@ -3761,85 +4106,72 @@ In summary, this filter is used to narrow down the dataset to only those timeshe
 - Type: `slicer`
 - Name: `b68ed4ff60eaaa69eba3`
 - Fields Used:
-  - `DimDate.CalendarYear` (Role: Values)
+  - `CalendarYear` (Query: `DimDate.CalendarYear`) (Role: Values)
 
 **TimeSpan**
 
 - Type: `slicer`
 - Name: `e3a7d72294d8d9e61495`
 - Fields Used:
-  - `DimDate.ShortDate` (Role: Values)
+  - `ShortDate` (Query: `DimDate.ShortDate`) (Role: Values)
 
 **Unit**
 
 - Type: `slicer`
 - Name: `b2b4cc327952867b69e4`
 - Fields Used:
-  - `PBI_TIMESHEET.MAIN_UNIT` (Role: Values)
+  - `MAIN_UNIT` (Query: `PBI_TIMESHEET.MAIN_UNIT`) (Role: Values)
 
 **SubUnit**
 
 - Type: `slicer`
 - Name: `432e1018d6ab8f57edee`
 - Fields Used:
-  - `PBI_TIMESHEET.Unit` (Role: Values)
+  - `Unit` (Query: `PBI_TIMESHEET.Unit`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`Unit` (Type: Advanced, Explanation: This Power BI filter definition JSON is designed to control which records are included or excluded when analyzing data from the `vw_Timesheet` view, specifically focusing on the `Unit` column.
+  - Filter on `vw_Timesheet`.`Unit` (Type: Advanced, Explanation: The provided Power BI filter definition JSON is specifying a condition that filters the data based on the `Unit` field in the `vw_Timesheet` view.
 
-### Breakdown of the Filter:
+In simple business terms, this filter is saying:
 
-1. **Source of Data**: 
-   - The filter is applied to a data source named `vw_Timesheet`, which is likely a view that contains timesheet-related data.
+**"Include all records where the `Unit` field has a value, and exclude any records where the `Unit` field is empty or has no value."**
 
-2. **Target Column**: 
-   - The filter specifically targets the `Unit` column within the `vw_Timesheet` view.
+### Breakdown:
+- **`NOT`**: This indicates that we are excluding certain records based on the condition that follows.
+- **`(`Unit` = null)`**: This part checks if the `Unit` field is empty (or null). 
 
-3. **Filter Condition**:
-   - The filter condition is set to exclude any records where the `Unit` column has a value of `null`. 
+### What this means for your data:
+- **Included**: Any record in the `vw_Timesheet` where the `Unit` has a valid entry (e.g., it could be a department, team, or any other identifier that is not empty).
+- **Excluded**: Any record where the `Unit` is not specified (i.e., it is null or empty).
 
-### Business Terms Explanation:
-
-- **Inclusion/Exclusion**:
-  - This filter ensures that only records with a valid (non-null) value in the `Unit` column are included in the analysis. 
-  - Any records where the `Unit` is not specified (i.e., it is `null`) will be excluded from the results.
-
-### Summary:
-In simple terms, when this filter is applied, you will only see timesheet entries that have a specified unit of work. Any entries that do not have a unit defined will be left out of your analysis, ensuring that the data you are working with is complete and relevant.)
+In summary, this filter ensures that you only see timesheet entries that are associated with a specific unit, helping to focus on relevant data and avoid confusion from entries that lack this important information.)
 
 **Employee**
 
 - Type: `slicer`
 - Name: `7b4d0077c29ca2050146`
 - Fields Used:
-  - `PBI_TIMESHEET.EmployeeName` (Role: Values)
+  - `EmployeeName` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Values)
 
 **Own-Sub-Ext**
 
 - Type: `slicer`
 - Name: `e6c6261fce63077266d0`
 - Fields Used:
-  - `ONEDRIVE_UNIT.OWN-Sub-ExtT` (Role: Values)
+  - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis based on the `OWN-Sub-ExtT` field.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is saying that we want to include only those records from the data source where the field `OWN-Sub-ExtT` is not empty or missing.
 
-### Breakdown of the Filter:
+Here's a breakdown of what this means:
 
-1. **Target Entity**: The filter is applied to the `lkp_Unit` table, specifically focusing on the `OWN-Sub-ExtT` column.
+- **`OWN-Sub-ExtT`**: This is a specific column or field in your data that likely contains some kind of identifier or value related to units (like a unit number, code, or description).
+  
+- **`= null`**: This part checks if the value in the `OWN-Sub-ExtT` field is null, which means it has no value or is empty.
 
-2. **Filter Logic**: The filter uses a "Not" condition. This means it will exclude certain records based on the criteria defined.
+- **`NOT`**: This negates the condition, meaning we want to exclude any records where `OWN-Sub-ExtT` is null.
 
-3. **Condition Explained**:
-   - The filter checks if the value in the `OWN-Sub-ExtT` column is **not** equal to `null`.
-   - In simpler terms, it is looking for records where the `OWN-Sub-ExtT` field has a value (i.e., it is filled in) and is not empty.
+So, when this filter is applied, it will only show records where `OWN-Sub-ExtT` has a valid value (i.e., it is not null). Any records that do not have a value in this field will be excluded from the results. 
 
-### What Data is Included or Excluded:
-
-- **Included**: Any record in the `lkp_Unit` table where the `OWN-Sub-ExtT` field has a value (not null).
-- **Excluded**: Any record where the `OWN-Sub-ExtT` field is empty or has no value (null).
-
-### Summary:
-
-When this filter is applied, you will only see records from the `lkp_Unit` table that have a specified value in the `OWN-Sub-ExtT` column, effectively filtering out any records that do not have this information. This helps ensure that your analysis focuses on relevant data where the `OWN-Sub-ExtT` field is populated.)
+In summary, this filter ensures that you are only looking at data that has meaningful entries in the `OWN-Sub-ExtT` field, helping to focus your analysis on relevant information.)
 
 **image**
 
@@ -3852,24 +4184,24 @@ When this filter is applied, you will only see records from the `lkp_Unit` table
 - Type: `pivotTable`
 - Name: `936465ad5c5d30136110`
 - Fields Used:
-  - `PBI_TIMESHEET.Unit` (Role: Rows)
   - `Employee Name` (Query: `PBI_TIMESHEET.EmployeeName`) (Role: Rows)
-  - `PBI_TIMESHEET.Project` (Role: Rows)
-  - `Sum(PBI_TIMESHEET.Hours)` (Role: Values)
-  - `DimDate.CalendarYear` (Role: Columns)
-  - `DimDate.WeekNumberOfYear` (Role: Columns)
+  - `Project` (Query: `PBI_TIMESHEET.Project`) (Role: Rows)
+  - `Sum of Hours` (Query: `Sum(PBI_TIMESHEET.Hours)`) (Role: Values)
+  - `Unit` (Query: `PBI_TIMESHEET.Unit`) (Role: Rows)
+  - `WeekNumberOfYear` (Query: `DimDate.WeekNumberOfYear`) (Role: Columns)
+  - `CalendarYear` (Query: `DimDate.CalendarYear`) (Role: Columns)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which employee names are included in the data being analyzed from the `vw_Timesheet` view. Let's break it down in simple terms:
+  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is saying:
 
-1. **Source of Data**: The filter is applied to a data source called `vw_Timesheet`, specifically focusing on the `EmployeeName` field.
+**"Include all records where the Employee Name is not empty."**
 
-2. **Filter Condition**: The key part of this filter is the condition specified in the "Where" section. It states that we want to **exclude** any records where the `EmployeeName` is `null`. 
+Here's a breakdown of what this means:
 
-3. **What Does This Mean?**: 
-   - If an employee's name is not recorded (i.e., it is `null`), that record will not be included in the results.
-   - Conversely, any records where the `EmployeeName` has a valid name (not `null`) will be included in the analysis.
+- **`EmployeeName`**: This refers to the name of the employee in the dataset.
+- **`= null`**: This part checks if the Employee Name is empty or missing (which is referred to as "null" in data terminology).
+- **`NOT`**: This means we want to exclude those records where the Employee Name is empty.
 
-In summary, this filter ensures that only employees with valid names are considered in the report or visualization, effectively filtering out any entries that do not have an associated employee name.)
+So, when this filter is applied to the data in the `vw_Timesheet` view, it will only show records for employees who have a name listed. Any records where the Employee Name is missing will be excluded from the results. This helps ensure that the analysis focuses only on valid employee entries.)
 
 **actionButton**
 
@@ -3895,24 +4227,21 @@ In summary, this filter ensures that only employees with valid names are conside
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to include specific data from the `vw_Timesheet` view based on the `TimesheetCode` field. Here's a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What the Filter Does:
-- **Target Data**: The filter is applied to the `TimesheetCode` column in the `vw_Timesheet` view.
-- **Included Values**: The filter specifies that only certain `TimesheetCode` values should be included in the analysis. These values are:
-  - `'int'`
-  - `'ROEG'`
-  - `'ROIG'`
-  - `'RSEG'`
-  - `'V'`
-  - `'Z'`
+In simple terms, the filter is saying:
 
-### What This Means:
-- **Inclusion**: When this filter is applied, only records from the `vw_Timesheet` that have a `TimesheetCode` matching one of the specified values will be included in the report or analysis.
-- **Exclusion**: Any records with a `TimesheetCode` that does not match one of these values will be excluded from the results.
+- **Include only the following Timesheet Codes**: 
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
 
-### Summary:
-In summary, this filter is used to focus on specific types of timesheets by including only those with the codes `'int'`, `'ROEG'`, `'ROIG'`, `'RSEG'`, `'V'`, and `'Z'`. All other timesheet codes will not be considered in the analysis, allowing for a more targeted view of the data.)
+This means that when this filter is applied, only records (or entries) from the dataset that have a `TimesheetCode` matching one of these specified values will be shown. Any records with a `TimesheetCode` that is not one of these six values will be excluded from the analysis.
+
+So, if you are looking at a report or dashboard in Power BI that uses this filter, you will only see data related to those specific Timesheet Codes, helping you focus on a particular subset of timesheet entries.)
 
 ##### Visuals on this Page
 
@@ -3987,19 +4316,17 @@ In summary, this filter is used to focus on specific types of timesheets by incl
   - `SubUnit` (Query: `PBI_TIMESHEET.Unit`) (Role: Rows)
   - `Unit` (Query: `PBI_TIMESHEET.MAIN_UNIT`) (Role: Rows)
 - Visual Level Filters:
-  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which employee names are included in a report or visualization based on the `vw_Timesheet` data source. Let's break it down in simple business terms:
+  - Filter on `vw_Timesheet`.`EmployeeName` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is designed to exclude any records where the `EmployeeName` field is empty or not provided. 
 
-1. **Data Source**: The filter is applied to a view called `vw_Timesheet`, which likely contains timesheet data for employees.
+Here's a breakdown of the filter:
 
-2. **Target Field**: The specific field being filtered is `EmployeeName`, which represents the names of employees in the timesheet data.
+- **`EmployeeName` = null**: This part checks if the `EmployeeName` is empty (or null). In a business context, this means it looks for entries where no employee name has been recorded.
 
-3. **Filter Logic**: The filter is set up to **exclude** any records where the `EmployeeName` is `null`. In other words, it is looking for employee names that are present and not empty.
+- **NOT**: This negates the condition. So instead of including records where the employee name is empty, it excludes them.
 
-4. **What This Means**:
-   - **Included Data**: Only those records where `EmployeeName` has a valid name (i.e., it is not `null`) will be included in the report or visualization.
-   - **Excluded Data**: Any records where `EmployeeName` is missing (i.e., `null`) will be filtered out and not shown.
+When this filter is applied to the target `vw_Timesheet`.`EmployeeName`, it means that only records with a valid employee name will be included in the analysis. Any records where the employee name is missing will be left out. 
 
-In summary, this filter ensures that the report only displays employees who have a name recorded in the timesheet, effectively ignoring any entries that do not have an associated employee name.)
+In summary, this filter ensures that the data you are analyzing only contains entries for employees who have a name listed, helping to maintain data quality and relevance in your reports.)
 
 **Category**
 
@@ -4029,23 +4356,19 @@ In summary, this filter ensures that the report only displays employees who have
 - Fields Used:
   - `OWN-Sub-ExtT` (Query: `ONEDRIVE_UNIT.OWN-Sub-ExtT`) (Role: Values)
 - Visual Level Filters:
-  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: This Power BI filter definition is designed to control which records from the `lkp_Unit` table are included in your analysis based on the `OWN-Sub-ExtT` column.
+  - Filter on `lkp_Unit`.`OWN-Sub-ExtT` (Type: Advanced, Explanation: In simple business terms, this Power BI filter definition is saying that we want to include only those records where the field `OWN-Sub-ExtT` is not empty or missing. 
 
-### Breakdown of the Filter:
+Here's a breakdown of what this means:
 
-1. **Target Entity**: The filter is applied to the `lkp_Unit` table, specifically focusing on the `OWN-Sub-ExtT` column.
-
-2. **Filter Condition**: The key part of this filter is the condition specified in the "Where" section. It states that we want to **exclude** any records where the `OWN-Sub-ExtT` column has a value of `null`.
-
-### In Simple Terms:
-
-- **Included Data**: This filter will include all records from the `lkp_Unit` table where the `OWN-Sub-ExtT` column has a value (i.e., it is not empty or null).
+- **`OWN-Sub-ExtT`**: This is a specific column or field in your data that likely contains some kind of identifier or value related to units.
   
-- **Excluded Data**: Any record where the `OWN-Sub-ExtT` column is `null` will be excluded from the results.
+- **`= null`**: This part checks if the value in the `OWN-Sub-ExtT` field is empty or does not exist (which is referred to as "null" in data terminology).
 
-### Summary:
+- **`NOT`**: This means we are excluding any records where `OWN-Sub-ExtT` is null.
 
-When this filter is applied, you will only see records from the `lkp_Unit` table that have a valid, non-null entry in the `OWN-Sub-ExtT` column. This helps ensure that your analysis focuses on meaningful data, avoiding any entries that do not provide useful information.)
+So, when this filter is applied, it will only show records where `OWN-Sub-ExtT` has a valid value (i.e., it is not null). Any records that have no value in this field will be excluded from the results. 
+
+In summary, this filter ensures that you are only looking at data that has meaningful entries in the `OWN-Sub-ExtT` field, helping to focus your analysis on relevant records.)
 
 **actionButton**
 
@@ -4071,40 +4394,48 @@ When this filter is applied, you will only see records from the `lkp_Unit` table
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is designed to include specific values from the `TimesheetCode` column in the `vw_Timesheet` view. Here’s a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field from the `vw_Timesheet` table should be included in the analysis or report.
 
-### What the Filter Does:
-- **Target Data**: The filter is applied to the `TimesheetCode` field within the `vw_Timesheet` dataset.
-- **Included Values**: The filter specifies a list of `TimesheetCode` values that should be included in the analysis. Only records with these specific codes will be considered.
+### Breakdown of the Filter:
 
-### Included Timesheet Codes:
+- **Target Field**: `vw_Timesheet`.`TimesheetCode`
+  - This is the specific column in the data that we are filtering on. It contains various codes that represent different types of timesheets.
+
+- **Filter Condition**: `IN ('int', 'ROEG', 'ROIG', 'RSEG', 'V', 'Z', 'RSIG')`
+  - This part of the filter indicates that we want to include only those records where the `TimesheetCode` matches one of the specified values in the parentheses.
+
+### Included Values:
 The filter includes the following `TimesheetCode` values:
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
-7. **'RSIG'**
+- `int`
+- `ROEG`
+- `ROIG`
+- `RSEG`
+- `V`
+- `Z`
+- `RSIG`
 
-### Excluded Data:
-- Any records in the `vw_Timesheet` that do not have one of the above `TimesheetCode` values will be excluded from the analysis. This means that if a timesheet has a code that is not listed, it will not appear in the results.
+### Excluded Values:
+Any `TimesheetCode` that is **not** one of the above values will be excluded from the analysis. This means that if a timesheet has a code like `ABC`, `XYZ`, or any other code not listed, it will not be considered in the results.
 
 ### Summary:
-In summary, this filter is used to focus on specific types of timesheets by including only those with the designated codes. This helps in analyzing or reporting on a targeted subset of timesheet data, ensuring that only relevant entries are considered.)
-- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_missing_timesheet` view, particularly the `ContractStatusToday` column. Here’s a breakdown of what this filter does in simple business terms:
+In simple terms, this filter is set up to focus on specific types of timesheets that are identified by their codes. Only the timesheets with the codes `int`, `ROEG`, `ROIG`, `RSEG`, `V`, `Z`, and `RSIG` will be included in the report or analysis, while all other timesheet codes will be ignored. This helps in narrowing down the data to only the relevant entries for whatever analysis is being performed.)
+- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: The provided filter definition JSON is specifying a condition for the data that will be included when analyzing the `ContractStatusToday` field from the `vw_missing_timesheet` view in Power BI.
 
-1. **Target Data Source**: The filter is applied to a data source called `vw_missing_timesheet`, which likely contains information about timesheets and their statuses.
+### Explanation in Business Terms:
 
-2. **Column of Interest**: The filter specifically looks at the `ContractStatusToday` column within this data source. This column probably indicates the current status of contracts related to timesheets.
+- **Target Field**: The filter is applied to the `ContractStatusToday` field, which likely indicates the current status of contracts in the system.
 
-3. **Filter Condition**: The filter condition specifies that only records where the `ContractStatusToday` is equal to `'Valid'` should be included in the analysis. 
+- **Filter Condition**: The filter states that only records where the `ContractStatusToday` is equal to 'Valid' should be included in the analysis.
 
-4. **Inclusion Criteria**: By using the "In" condition, the filter is saying, "Include only those records where the `ContractStatusToday` is 'Valid'." 
+### What This Means:
 
-5. **Exclusion of Other Data**: As a result, any records where the `ContractStatusToday` is not `'Valid'` (for example, statuses like 'Expired', 'Pending', or 'Invalid') will be excluded from the analysis.
+- **Included Data**: Only contracts that are currently marked as 'Valid' will be considered. This means you will see data related to contracts that are active and in good standing.
 
-In summary, this filter ensures that only the timesheet records with a current contract status of 'Valid' are considered, allowing users to focus on relevant and actionable data regarding valid contracts.)
+- **Excluded Data**: Any contracts that have a status other than 'Valid' (for example, 'Expired', 'Pending', or 'Cancelled') will be excluded from the analysis. This helps focus on contracts that are currently operational and relevant for decision-making.
+
+### Summary:
+
+In summary, this filter ensures that your analysis only looks at contracts that are valid, allowing for more accurate insights and reporting on the current state of contracts without the noise of inactive or irrelevant statuses.)
 
 ##### Visuals on this Page
 
@@ -4244,35 +4575,37 @@ In summary, this filter ensures that only the timesheet records with a current c
 
 ##### Page Level Filters
 
-- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition JSON specifies a filter that is applied to the `TimesheetCode` column of the `vw_Timesheet` view. Here's a breakdown of what this filter does in simple business terms:
+- Filter on `vw_Timesheet`.`TimesheetCode` (Type: Categorical, Explanation: This Power BI filter definition is specifying which values of the `TimesheetCode` field should be included in the data being analyzed. 
 
-### What Data is Included:
-The filter is designed to **include** only those records from the `vw_Timesheet` view where the `TimesheetCode` matches any of the following specific values:
+In simple terms, the filter is saying:
 
-1. **'int'**
-2. **'ROEG'**
-3. **'ROIG'**
-4. **'RSEG'**
-5. **'V'**
-6. **'Z'**
-7. **'RSIG'**
+- **Include only the following Timesheet Codes**: 
+  - 'int'
+  - 'ROEG'
+  - 'ROIG'
+  - 'RSEG'
+  - 'V'
+  - 'Z'
+  - 'RSIG'
 
-### What Data is Excluded:
-Any records in the `vw_Timesheet` view that have a `TimesheetCode` **not** listed above will be **excluded** from the results. This means that if a record has a `TimesheetCode` that is different from the ones specified, it will not appear in the filtered data.
+### What This Means for Your Data:
+
+- **Included Data**: When this filter is applied, only records (or entries) that have a `TimesheetCode` matching one of the specified values will be included in your analysis. For example, if you have a timesheet entry with the code 'ROEG', it will be included in the results.
+
+- **Excluded Data**: Any records with a `TimesheetCode` that is **not** one of these specified values will be excluded from the analysis. For instance, if there is a timesheet entry with the code 'ABC', it will not appear in the results.
 
 ### Summary:
-In summary, this filter narrows down the data to only show timesheets that have specific codes, allowing users to focus on those particular entries while ignoring all others. This can be useful for reporting or analysis where only certain types of timesheets are relevant.)
-- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: This Power BI filter definition is designed to focus on a specific aspect of the data from the `vw_missing_timesheet` view, particularly the `ContractStatusToday` field. Here’s a breakdown of what this filter does in simple business terms:
+This filter helps narrow down the dataset to focus only on specific timesheet codes that are relevant for your analysis, ensuring that you are looking at the most pertinent information.)
+- Filter on `vw_missing_timesheet`.`ContractStatusToday` (Type: Categorical, Explanation: In simple business terms, this Power BI filter is designed to focus on a specific subset of data related to the `ContractStatusToday` field in the `vw_missing_timesheet` view.
 
-1. **Target Data Source**: The filter is applied to a data source called `vw_missing_timesheet`, which likely contains information about timesheets and their statuses.
+### What the Filter Does:
+- **Includes Only Valid Contracts**: The filter specifies that only records where the `ContractStatusToday` is marked as 'Valid' will be included in the analysis or report.
+  
+### What the Filter Excludes:
+- **Excludes All Other Contract Statuses**: Any records where the `ContractStatusToday` is not 'Valid' (such as 'Expired', 'Pending', or any other status) will be excluded from the data being analyzed.
 
-2. **Field of Interest**: The filter specifically looks at the `ContractStatusToday` field within this data source. This field probably indicates the current status of contracts related to timesheets.
-
-3. **Inclusion Criteria**: The filter includes only those records where the `ContractStatusToday` is equal to `'Valid'`. This means that any timesheet records that have a contract status other than `'Valid'` will be excluded from the analysis.
-
-4. **Purpose**: By applying this filter, the analysis will focus solely on valid contracts, allowing users to see only the relevant timesheet data that is associated with contracts that are currently considered valid.
-
-In summary, this filter ensures that only timesheet records with a `ContractStatusToday` of `'Valid'` are included in the report or visualization, effectively excluding any records with different statuses.)
+### Summary:
+When this filter is applied, you will only see data related to contracts that are currently valid, allowing you to focus on active and relevant contracts without any distractions from those that are not valid.)
 
 ##### Visuals on this Page
 
@@ -4412,4 +4745,7 @@ In summary, this filter ensures that only timesheet records with a `ContractStat
 - Type: `None`
 - Name: `256e456cfd6a08250f63`
 - Fields Used: _(None detected)_
+
+
+---
 
